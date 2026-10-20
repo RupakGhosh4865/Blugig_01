@@ -1,0 +1,413 @@
+@import "tailwindcss";
+
+/*
+ * Blugig design tokens.
+ * Layout + motion language mirrors zig.ai (light base, pill buttons, chips,
+ * scroll-driven page background). Brand colours follow the Blugig logo:
+ * white + yellow/gold, blue for actions.
+ * Logo hex values are stand-ins — swap them here only (see TODO.md).
+ */
+@theme {
+  --font-sans: var(--font-archivo), "Archivo", Arial, sans-serif;
+  --font-mono: var(--font-azeret), "Azeret Mono", ui-monospace, monospace;
+
+  /* Neutrals (warm, to sit with yellow) */
+  --color-base: #f5f4ee; /* page background (zig gray-50 analogue) */
+  --color-white: #ffffff;
+  --color-ink: #15171a; /* zig black */
+  --color-gray-100: #e8e7e1;
+  --color-gray-200: #d3d1c9;
+  --color-gray-300: #b5b2a8;
+  --color-gray-400: #8e8b81;
+  --color-gray-500: #6e6b62;
+  --color-gray-600: #57554d;
+  --color-gray-700: #45433d;
+  --color-gray-800: #2f2e2a;
+
+  /* Brand yellow / gold (replaces zig green) */
+  --color-gold-50: #fffaeb;
+  --color-gold-100: #fef2c7;
+  --color-gold-200: #fde58f;
+  --color-gold-300: #fad45c;
+  --color-gold-400: #f7c83b;
+  --color-gold-500: #f5c030; /* logo yellow — stand-in */
+  --color-gold-600: #d9a21a;
+  --color-gold-700: #b3830f; /* large text on light (≥3:1) */
+  --color-gold-800: #8a6410; /* small text on light (≥4.5:1) */
+  --color-gold-900: #5e440b;
+
+  /* Action blue (replaces zig coral) */
+  --color-blue-50: #eef4ff;
+  --color-blue-100: #dce8ff;
+  --color-blue-200: #bcd3ff;
+  --color-blue-300: #8eb5ff;
+  --color-blue-400: #5c95ff;
+  --color-blue-500: #2f7bff;
+  --color-blue-600: #1f5fe0; /* buttons with white text (AA) */
+  --color-blue-700: #1a4db8;
+  --color-blue-800: #163c8c;
+
+  /* Deep navy (replaces zig blue-700 sections) */
+  --color-navy: #13213d;
+  --color-navy-2: #1b2c4f;
+
+  /* Service accents (particles, hero glow) */
+  --color-svc-smartsheet: #2f7bff;
+  --color-svc-safetyculture: #3ddc97;
+  --color-svc-powerbi: #f2c14e;
+  --color-svc-data: #5ce1ff;
+  --color-svc-migration: #8b7cff;
+
+  --radius-card: 1.5rem;
+  --radius-input: 0.75rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --animate-marquee: marquee var(--marquee-duration, 30s) linear infinite;
+  --animate-caret: caret 1s steps(1) infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-expo) infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+}
+
+/* Page colour is driven by scroll zones (components/layout/PageBackground). */
+:root {
+  --page-bg: var(--color-base);
+  --page-fg: var(--color-ink);
+  --page-muted: var(--color-gray-600);
+  --grad-a: var(--color-gold-800);
+  --grad-b: var(--color-gold-700);
+  --logo-mark: var(--color-gold-500);
+  --outline-fg: var(--color-blue-600);
+  --gutter: 1rem;
+  --nav-h: 4rem;
+  color-scheme: light;
+}
+@media (min-width: 640px) {
+  :root {
+    --gutter: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 2.5rem;
+  }
+}
+:root[data-zone="ink"] {
+  --page-bg: var(--color-ink);
+  --page-fg: #ffffff;
+  --page-muted: var(--color-gray-300);
+  --grad-a: var(--color-gold-400);
+  --grad-b: var(--color-gold-200);
+  --outline-fg: #ffffff;
+}
+:root[data-zone="gold"] {
+  --page-bg: var(--color-gold-500);
+  --page-fg: var(--color-ink);
+  --page-muted: var(--color-gray-800);
+  --logo-mark: var(--color-ink);
+  --outline-fg: var(--color-ink);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--page-bg);
+  color: var(--page-fg);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-gold-300);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blue-500);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- Type scale (zig) ---------- */
+@utility title-xl {
+  font-size: clamp(2.75rem, 5.2vw, 4.5rem);
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+@utility title-l {
+  font-size: clamp(2.25rem, 4.2vw, 3.625rem);
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+@utility title-m {
+  font-size: clamp(1.625rem, 2.5vw, 2.25rem);
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+@utility title-s {
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+@utility title-xs {
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+@utility text-l {
+  font-size: 1.125rem;
+  line-height: 1.5;
+  letter-spacing: -0.03em;
+}
+@utility text-m {
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+@utility text-s {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+@utility text-number {
+  font-size: clamp(3rem, 4.6vw, 4.375rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+@utility text-step {
+  font-size: clamp(2.25rem, 3.5vw, 3.125rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+@utility text-mono {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* zig .text--grad */
+@utility text-grad {
+  background: linear-gradient(265deg, var(--grad-a) 38%, var(--grad-b) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.05ch;
+}
+
+/* zig padding_global + container */
+@utility shell {
+  width: 100%;
+  max-width: calc(85rem + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+@utility shell-wide {
+  width: 100%;
+  max-width: calc(90rem + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@utility section-y {
+  padding-block: clamp(4.5rem, 8vw, 6.25rem);
+}
+
+@utility dot-pattern {
+  background-image: radial-gradient(currentColor 1.5px, transparent 1.6px);
+  background-size: 18px 18px;
+}
+
+/* ---------- Hero choreography: CSS so the LCP heading never waits for JS ---------- */
+@keyframes rise-in {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.split-word > span {
+  display: inline-block;
+  animation: rise-in 0.8s var(--ease-out-expo) both;
+  animation-delay: calc(0.1s + var(--i, 0) * 0.04s);
+}
+.enter-fade {
+  animation: fade-up 0.7s var(--ease-out-expo) both;
+  animation-delay: var(--d, 0s);
+}
+.page-enter {
+  animation: fade-up 0.5s var(--ease-out-expo) both;
+}
+
+/* Accordion height animation (Radix exposes the measured height) */
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+.accordion-content[data-state="open"] {
+  animation: accordion-down 0.3s ease-out;
+}
+.accordion-content[data-state="closed"] {
+  animation: accordion-up 0.3s ease-out;
+}
+
+/* Marquee pauses on hover and when off-screen */
+.marquee-row:hover .marquee-list,
+.marquee-row[data-paused="true"] .marquee-list {
+  animation-play-state: paused;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+}
+@media (max-width: 480px) {
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Long-form legal pages */
+.prose-legal h2 {
+  font-size: 1.75rem;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.prose-legal p,
+.prose-legal li {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  letter-spacing: 0;
+  color: var(--color-gray-700);
+}
+.prose-legal p + p {
+  margin-top: 1rem;
+}
+.prose-legal ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin-top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.2s !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.2s !important;
+    scroll-behavior: auto !important;
+  }
+  .split-word > span {
+    animation: fade-in 0.2s both;
+  }
+  .marquee-list {
+    animation: none !important;
+  }
+}
