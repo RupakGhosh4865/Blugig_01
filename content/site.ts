@@ -2,7 +2,12 @@
 export const site = {
   name: "Blugig Global",
   legalName: "Blugig Global LLC",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.blugig.com",
+  /** Explicit domain → Vercel production URL (system env) → placeholder. */
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "https://www.blugig.com"),
   description:
     "Blugig Global designs the workflows, data pipelines, and AI agents that help teams move faster — on Smartsheet, SafetyCulture, Power BI, and the modern data stack.",
   email: "[PLACEHOLDER: hello@blugig.com]",
