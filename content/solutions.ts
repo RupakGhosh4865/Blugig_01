@@ -1,4 +1,4 @@
-import type { IconName } from "@/components/icons/Icon";
+import type { IconName } from "@/components/icons/DrawIcon";
 
 /** Solutions page copy (common Mitti use cases). */
 export type Solution = {
@@ -9,14 +9,16 @@ export type Solution = {
 };
 
 export const solutionsHero = {
-  chip: "Solutions with Mitti",
+  eyebrow: "Solutions with Mitti",
   titleLead: "Better ways to manage",
   titleAccent: "everyday operations.",
   sub: "Practical Mitti solutions for inspections, follow-up, and visibility across your sites.",
-  cta: { label: "Find your starting point", href: "#use-cases" },
+  primary: { label: "Find your starting point", href: "#use-cases" },
+  secondary: { label: "Talk to our team", href: "/contact" },
 };
 
 export const solutionsIntro = {
+  chip: "Use cases",
   title: "What would you like to improve?",
   sub: "Explore common use cases for Mitti. Each solution can be tailored to your processes, sites, and teams.",
 };
@@ -61,18 +63,21 @@ export const solutions: Solution[] = [
 ];
 
 export const workflow = {
+  chip: "Workflow",
   title: "See the workflow, not just the form.",
   sub: "An illustrative workflow configured around your team.",
   steps: [
-    { title: "Inspect", body: "Complete digital inspections on site using Mitti.", icon: "inspect" as IconName },
-    { title: "Identify", body: "Capture issues and raise observations.", icon: "alert" as IconName },
-    { title: "Assign", body: "Assign ownership and set follow-up.", icon: "person" as IconName },
-    { title: "Review", body: "Track progress and review trends.", icon: "chart" as IconName },
+    { title: "Inspect", body: "Complete digital inspections on site using Mitti." },
+    { title: "Identify", body: "Capture issues and raise observations." },
+    { title: "Assign", body: "Assign ownership and set follow-up." },
+    { title: "Review", body: "Track progress and review trends." },
   ],
 };
 
 export const solutionsIndustries = {
-  title: "Adapted to your environment.",
+  chip: "Industries",
+  lead: "Adapted to",
+  accent: "your environment",
   sub: "Mitti can be configured for a range of industries and site types.",
 };
 

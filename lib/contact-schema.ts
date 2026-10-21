@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { supportOptions } from "@/content/services";
+import { services, supportOptions } from "@/content/services";
 import { solutions } from "@/content/solutions";
 
 /** "What can we help with?" — grouped in the form; `/contact?topic={value}` pre-selects one. */
@@ -11,6 +11,10 @@ export const topicGroups = [
   {
     label: "What you want to improve",
     options: solutions.map((s) => ({ value: s.slug, label: s.title })),
+  },
+  {
+    label: "Services",
+    options: services.map((s) => ({ value: s.slug, label: s.title })),
   },
 ];
 

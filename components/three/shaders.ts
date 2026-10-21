@@ -66,7 +66,7 @@ export const particleFragment = /* glsl */ `
     if (d > 0.5) discard;
     float alpha = smoothstep(0.5, 0.08, d);
     vec3 col = mix(uColorA, uColorB, vDepth);
-    // ~3% of points sparkle gold
+    // ~3% of points sparkle in the accent colour
     float sparkle = step(0.97, vSeed);
     float twinkle = 0.55 + 0.45 * sin(uTime * 2.2 + vSeed * 40.0);
     col = mix(col, uSparkle, sparkle);

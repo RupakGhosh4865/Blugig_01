@@ -1,9 +1,7 @@
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import type { CSSProperties } from "react";
 import { SplitWords } from "@/components/motion/SplitWords";
-import { HeroRays } from "@/components/sections/home/HeroArt";
-import { HeroMotion } from "@/components/sections/home/HeroMotion";
-import { HeroVisual } from "@/components/sections/home/HeroVisual";
+import { HeroWheel } from "@/components/sections/home/HeroWheel";
 import { ButtonLink } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { hero } from "@/content/home";
@@ -11,58 +9,44 @@ import { hero } from "@/content/home";
 const d = (s: number) => ({ "--d": `${s}s` }) as CSSProperties;
 
 /**
- * zig hero: eyebrow → title-xl with gradient tail → text-l → two buttons,
- * line art behind and the inspection-tablet visual on the right.
- * Choreography (≤1.4s): eyebrow 0s → words 0.1s (+0.04 each) → sub 0.5s → CTAs 0.65s.
+ * zig hero (`.hero_container-new`): copy column over a full-bleed animation
+ * layer. Desktop: 100vh clamped to 54.375–56.25rem, columns 1fr 1fr (1.4fr 1fr
+ * from 1280px). ≤991px: stacked and centred, min-height 75rem, the wheel sits
+ * at the bottom under a top fade.
+ * Choreography (≤1.4s): chip 0s → words 0.1s (+0.04 each) → sub 0.5s → CTAs 0.65s.
  */
 export function Hero() {
   const leadCount = hero.titleLead.split(/\s+/).length;
   return (
-    <HeroMotion
-      gridClassName="min-h-[100svh] pt-28 pb-16 lg:min-h-[52rem] lg:max-h-[60rem] lg:grid-cols-[1.15fr_1fr] lg:gap-10 lg:pt-24 lg:pb-10"
-      background={
-        <>
-          <HeroRays className="pointer-events-none absolute inset-0 -z-10 h-full w-full" />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-40 -right-40 -z-10 size-[48rem] rounded-full opacity-80 blur-3xl"
-            style={{ background: "radial-gradient(circle, rgba(29,88,196,0.2), transparent 65%)" }}
-          />
-        </>
-      }
-      copy={
-        <div className="flex max-w-[44rem] flex-col gap-[2.625rem]">
-          <div className="flex flex-col gap-6">
-            <Chip className="enter-fade">{hero.chip}</Chip>
-            <h1 className="title-xl">
-              <SplitWords text={hero.titleLead} />{" "}
-              <SplitWords text={hero.titleAccent} offset={leadCount} wordClassName="text-grad" />
-            </h1>
-            <p className="enter-fade text-l max-w-[32rem] text-gray-700" style={d(0.5)}>
-              {hero.sub}
-            </p>
-          </div>
-          <div className="enter-fade flex flex-wrap items-center gap-3" style={d(0.65)}>
-            <ButtonLink href={hero.primary.href} className="group">
-              {hero.primary.label}
-              <ArrowRight aria-hidden className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" strokeWidth={1.8} />
-            </ButtonLink>
-            <ButtonLink href={hero.secondary.href} variant="outline" className="group">
-              {hero.secondary.label}
-              <ArrowUpRight
-                aria-hidden
-                className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                strokeWidth={1.8}
-              />
-            </ButtonLink>
+    <section className="relative isolate overflow-hidden">
+      <HeroWheel />
+      <div className="shell relative z-10">
+        <div className="grid items-center gap-5 min-[992px]:h-screen min-[992px]:max-h-[56.25rem] min-[992px]:min-h-[54.375rem] min-[992px]:grid-cols-2 min-[1280px]:grid-cols-[1.4fr_1fr] max-[991px]:flex max-[991px]:min-h-[75rem] max-[991px]:flex-col max-[991px]:pt-[8.625rem] max-[767px]:gap-15 max-[767px]:pb-[6.875rem] max-[479px]:block max-[479px]:pt-[9.75rem] max-[479px]:pb-0">
+          <div className="flex w-full max-w-[46.5rem] flex-col gap-[2.625rem] max-[991px]:items-center max-[991px]:text-center">
+            <div className="flex flex-col gap-6 max-[991px]:items-center max-[767px]:max-w-[24rem]">
+              <Chip icon={Sparkles} className="enter-fade">
+                {hero.chip}
+              </Chip>
+              <h1 className="title-xl">
+                <SplitWords text={hero.titleLead} />{" "}
+                <SplitWords text={hero.titleAccent} offset={leadCount} wordClassName="text-grad" />
+              </h1>
+              <p className="enter-fade text-l max-w-[33.75rem]" style={d(0.5)}>
+                {hero.sub}
+              </p>
+            </div>
+            <div
+              className="enter-fade flex flex-wrap items-center gap-3 max-[479px]:w-full max-[479px]:flex-col max-[479px]:items-stretch"
+              style={d(0.65)}
+            >
+              <ButtonLink href={hero.primary.href}>{hero.primary.label}</ButtonLink>
+              <ButtonLink href={hero.secondary.href} variant="outline">
+                {hero.secondary.label}
+              </ButtonLink>
+            </div>
           </div>
         </div>
-      }
-      visual={
-        <div className="enter-fade" style={d(0.3)}>
-          <HeroVisual badge={hero.badge} />
-        </div>
-      }
-    />
+      </div>
+    </section>
   );
 }

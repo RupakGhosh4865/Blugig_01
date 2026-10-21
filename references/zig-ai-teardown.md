@@ -24,7 +24,7 @@ Webflow · GSAP 3 + ScrollTrigger + SplitText · Lenis (driven from `gsap.ticker
 | cards | radius 24px, padding 32px, 30.6rem tall bento | same |
 
 ## Section order & choreography
-1. **Hero** — chip → title-xl with gradient tail → text-l → 2 pills; Lottie of floating "Zig did / You did" cards over hairline rays. Lottie stepped via GSAP: 0→25% → hold 1s → 65% → hold 1s → 100%, 8s loop.
+1. **Hero** — chip → title-xl with gradient tail → text-l → 2 pills over a full-bleed Lottie (see *Hero wheel* below). Lottie stepped via GSAP: 0→25% → hold 1s → 65% → hold 1s → 100% (8 s of frames + 2 s of holds = 10 s loop).
 2. **Execution gap** (white) — heading + Before (dark pill) / After (brand pill) lists in the right 2 of 3 columns.
 3. **Statement** — SplitText words `opacity 0.2 → 1`, scrubbed `start: top 60%` → `end: bottom 40%`.
 4. **Trusted by** — label | 1px divider | logo lists translating −100% in 10s linear loop, right-edge mask fade.
@@ -42,3 +42,28 @@ Global: Lenis smoothing; `.animate-block_appear` = `from {opacity:0, y:40}`, 1.2
 ## Where it lives in this codebase
 `components/sections/home/*` (one file per section above), `components/motion/*` (primitives),
 `components/layout/PageBackground.tsx` (body colour zones), `lib/motion.ts` (tokens).
+
+## Hero wheel (re-captured 2026-10-21 with REA)
+
+Observed: REA `capture_browser_scenario` (Evidence `ev_94658388d91bffdb4041358a494b65bb4711fb547e16c07c260bc1c795924e55`)
+shows `.hero-animation_wrapp` (absolute, inset 0, behind the copy) holding four Webflow Lottie
+players (`data-renderer="canvas"`, `data-duration="8"`, `data-loop`), one per breakpoint:
+`Motion_2500` (≥1280, aspect 25/8.7, height 100%), `Motion_1280` (992–1279, 6.4/4.5),
+`Motion_820` (≤991, width 100%, bottom) and `Motion_420` (<480, 7/20, absolute bottom). An inline
+`hero-lottie-js` script drives the visible one with GSAP as described above.
+
+From the public `.lottie` data (1280 comp: 1280×900, 24 fps, 192 frames):
+- A hub (layer "22") centred off-screen right turns −53° → 0° (0–48f), holds, then → 124.4° (132–191f).
+  The hub layer is hidden (`hd: true`) — it is only the pivot. Eight 2376-unit hairline spokes radiate
+  left from it; one r 550 circle draws the single visible arc, and a second r 550 circle filled with
+  the page colour (drawn on top) covers the spokes' far end on very wide screens.
+- Four activity cards (380×104, radius 22, tinted 58px icon tile, time / title / detail, check
+  badge) ride spokes at radius ≈549 and counter-rotate to stay level. Spokes sit at ±30°/±10° while
+  the wheel fans them out, converge to 0° (60–79f) into a stack, the top card morphs to 325×153
+  (90–100f) and becomes "Zig did" (content rises 50 units, avatars spread); "You did" separates to
+  ±14° (96–120f), then the pair sweeps out with the hub while the next loop's cards rise (154–192f).
+- Placement per render: scene origin (1249,444)·1.0 in 2500×887, (662,450)·0.8 in 1280×900,
+  (25,860)·0.85 in 820×1200, (−93,871)·0.8 in 420×1200.
+
+Re-implemented in code (no zig assets) in `components/sections/home/HeroWheel.tsx` with Avantra
+content; keyframe values and easings are transcribed from the data above.

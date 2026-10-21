@@ -1,6 +1,8 @@
-import type { IconName } from "@/components/icons/Icon";
-
-/** Home page copy. */
+/**
+ * Home page copy. Section order mirrors zig.ai (the original build's layout);
+ * wording comes from the Avantra mockups. Counts are factual (from the offer
+ * itself), console lines and card metas are illustrative.
+ */
 export const hero = {
   chip: "Mitti implementation partner",
   titleLead: "Turn everyday checks",
@@ -8,32 +10,107 @@ export const hero = {
   sub: "Implement Mitti with a partner who understands your processes, your people, and your goals.",
   primary: { label: "Explore implementation", href: "/how-we-work" },
   secondary: { label: "Meet Avantra", href: "/about" },
-  badge: "From setup to site-wide adoption",
 };
 
-export const mittiStrip = {
-  product: "Mitti",
-  maker: "(by SafetyCulture)",
-  pillars: ["Implementation", "Enablement", "Ongoing support"],
+/**
+ * Hero wheel (illustrative). Four Mitti workflow events ride the wheel, stack,
+ * then resolve into the two summary cards — same choreography as zig.ai's hero.
+ * Order matters: [0] becomes the "Avantra did" card, [1] hides the "You did" card.
+ */
+export const heroWheel = {
+  activity: [
+    { time: "9:02 AM", title: "Inspection completed", detail: "Daily site walk · North site", icon: "inspect", tone: "mint" },
+    { time: "9:03 AM", title: "Issue flagged", detail: "Guard rail damaged · Bay 4", icon: "alert", tone: "peach" },
+    { time: "9:03 AM", title: "Action assigned", detail: "Maintenance → Due Friday", icon: "person", tone: "sky" },
+    { time: "9:04 AM", title: "Re-check scheduled", detail: "Follow-up inspection on May 16", icon: "calendar", tone: "lilac" },
+  ],
+  brand: { title: "Avantra did", detail: "14 setup tasks", people: ["AM", "JR", "SK"], more: "+12" },
+  person: { title: "You did", detail: "Approved the rollout" },
+} as const;
+
+export const gap = {
+  chip: "The operations gap",
+  titleLead: "Everyday checks",
+  titleAccent: "still live on paper",
+  sub: "When inspections, issues and follow-up don't connect, teams chase status instead of improving operations.",
+  before: [
+    "Checks happen on paper and get filed away.",
+    "Issues get raised, then lost between site and office.",
+    "Nobody is sure who owns the follow-up.",
+    "Leaders can't see what's happening across sites.",
+  ],
+  after: [
+    "Consistent digital inspections on every site.",
+    "A clear way to capture what needs attention.",
+    "Every finding assigned, owned and tracked.",
+    "Activity and trends visible across operations.",
+  ],
 };
 
 export const statement = {
-  accent: "We translate your operational needs",
-  rest: "into a practical Mitti rollout.",
+  accent: "Your Mitti implementation partner,",
+  rest: "from planning and configuration to adoption and rollout.",
 };
 
-export const whatWeDo = {
+export const platforms = {
+  label: "Mitti (by SafetyCulture)",
+  items: [
+    "Implementation",
+    "Enablement",
+    "Ongoing support",
+    "Inspections & audits",
+    "Issue reporting",
+    "Corrective actions",
+    "Site standards",
+    "Asset inspections",
+    "Operational visibility",
+  ],
+};
+
+export const expertise = {
   chip: "What we do",
   titleLead: "The right setup.",
   titleAccent: "A stronger way to work.",
+  sub: "We translate your operational needs into a practical Mitti rollout.",
+};
+
+export const impact = {
+  chip: "Why it works",
+  titleAccent: "How Avantra",
+  titleRest: "makes a Mitti rollout stick",
+  sub: "Not the platform alone — the details that make it useful, delivered by one partner from setup to adoption.",
+  /** Factual counts derived from the offer itself (not performance claims). */
   items: [
-    { title: "Implementation planning", body: "A rollout plan tailored to your operations and people.", icon: "plan" },
-    { title: "Account configuration", body: "Set up Mitti to match your structure, workflows and permissions.", icon: "settings" },
-    { title: "Digital inspections", body: "Digitize your checklists and field processes for consistent execution.", icon: "tablet" },
-    { title: "Actions & reporting", body: "Turn findings into actions with clear visibility.", icon: "chart" },
-    { title: "Team enablement", body: "Practical training and support to build confidence and adoption.", icon: "team" },
-    { title: "Ongoing improvement", body: "Refine and expand as your needs evolve.", icon: "refresh" },
-  ] satisfies { title: string; body: string; icon: IconName }[],
+    { value: 6, suffix: "", label: "Solutions for everyday operations." },
+    { value: 6, suffix: "", label: "Implementation services, clear deliverables." },
+    { value: 4, suffix: "", label: "Steps from discovery to everyday use." },
+    { value: 1, suffix: "", label: "Partner from setup to site-wide adoption." },
+  ],
+  accent:
+    "Clear workflows, practical templates, defined responsibilities — and people who feel ready to use the platform.",
+};
+
+export const wins = {
+  chip: "One partner. Every stage",
+  titleA: "New rollouts start strong.",
+  titleB: "Existing setups get better.",
+  sub: "Same partner. Different needs at different stages of your Mitti journey.",
+  left: {
+    title: "New to Mitti",
+    tips: [
+      { title: "Checks on paper", body: "Digital inspections." },
+      { title: "No clear owner", body: "Assigned follow-up." },
+      { title: "No rollout plan", body: "A rollout roadmap." },
+    ],
+  },
+  right: {
+    title: "Already using Mitti",
+    tips: [
+      { title: "Templates feel clunky", body: "Template improvements." },
+      { title: "Adoption has stalled", body: "Adoption support." },
+      { title: "Ready for more sites", body: "A phased rollout." },
+    ],
+  },
 };
 
 export const approach = {
@@ -49,16 +126,37 @@ export const approach = {
   ],
 };
 
-export const homeIndustries = {
-  chip: "Industries",
-  title: "Built around the work you do.",
-  sub: "We help operational teams in a range of industries put Mitti to work in practical, meaningful ways.",
+export const momentum = {
+  chip: "Gets stronger over time",
+  titleAccent: "Every phase,",
+  titleRest: "your rollout gets stronger",
+  sub: "We deliver in stages so value shows up early — discovery first, then configuration, launch and continuous improvement.",
+  cards: [
+    { label: "Discover", body: "Agreed scope & rollout roadmap." },
+    { label: "Configure & validate", body: "Configured workspace & pilot feedback." },
+    { label: "Train & launch", body: "User onboarding & launch checklist." },
+    { label: "Support & improve", body: "Prioritized improvement plan." },
+  ],
+  cta: {
+    text: "Make your next rollout your best rollout.",
+    primary: { label: "Talk to our team", href: "/contact" },
+    secondary: { label: "Explore services", href: "/services" },
+  },
 };
 
-export const homeCta = {
-  title: "Make your next rollout your best rollout.",
-  label: "Start a conversation",
-  href: "/contact",
+export const agent = {
+  chip: "Illustrative workflow",
+  title: "See the workflow, not just the form.",
+  body: "Inspect, identify, assign and review — configured around your team, so every finding on site turns into owned, tracked action.",
+  link: { label: "Explore solutions", href: "/solutions" },
+  consoleLabel: "mitti workflow · illustrative",
+  console: [
+    { kind: "cmd", text: "> workflow: daily-site-inspection" },
+    { kind: "ok", text: "✓ Inspections completed across 4 sites" },
+    { kind: "ok", text: "✓ 3 issues raised with photos and notes" },
+    { kind: "ok", text: "✓ Actions assigned to owners · due Friday" },
+    { kind: "send", text: "→ Trends shared with site managers" },
+  ],
 };
 
 /** Answers draw only on what the site already states (services, approach, ownership). */

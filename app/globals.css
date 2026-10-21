@@ -3,28 +3,42 @@
 /*
  * Avantra Technologies design tokens.
  * Layout + motion language mirrors zig.ai (light base, pill buttons, chips,
- * scroll-driven page background). Colours come from the Avantra logo
- * (public/brand): mark blue #003FA9 and wordmark slate #2C3A52.
+ * scroll-driven page background) — unchanged from the original build. Only the
+ * palette follows the Avantra logo: `sky` is the light brand blue (the old
+ * yellow's role, ink text on it), `blue` is the logo blue #003FA9 for actions,
+ * `slate` is the wordmark colour.
  */
 @theme {
   --font-sans: var(--font-archivo), "Archivo", Arial, sans-serif;
   --font-mono: var(--font-azeret), "Azeret Mono", ui-monospace, monospace;
 
   /* Neutrals (cool, to sit with the logo blue) */
-  --color-canvas: #f4f6fa; /* page background */
+  --color-canvas: #f4f6fa; /* page background (zig gray-50 analogue) */
   --color-white: #ffffff;
-  --color-ink: #172033; /* body text */
+  --color-ink: #172033;
   --color-slate: #2c3a52; /* logo wordmark */
   --color-gray-100: #e7ebf2;
   --color-gray-200: #d4dae5;
   --color-gray-300: #b4bdcc;
-  --color-gray-400: #8b95a7; /* decorative only */
-  --color-gray-500: #626d81; /* small text on base/white (≥4.5:1) */
+  --color-gray-400: #8b95a7;
+  --color-gray-500: #626d81;
   --color-gray-600: #4f596b;
   --color-gray-700: #3d4657;
   --color-gray-800: #2a3140;
 
-  /* Brand blue — 600 is the logo mark */
+  /* Light brand blue (the old yellow's role) — ink text on 400–500 */
+  --color-sky-50: #f0f6ff;
+  --color-sky-100: #deebff;
+  --color-sky-200: #bdd7ff;
+  --color-sky-300: #9cc3ff;
+  --color-sky-400: #86b4fd;
+  --color-sky-500: #72a6fa; /* brand surface */
+  --color-sky-600: #4d89ea;
+  --color-sky-700: #2563c9; /* large text on light (≥3:1) */
+  --color-sky-800: #0d47a8; /* small text on light (≥4.5:1) */
+  --color-sky-900: #0a326f;
+
+  /* Action blue = the logo mark (replaces zig coral) */
   --color-blue-50: #eef3fc;
   --color-blue-100: #dbe5f8;
   --color-blue-200: #b7cbf1;
@@ -34,16 +48,8 @@
   --color-blue-600: #003fa9; /* logo blue · buttons with white text (AAA) */
   --color-blue-700: #00358f;
   --color-blue-800: #002b75;
-  --color-blue-900: #00215a;
 
-  /* Bright accent for dark surfaces (navy bands, brand zone) */
-  --color-sky-100: #e3f1ff;
-  --color-sky-200: #bfe0ff;
-  --color-sky-300: #8cc8ff;
-  --color-sky-400: #52a9ff;
-  --color-sky-500: #2389f0;
-
-  /* Deep navy sections (derived from the wordmark slate) */
+  /* Deep navy (replaces zig blue-700 sections) */
   --color-navy: #111d33;
   --color-navy-2: #1a2a47;
 
@@ -52,6 +58,34 @@
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --animate-marquee: marquee var(--marquee-duration, 30s) linear infinite;
+  --animate-caret: caret 1s steps(1) infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-expo) infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
 }
 
 /* Page colour is driven by scroll zones (components/layout/PageBackground). */
@@ -59,11 +93,9 @@
   --page-bg: var(--color-canvas);
   --page-fg: var(--color-ink);
   --page-muted: var(--color-gray-600);
-  --grad-a: var(--color-blue-700);
-  --grad-b: var(--color-blue-500);
+  --grad-a: var(--color-sky-800);
+  --grad-b: var(--color-sky-700);
   --outline-fg: var(--color-blue-600);
-  --cta-bg: var(--color-blue-600);
-  --cta-fg: #ffffff;
   --gutter: 1rem;
   --nav-h: 4rem;
   color-scheme: light;
@@ -78,37 +110,31 @@
     --gutter: 2.5rem;
   }
 }
-:root[data-zone="navy"] {
-  --page-bg: var(--color-navy);
+:root[data-zone="ink"] {
+  --page-bg: var(--color-ink);
   --page-fg: #ffffff;
   --page-muted: var(--color-gray-300);
   --grad-a: var(--color-sky-300);
   --grad-b: var(--color-sky-100);
   --outline-fg: #ffffff;
-  --cta-bg: #ffffff;
-  --cta-fg: var(--color-blue-700);
 }
-:root[data-zone="brand"] {
-  --page-bg: var(--color-blue-600);
-  --page-fg: #ffffff;
-  --page-muted: var(--color-blue-100);
-  --grad-a: var(--color-sky-200);
-  --grad-b: #ffffff;
-  --outline-fg: #ffffff;
-  --cta-bg: #ffffff;
-  --cta-fg: var(--color-blue-700);
+:root[data-zone="sky"] {
+  --page-bg: var(--color-sky-500);
+  --page-fg: var(--color-ink);
+  --page-muted: var(--color-gray-800);
+  --grad-a: var(--color-ink);
+  --grad-b: var(--color-blue-800);
+  --outline-fg: var(--color-ink);
 }
 
-/* Logo swap: the slate wordmark on light pages, the white wordmark on dark zones. */
+/* Logo swap: slate wordmark on light/sky pages, white wordmark on the ink zone. */
 .logo-auto.logo-on-dark {
   display: none;
 }
-:root[data-zone="navy"] .logo-auto.logo-on-light,
-:root[data-zone="brand"] .logo-auto.logo-on-light {
+:root[data-zone="ink"] .logo-auto.logo-on-light {
   display: none;
 }
-:root[data-zone="navy"] .logo-auto.logo-on-dark,
-:root[data-zone="brand"] .logo-auto.logo-on-dark {
+:root[data-zone="ink"] .logo-auto.logo-on-dark {
   display: block;
 }
 
@@ -133,7 +159,7 @@ body {
 }
 
 ::selection {
-  background: var(--color-blue-100);
+  background: var(--color-sky-200);
   color: var(--color-ink);
 }
 
@@ -147,25 +173,25 @@ body {
 @utility title-xl {
   font-size: clamp(2.75rem, 5.2vw, 4.5rem);
   line-height: 1.15;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.03em;
 }
 @utility title-l {
   font-size: clamp(2.25rem, 4.2vw, 3.625rem);
   line-height: 1.1;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.04em;
 }
 @utility title-m {
   font-size: clamp(1.625rem, 2.5vw, 2.25rem);
   line-height: 1.2;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.03em;
 }
 @utility title-s {
   font-size: clamp(1.375rem, 2vw, 1.75rem);
   line-height: 1.1;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.04em;
 }
 @utility title-xs {
@@ -188,6 +214,12 @@ body {
   font-size: 0.875rem;
   line-height: 1.5;
   letter-spacing: 0;
+}
+@utility text-number {
+  font-size: clamp(3rem, 4.6vw, 4.375rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
 }
 @utility text-step {
   font-size: clamp(2.25rem, 3.5vw, 3.125rem);
@@ -315,23 +347,20 @@ body {
   animation: accordion-up 0.3s ease-out;
 }
 
-/* Solutions workflow: a dot travelling Inspect → Review along the connector */
-@keyframes workflow-pulse {
-  0% {
-    left: 0;
-    opacity: 0;
-  }
-  12%,
-  88% {
-    opacity: 1;
-  }
-  100% {
-    left: 100%;
-    opacity: 0;
-  }
+/* Marquee pauses on hover and when off-screen */
+.marquee-row:hover .marquee-list,
+.marquee-row[data-paused="true"] .marquee-list {
+  animation-play-state: paused;
 }
-.workflow-pulse {
-  animation: workflow-pulse 4s ease-in-out 1.4s infinite;
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+}
+@media (max-width: 480px) {
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
 }
 
 /* Lenis */
@@ -384,7 +413,7 @@ html.lenis body {
   .split-word > span {
     animation: fade-in 0.2s both;
   }
-  .workflow-pulse {
+  .marquee-list {
     animation: none !important;
   }
 }

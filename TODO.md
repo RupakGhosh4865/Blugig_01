@@ -11,7 +11,7 @@ Each value is rendered only when set (footer, contact page, JSON-LD).
 
 ## Brand
 - [ ] Vector logo, if available — the site uses the supplied PNGs (`public/brand/avantra-logo*.png`) and a traced SVG mark (`public/brand/avantra-mark.svg`, `app/icon.svg`).
-- [ ] Photography — the mockups use site/team photos; heroes currently use illustrated UI (`components/illustrations/`, `components/sections/home/HeroVisual.tsx`). Swap in licensed photos if preferred.
+- [ ] Client logos (with permission) — the marquee under the statement shows Mitti services/use cases until then (`content/home.ts` → `platforms`).
 
 ## Content to confirm
 - [ ] Home FAQ answers — `content/home.ts` (`homeFaqs`), written from the services/approach copy.

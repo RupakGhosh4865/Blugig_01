@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { Accordion, Dialog, VisuallyHidden } from "radix-ui";
@@ -19,9 +19,9 @@ const item = {
 };
 
 /**
- * Full-screen overlay: blurred background, links stagger in (0.05s), Solutions
- * and Services as accordions, CTA pinned to the bottom. Radix Dialog provides
- * the focus trap, Esc to close and body scroll lock.
+ * Full-screen overlay (BUILD_SPEC §7.1): blurred background, links stagger in
+ * (0.05s), services as an accordion, CTA pinned to the bottom. Radix Dialog
+ * provides the focus trap, Esc to close and body scroll lock.
  */
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -32,20 +32,20 @@ export function MobileMenu() {
       value: "solutions",
       label: "Solutions",
       all: { label: "All solutions", href: "/solutions" },
-      links: solutions.map((s) => ({ key: s.slug, label: s.title, href: `/solutions#${s.slug}`, prefix: null })),
+      links: solutions.map((s, i) => ({ href: `/solutions#${s.slug}`, number: String(i + 1).padStart(2, "0"), label: s.title })),
     },
     {
       value: "services",
       label: "Services",
       all: { label: "All services", href: "/services" },
-      links: services.map((s) => ({ key: s.slug, label: s.title, href: `/services#${s.slug}`, prefix: s.number })),
+      links: services.map((s) => ({ href: `/services#${s.slug}`, number: s.number, label: s.title })),
     },
   ];
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger
-        className="flex size-10 items-center justify-center justify-self-end rounded-full bg-white text-ink shadow-[0_8px_24px_-16px_rgba(17,29,51,0.35)] lg:hidden"
+        className="flex size-10 items-center justify-center justify-self-end rounded-full bg-white text-ink lg:hidden"
         aria-label="Open menu"
       >
         <span aria-hidden className="flex w-4 flex-col gap-1.5">
@@ -54,7 +54,7 @@ export function MobileMenu() {
         </span>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-[70] bg-canvas/85 backdrop-blur-xl data-[state=open]:animate-[fade-in_0.25s_ease-out]" />
+        <Dialog.Overlay className="fixed inset-0 z-[70] bg-canvas/80 backdrop-blur-xl data-[state=open]:animate-[fade-in_0.25s_ease-out]" />
         <Dialog.Content
           data-lenis-prevent
           className="fixed inset-0 z-[71] flex flex-col overflow-y-auto px-[var(--gutter)] pb-6 text-ink data-[state=open]:animate-[fade-in_0.25s_ease-out]"
@@ -65,7 +65,7 @@ export function MobileMenu() {
           </VisuallyHidden.Root>
           <div className="flex h-16 shrink-0 items-center justify-between">
             <Link href="/" onClick={close} aria-label={`${site.name} — home`}>
-              <Logo variant="onLight" height={28} className="h-7 w-auto" />
+              <Logo variant="onLight" height={32} className="h-8 w-auto" />
             </Link>
             <Dialog.Close
               className="flex size-10 items-center justify-center rounded-full bg-white"
@@ -98,9 +98,9 @@ export function MobileMenu() {
                     <Accordion.Content className="accordion-content overflow-hidden">
                       <ul className="flex flex-col gap-1 pb-5">
                         {g.links.map((l) => (
-                          <li key={l.key}>
+                          <li key={l.href}>
                             <Link href={l.href} onClick={close} className="flex items-baseline gap-3 rounded-xl py-2 text-lg">
-                              {l.prefix ? <span className="text-mono text-sm text-blue-600">{l.prefix}</span> : null}
+                              <span className="text-mono text-sm text-sky-800">{l.number}</span>
                               {l.label}
                             </Link>
                           </li>
@@ -125,10 +125,12 @@ export function MobileMenu() {
             ))}
           </motion.nav>
 
-          <div className="sticky bottom-0 mt-8 flex flex-col gap-3 pt-4">
+          <div className="sticky bottom-0 mt-8 flex flex-col gap-3 bg-transparent pt-4">
             <ButtonLink href={primaryCta.href} onClick={close} className="w-full">
               {primaryCta.label}
-              <ArrowRight aria-hidden className="size-4" strokeWidth={1.8} />
+            </ButtonLink>
+            <ButtonLink href="/services" onClick={close} variant="outline" className="w-full">
+              Explore services
             </ButtonLink>
           </div>
         </Dialog.Content>

@@ -141,7 +141,7 @@ function Field({
     <div className="flex flex-col gap-2">
       <label htmlFor={id} className="text-sm font-medium tracking-normal">
         {label}
-        {required ? <span className="text-blue-600"> *</span> : null}
+        {required ? <span className="text-sky-800"> *</span> : null}
       </label>
       {children({
         id,
@@ -167,7 +167,7 @@ function Success({ message }: { message: string }) {
           cy="32"
           r="30"
           fill="none"
-          stroke="#003fa9"
+          stroke="#72a6fa"
           strokeWidth="3"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}

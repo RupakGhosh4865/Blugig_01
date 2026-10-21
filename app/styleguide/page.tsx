@@ -11,10 +11,10 @@ const swatches = [
   ["white", "bg-white"],
   ["ink", "bg-ink"],
   ["navy", "bg-navy"],
-  ["slate", "bg-slate"],
   ["sky-300", "bg-sky-300"],
-  ["blue-50", "bg-blue-50"],
-  ["blue-700", "bg-blue-700"],
+  ["sky-500", "bg-sky-500"],
+  ["sky-700", "bg-sky-700"],
+  ["sky-800", "bg-sky-800"],
   ["blue-100", "bg-blue-100"],
   ["blue-500", "bg-blue-500"],
   ["blue-600", "bg-blue-600"],
@@ -87,7 +87,7 @@ export default function Styleguide() {
 
       <section className="grid gap-5 md:grid-cols-3">
         <div className="min-h-60 rounded-[1.5rem] bg-white p-8">White card</div>
-        <div className="min-h-60 rounded-[1.5rem] bg-blue-600 p-8 text-white">Brand card</div>
+        <div className="min-h-60 rounded-[1.5rem] bg-sky-500 p-8">Brand card</div>
         <div className="min-h-60 rounded-[1.5rem] bg-navy p-8 text-white">Navy card</div>
       </section>
     </div>

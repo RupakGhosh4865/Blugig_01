@@ -47,9 +47,13 @@ export function useReducedMotionSafe() {
   return useMediaQuery(REDUCED_MOTION_QUERY);
 }
 
+/** Pinned panels need room for their full content; shorter windows get the static layouts. */
+export const TALL_QUERY = "(min-height: 640px)";
+
 /** True when pinned / scroll-scrubbed choreography should run. */
 export function useScrollChoreography() {
   const desktop = useMediaQuery(DESKTOP_QUERY);
+  const tall = useMediaQuery(TALL_QUERY);
   const reduced = useMediaQuery(REDUCED_MOTION_QUERY);
-  return desktop && !reduced;
+  return desktop && tall && !reduced;
 }
