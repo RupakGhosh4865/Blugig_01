@@ -8,11 +8,11 @@ import { useForm, type FieldError } from "react-hook-form";
 import { submitContact, type ContactResult } from "@/app/contact/actions";
 import { Button } from "@/components/ui/Button";
 import { site } from "@/content/site";
-import { contactSchema, serviceOptions, type ContactInput } from "@/lib/contact-schema";
+import { contactSchema, topicGroups, topicOptions, type ContactInput } from "@/lib/contact-schema";
 import { cn } from "@/lib/utils";
 
 const field =
-  "w-full rounded-[0.75rem] border border-gray-200 bg-base px-4 text-base tracking-normal text-ink placeholder:text-gray-400 transition-[border-color,box-shadow] duration-200 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 aria-[invalid=true]:border-[#b4321f]";
+  "w-full rounded-[0.75rem] border border-gray-200 bg-canvas px-4 text-base tracking-normal text-ink placeholder:text-gray-400 transition-[border-color,box-shadow] duration-200 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 aria-[invalid=true]:border-[#b4321f]";
 
 export function ContactForm() {
   const [pending, startTransition] = useTransition();
@@ -25,13 +25,13 @@ export function ContactForm() {
     formState: { errors },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", company: "", service: "", message: "", source: "", website: "" },
+    defaultValues: { name: "", email: "", company: "", topic: "", message: "", source: "", website: "" },
   });
 
-  // /contact?service={slug} pre-selects the service (read client-side so the page stays static).
+  // /contact?topic={slug} pre-selects the topic (read client-side so the page stays static).
   useEffect(() => {
-    const slug = new URLSearchParams(window.location.search).get("service");
-    if (slug && serviceOptions.some((o) => o.value === slug)) setValue("service", slug);
+    const slug = new URLSearchParams(window.location.search).get("topic");
+    if (slug && topicOptions.some((o) => o.value === slug)) setValue("topic", slug);
   }, [setValue]);
 
   const onSubmit = handleSubmit((values) => {
@@ -62,16 +62,21 @@ export function ContactForm() {
         <Field label="Company" required error={errors.company}>
           {(p) => <input {...p} {...register("company")} autoComplete="organization" className={cn(field, "h-12")} />}
         </Field>
-        <Field label="Service of interest" error={errors.service}>
+        <Field label="What can we help with?" error={errors.topic}>
           {(p) => (
             <div className="relative">
-              <select {...p} {...register("service")} className={cn(field, "h-12 appearance-none pr-10")}>
-                <option value="">Select a service</option>
-                {serviceOptions.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
-                  </option>
+              <select {...p} {...register("topic")} className={cn(field, "h-12 appearance-none pr-10")}>
+                <option value="">Select a topic</option>
+                {topicGroups.map((g) => (
+                  <optgroup key={g.label} label={g.label}>
+                    {g.options.map((o) => (
+                      <option key={o.value} value={o.value}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
+                <option value="not-sure">Not sure yet</option>
               </select>
               <ChevronDown
                 aria-hidden
@@ -99,7 +104,13 @@ export function ContactForm() {
 
       {result && !result.ok ? (
         <p role="alert" className="text-s rounded-[0.75rem] bg-[#fde2dd] px-4 py-3 text-[#8a2516]">
-          {result.message} You can also email us at <span className="font-medium">{site.email}</span>.
+          {result.message}
+          {site.email ? (
+            <>
+              {" "}
+              You can also email us at <span className="font-medium">{site.email}</span>.
+            </>
+          ) : null}
         </p>
       ) : null}
 
@@ -130,7 +141,7 @@ function Field({
     <div className="flex flex-col gap-2">
       <label htmlFor={id} className="text-sm font-medium tracking-normal">
         {label}
-        {required ? <span className="text-gold-800"> *</span> : null}
+        {required ? <span className="text-blue-600"> *</span> : null}
       </label>
       {children({
         id,
@@ -156,7 +167,7 @@ function Success({ message }: { message: string }) {
           cy="32"
           r="30"
           fill="none"
-          stroke="#f5c030"
+          stroke="#003fa9"
           strokeWidth="3"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
@@ -165,7 +176,7 @@ function Success({ message }: { message: string }) {
         <motion.path
           d="M20 33l8 8 16-17"
           fill="none"
-          stroke="#15171a"
+          stroke="#172033"
           strokeWidth="3.5"
           strokeLinecap="round"
           strokeLinejoin="round"

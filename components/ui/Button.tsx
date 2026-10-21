@@ -3,22 +3,22 @@ import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * zig.ai `.button` — pill, medium weight, colour swap on hover (0.3s).
- * zig coral → Blugig blue; zig white/outline variants kept.
+ * zig.ai `.button` — pill, medium weight, colour swap on hover (0.3s), in the
+ * Avantra logo blue. `accent` is the bright button used on navy bands.
  */
 const variants = {
-  primary: "bg-blue-600 text-white border-blue-600 hover:bg-white hover:text-blue-600 hover:border-white",
-  outline: "border-blue-600 text-blue-600 bg-transparent hover:bg-white hover:border-white",
-  white: "bg-white text-blue-600 border-white hover:bg-transparent hover:text-white",
-  "outline-light": "border-white text-white bg-transparent hover:bg-white hover:text-blue-600",
+  primary: "bg-blue-600 text-white border-blue-600 hover:bg-blue-800 hover:border-blue-800",
+  outline: "border-blue-600 text-blue-600 bg-transparent hover:bg-blue-600 hover:text-white",
+  white: "bg-white text-blue-700 border-white hover:bg-transparent hover:text-white",
+  accent: "bg-sky-300 text-navy border-sky-300 hover:bg-white hover:border-white",
+  "outline-light": "border-white/70 text-white bg-transparent hover:bg-white hover:text-blue-700 hover:border-white",
   "outline-ink": "border-ink text-ink bg-transparent hover:bg-ink hover:text-white",
   ink: "bg-ink text-white border-ink hover:bg-white hover:text-ink hover:border-white",
-  /** Nav outline: blue on light pages, white on the black zone, ink on the yellow zone. */
-  "outline-adaptive":
-    "border-[color:var(--outline-fg)] text-[color:var(--outline-fg)] bg-transparent hover:bg-white hover:text-blue-600 hover:border-white",
-  /** Follows the scroll-zone page colour (light → ink → gold sections). */
+  /** Nav CTA: logo blue on light pages, white on the navy / brand scroll zones. */
+  zone: "bg-[var(--cta-bg)] text-[color:var(--cta-fg)] border-[color:var(--cta-bg)] hover:bg-navy hover:text-white hover:border-navy",
+  /** Follows the scroll-zone page colour (light → brand sections). */
   "outline-zone":
-    "border-[color:var(--page-fg)] text-[color:var(--page-fg)] bg-transparent hover:bg-white hover:text-blue-600 hover:border-white",
+    "border-[color:var(--page-fg)] text-[color:var(--page-fg)] bg-transparent hover:bg-white hover:text-blue-700 hover:border-white",
 } as const;
 
 const sizes = {

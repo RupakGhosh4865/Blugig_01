@@ -1,5 +1,7 @@
 # BLUGIG GLOBAL LLC — Website Build Spec
 
+> **Superseded content (2026-10-21).** The site was rebranded to **Avantra Technologies** (Mitti implementation partner). Brand (§4.1–4.2), sitemap (§8), page content (§9–§12) and open items (§17) below describe the original Blugig build and no longer apply — see `README.md`, `content/*.ts` and `TODO.md`. The motion system (§5), 3D gate (§6.1) and performance/accessibility rules (§14) still hold.
+
 > Source of truth for Claude Code. Put this file in the project root.
 > If anything in `/references` (motionsites prompts, 21st.dev components, Stitch exports) conflicts with this file, **this file wins**.
 > Copy marked *(draft)* is placeholder copy written for layout — the owner will review it.

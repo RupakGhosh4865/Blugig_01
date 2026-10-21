@@ -27,7 +27,7 @@ const azeret = Azeret_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Workflow, data & AI consulting`,
+    default: `${site.name} — ${site.tagline}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f5f4ee",
+  themeColor: "#f4f6fa",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

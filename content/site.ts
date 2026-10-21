@@ -1,23 +1,29 @@
-/** Global site settings. Values in [PLACEHOLDER] brackets are tracked in TODO.md. */
+/** Global site settings. Empty contact values are hidden on the site and tracked in TODO.md. */
 export const site = {
-  name: "Blugig Global",
-  legalName: "Blugig Global LLC",
-  /** Explicit domain → Vercel production URL (system env) → placeholder. */
+  name: "Avantra Technologies",
+  shortName: "Avantra",
+  legalName: "Avantra Technologies",
+  tagline: "Mitti Implementation Partner",
+  /** Explicit domain → Vercel production URL (system env) → local dev. */
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
     (process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : "https://www.blugig.com"),
+      : "http://localhost:3000"),
   description:
-    "Blugig Global designs the workflows, data pipelines, and AI agents that help teams move faster — on Smartsheet, SafetyCulture, Power BI, and the modern data stack.",
-  email: "[PLACEHOLDER: hello@blugig.com]",
-  phone: "[PLACEHOLDER: +1 000 000 0000]",
-  address: "[PLACEHOLDER: office address]",
+    "Avantra Technologies is a Mitti implementation partner. We help operations teams plan, configure and roll out Mitti by SafetyCulture — from setup to site-wide adoption.",
+  /** [TODO] owner to supply — each is rendered only when set. */
+  email: "" as string,
+  phone: "" as string,
+  address: "" as string,
   replyTime: "1 business day",
   social: {
-    linkedin: "https://www.linkedin.com/company/[PLACEHOLDER]",
+    linkedin: "" as string,
   },
-  /** BUILD_SPEC §9 S6 — keep false until real, verified numbers exist. */
-  showImpactStats: false,
+  partner: {
+    name: "Bravas",
+    descriptor: "The Mitti Experts",
+    url: "https://bravastech.com/",
+  },
   calendlyUrl: process.env.NEXT_PUBLIC_CALENDLY_URL ?? "",
 } as const;

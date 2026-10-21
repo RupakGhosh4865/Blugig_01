@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 type Props = {
   chip?: string;
   icon?: LucideIcon;
-  chipTone?: "default" | "light" | "gold" | "zone";
+  chipTone?: "default" | "light" | "zone";
   lead?: string;
   accent?: string;
   /** Put the gradient words before the lead (zig "impact" heading). */

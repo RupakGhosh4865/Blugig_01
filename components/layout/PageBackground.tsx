@@ -6,7 +6,7 @@ import { useEffect } from "react";
 /**
  * zig.ai switches `body` background as sections cross the viewport centre
  * (gray-50 → black → green → gray-50). Here any element with
- * `data-bg-zone="ink" | "gold"` claims the page colour while it spans the
+ * `data-bg-zone="navy" | "brand"` claims the page colour while it spans the
  * centre line; CSS in globals.css maps the zone to --page-bg / --page-fg.
  */
 export function PageBackground() {

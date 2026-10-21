@@ -3,7 +3,7 @@ import { LegalPage } from "@/components/sections/LegalPage";
 
 export const metadata: Metadata = {
   title: "Terms",
-  description: "Terms of use for the Blugig Global LLC website.",
+  description: "Terms of use for the Avantra Technologies website.",
   alternates: { canonical: "/terms" },
 };
 

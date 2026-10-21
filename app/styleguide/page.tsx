@@ -7,14 +7,14 @@ import { Sparkles } from "lucide-react";
 export const metadata: Metadata = { title: "Styleguide", robots: { index: false, follow: false } };
 
 const swatches = [
-  ["base", "bg-base"],
+  ["canvas", "bg-canvas"],
   ["white", "bg-white"],
   ["ink", "bg-ink"],
   ["navy", "bg-navy"],
-  ["gold-300", "bg-gold-300"],
-  ["gold-500", "bg-gold-500"],
-  ["gold-700", "bg-gold-700"],
-  ["gold-800", "bg-gold-800"],
+  ["slate", "bg-slate"],
+  ["sky-300", "bg-sky-300"],
+  ["blue-50", "bg-blue-50"],
+  ["blue-700", "bg-blue-700"],
   ["blue-100", "bg-blue-100"],
   ["blue-500", "bg-blue-500"],
   ["blue-600", "bg-blue-600"],
@@ -87,7 +87,7 @@ export default function Styleguide() {
 
       <section className="grid gap-5 md:grid-cols-3">
         <div className="min-h-60 rounded-[1.5rem] bg-white p-8">White card</div>
-        <div className="min-h-60 rounded-[1.5rem] bg-gold-500 p-8">Gold card</div>
+        <div className="min-h-60 rounded-[1.5rem] bg-blue-600 p-8 text-white">Brand card</div>
         <div className="min-h-60 rounded-[1.5rem] bg-navy p-8 text-white">Navy card</div>
       </section>
     </div>

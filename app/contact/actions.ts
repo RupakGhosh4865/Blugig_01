@@ -1,7 +1,8 @@
 "use server";
 
 import { headers } from "next/headers";
-import { contactSchema, serviceOptions, type ContactInput } from "@/lib/contact-schema";
+import { site } from "@/content/site";
+import { contactSchema, topicOptions, type ContactInput } from "@/lib/contact-schema";
 
 export type ContactResult = {
   ok: boolean;
@@ -27,7 +28,7 @@ function allow(ip: string) {
   return true;
 }
 
-const SUCCESS = "Thanks — your message is in. We'll reply within 1 business day.";
+const SUCCESS = `Thanks — your message is in. We'll reply within ${site.replyTime}.`;
 
 export async function submitContact(input: ContactInput): Promise<ContactResult> {
   const parsed = contactSchema.safeParse(input);
@@ -50,12 +51,12 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
     return { ok: false, message: "Too many messages in a short time. Please try again in a few minutes." };
   }
 
-  const serviceLabel = serviceOptions.find((o) => o.value === data.service)?.label ?? "Not specified";
+  const topicLabel = topicOptions.find((o) => o.value === data.topic)?.label ?? "Not specified";
   const lead = {
     name: data.name,
     email: data.email,
     company: data.company,
-    service: serviceLabel,
+    topic: topicLabel,
     message: data.message,
     source: data.source ?? "",
     page: h.get("referer") ?? "",
@@ -81,10 +82,10 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
         method: "POST",
         headers: { authorization: `Bearer ${resendKey}`, "content-type": "application/json" },
         body: JSON.stringify({
-          from: process.env.CONTACT_FROM_EMAIL ?? "Blugig Website <onboarding@resend.dev>",
+          from: process.env.CONTACT_FROM_EMAIL ?? "Avantra Website <onboarding@resend.dev>",
           to: [to],
           reply_to: data.email,
-          subject: `New enquiry — ${data.company} (${serviceLabel})`,
+          subject: `New enquiry — ${data.company} (${topicLabel})`,
           text: Object.entries(lead)
             .map(([k, v]) => `${k}: ${v}`)
             .join("\n"),
@@ -104,5 +105,10 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
 
   return delivered
     ? { ok: true, message: SUCCESS }
-    : { ok: false, message: "We couldn't send your message right now. Please email us directly." };
+    : {
+        ok: false,
+        message: site.email
+          ? "We couldn't send your message right now. Please email us directly."
+          : "We couldn't send your message right now. Please try again shortly.",
+      };
 }

@@ -37,9 +37,9 @@ type Props = {
 export function ParticleField({
   shape,
   morphTo = null,
-  colorA = "#1f5fe0",
-  colorB = "#b3830f",
-  sparkle = "#f5c030",
+  colorA = "#003fa9",
+  colorB = "#111d33",
+  sparkle = "#8cc8ff",
   blending = "normal",
   density = 1,
   pointSize = 3.2,

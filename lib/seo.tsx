@@ -1,4 +1,3 @@
-import type { Service } from "@/content/services";
 import { site } from "@/content/site";
 
 export function absoluteUrl(path = "/") {
@@ -11,11 +10,13 @@ export function organizationJsonLd() {
     "@type": "Organization",
     "@id": absoluteUrl("/#organization"),
     name: site.legalName,
-    alternateName: site.name,
+    alternateName: site.shortName,
+    slogan: site.tagline,
     url: absoluteUrl("/"),
-    logo: absoluteUrl("/brand/logo.svg"),
+    logo: absoluteUrl("/brand/avantra-logo.png"),
     description: site.description,
-    sameAs: [site.social.linkedin],
+    ...(site.email ? { email: site.email } : {}),
+    ...(site.social.linkedin ? { sameAs: [site.social.linkedin] } : {}),
   };
 }
 
@@ -31,19 +32,6 @@ export function websiteJsonLd() {
   };
 }
 
-export function serviceJsonLd(service: Service) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: service.title,
-    description: service.summary,
-    url: absoluteUrl(`/services/${service.slug}`),
-    serviceType: service.title,
-    provider: { "@id": absoluteUrl("/#organization") },
-    areaServed: "Worldwide",
-  };
-}
-
 export function faqJsonLd(faqs: { q: string; a: string }[]) {
   return {
     "@context": "https://schema.org",
@@ -51,7 +39,7 @@ export function faqJsonLd(faqs: { q: string; a: string }[]) {
     mainEntity: faqs.map((f) => ({
       "@type": "Question",
       name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a.replace(/\s*\(draft\)\s*$/, "") },
+      acceptedAnswer: { "@type": "Answer", text: f.a },
     })),
   };
 }

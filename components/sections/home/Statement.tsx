@@ -7,11 +7,8 @@ export function Statement() {
     <section className="section-y">
       <div className="shell flex justify-center">
         <ScrollWords
-          className="title-l max-w-[50rem] text-center"
-          segments={[
-            { text: statement.accent, className: "text-gold-800" },
-            { text: statement.rest },
-          ]}
+          className="title-l max-w-[52rem] text-center"
+          segments={[{ text: statement.accent, className: "text-blue-600" }, { text: statement.rest }]}
         />
       </div>
     </section>

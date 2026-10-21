@@ -1,42 +1,48 @@
+import Image from "next/image";
+import logoOnLight from "@/public/brand/avantra-logo.png";
+import logoOnDark from "@/public/brand/avantra-logo-white.png";
 import { cn } from "@/lib/utils";
 
+const RATIO = logoOnLight.width / logoOnLight.height;
+
 /**
- * Text wordmark until the real SVG lands in public/brand/ (BUILD_SPEC §4.1).
- * Swap the inner markup for <Image src="/brand/logo.svg" …/> in one place.
+ * The Avantra Technologies logo (public/brand). `auto` renders both versions and
+ * lets globals.css show the white wordmark while a navy/brand scroll zone is active.
+ * `height` is the largest rendered height (sizes the srcset); `className` sets the
+ * displayed size. Callers wrap it in a link that carries the accessible name.
  */
-export function Logo({ className }: { className?: string }) {
+export function Logo({
+  variant = "auto",
+  height = 36,
+  alt = "",
+  eager = false,
+  className = "h-9 w-auto",
+}: {
+  variant?: "auto" | "onLight" | "onDark";
+  height?: number;
+  alt?: string;
+  eager?: boolean;
+  className?: string;
+}) {
+  const size = { width: Math.round(height * RATIO), height, loading: eager ? ("eager" as const) : undefined };
+
+  if (variant !== "auto") {
+    return <Image src={variant === "onDark" ? logoOnDark : logoOnLight} alt={alt} className={cn("block", className)} {...size} />;
+  }
   return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-[0.35em] text-[1.375rem] leading-none font-bold tracking-[-0.02em]",
-        className,
-      )}
-    >
-      <span aria-hidden className="size-[0.62em] rounded-[0.12em] bg-[var(--logo-mark,var(--color-gold-500))] transition-colors duration-300" />
-      <span>BLUGIG</span>
+    <span className="block">
+      <Image src={logoOnLight} alt={alt} className={cn("logo-auto logo-on-light block", className)} {...size} />
+      <Image src={logoOnDark} alt="" aria-hidden className={cn("logo-auto logo-on-dark", className)} {...size} />
     </span>
   );
 }
 
-/** Square brand mark (used where zig shows its "Z" icon tile). */
+/** Mark-only version (blue square, white "A" with the rising arrow), traced from the logo. */
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <span
-      aria-hidden
-      className={cn(
-        "inline-flex aspect-square items-center justify-center rounded-[22%] bg-gold-500 font-bold text-ink",
-        className,
-      )}
-    >
-      <svg viewBox="0 0 24 24" className="size-[58%]" fill="none">
-        <path
-          d="M6.5 4.5h6.2c2.6 0 4.3 1.3 4.3 3.4 0 1.5-.9 2.6-2.3 3 1.8.3 3 1.6 3 3.4 0 2.4-1.9 4-4.8 4H6.5z"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinejoin="round"
-        />
-        <path d="M6.5 11.2h7.2" stroke="currentColor" strokeWidth="2.2" />
-      </svg>
-    </span>
+    <svg viewBox="0 0 240 240" aria-hidden className={cn("block", className)}>
+      <rect width="240" height="240" fill="#003FA9" />
+      <path d="M120 22 234 224 134.5 178.5V151H157.5L120 101 82.5 151H105.5V178.5L6 224Z" fill="#fff" />
+    </svg>
   );
 }

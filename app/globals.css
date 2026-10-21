@@ -1,107 +1,69 @@
 @import "tailwindcss";
 
 /*
- * Blugig design tokens.
+ * Avantra Technologies design tokens.
  * Layout + motion language mirrors zig.ai (light base, pill buttons, chips,
- * scroll-driven page background). Brand colours follow the Blugig logo:
- * white + yellow/gold, blue for actions.
- * Logo hex values are stand-ins — swap them here only (see TODO.md).
+ * scroll-driven page background). Colours come from the Avantra logo
+ * (public/brand): mark blue #003FA9 and wordmark slate #2C3A52.
  */
 @theme {
   --font-sans: var(--font-archivo), "Archivo", Arial, sans-serif;
   --font-mono: var(--font-azeret), "Azeret Mono", ui-monospace, monospace;
 
-  /* Neutrals (warm, to sit with yellow) */
-  --color-base: #f5f4ee; /* page background (zig gray-50 analogue) */
+  /* Neutrals (cool, to sit with the logo blue) */
+  --color-canvas: #f4f6fa; /* page background */
   --color-white: #ffffff;
-  --color-ink: #15171a; /* zig black */
-  --color-gray-100: #e8e7e1;
-  --color-gray-200: #d3d1c9;
-  --color-gray-300: #b5b2a8;
-  --color-gray-400: #8e8b81;
-  --color-gray-500: #6e6b62;
-  --color-gray-600: #57554d;
-  --color-gray-700: #45433d;
-  --color-gray-800: #2f2e2a;
+  --color-ink: #172033; /* body text */
+  --color-slate: #2c3a52; /* logo wordmark */
+  --color-gray-100: #e7ebf2;
+  --color-gray-200: #d4dae5;
+  --color-gray-300: #b4bdcc;
+  --color-gray-400: #8b95a7; /* decorative only */
+  --color-gray-500: #626d81; /* small text on base/white (≥4.5:1) */
+  --color-gray-600: #4f596b;
+  --color-gray-700: #3d4657;
+  --color-gray-800: #2a3140;
 
-  /* Brand yellow / gold (replaces zig green) */
-  --color-gold-50: #fffaeb;
-  --color-gold-100: #fef2c7;
-  --color-gold-200: #fde58f;
-  --color-gold-300: #fad45c;
-  --color-gold-400: #f7c83b;
-  --color-gold-500: #f5c030; /* logo yellow — stand-in */
-  --color-gold-600: #d9a21a;
-  --color-gold-700: #b3830f; /* large text on light (≥3:1) */
-  --color-gold-800: #8a6410; /* small text on light (≥4.5:1) */
-  --color-gold-900: #5e440b;
+  /* Brand blue — 600 is the logo mark */
+  --color-blue-50: #eef3fc;
+  --color-blue-100: #dbe5f8;
+  --color-blue-200: #b7cbf1;
+  --color-blue-300: #85a6e6;
+  --color-blue-400: #4c7cd6;
+  --color-blue-500: #1d58c4;
+  --color-blue-600: #003fa9; /* logo blue · buttons with white text (AAA) */
+  --color-blue-700: #00358f;
+  --color-blue-800: #002b75;
+  --color-blue-900: #00215a;
 
-  /* Action blue (replaces zig coral) */
-  --color-blue-50: #eef4ff;
-  --color-blue-100: #dce8ff;
-  --color-blue-200: #bcd3ff;
-  --color-blue-300: #8eb5ff;
-  --color-blue-400: #5c95ff;
-  --color-blue-500: #2f7bff;
-  --color-blue-600: #1f5fe0; /* buttons with white text (AA) */
-  --color-blue-700: #1a4db8;
-  --color-blue-800: #163c8c;
+  /* Bright accent for dark surfaces (navy bands, brand zone) */
+  --color-sky-100: #e3f1ff;
+  --color-sky-200: #bfe0ff;
+  --color-sky-300: #8cc8ff;
+  --color-sky-400: #52a9ff;
+  --color-sky-500: #2389f0;
 
-  /* Deep navy (replaces zig blue-700 sections) */
-  --color-navy: #13213d;
-  --color-navy-2: #1b2c4f;
-
-  /* Service accents (particles, hero glow) */
-  --color-svc-smartsheet: #2f7bff;
-  --color-svc-safetyculture: #3ddc97;
-  --color-svc-powerbi: #f2c14e;
-  --color-svc-data: #5ce1ff;
-  --color-svc-migration: #8b7cff;
+  /* Deep navy sections (derived from the wordmark slate) */
+  --color-navy: #111d33;
+  --color-navy-2: #1a2a47;
 
   --radius-card: 1.5rem;
   --radius-input: 0.75rem;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
-
-  --animate-marquee: marquee var(--marquee-duration, 30s) linear infinite;
-  --animate-caret: caret 1s steps(1) infinite;
-  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-expo) infinite;
-
-  @keyframes marquee {
-    from {
-      transform: translate3d(0, 0, 0);
-    }
-    to {
-      transform: translate3d(-100%, 0, 0);
-    }
-  }
-  @keyframes caret {
-    50% {
-      opacity: 0;
-    }
-  }
-  @keyframes pulse-ring {
-    0% {
-      transform: scale(0.6);
-      opacity: 0.7;
-    }
-    100% {
-      transform: scale(2.4);
-      opacity: 0;
-    }
-  }
 }
 
 /* Page colour is driven by scroll zones (components/layout/PageBackground). */
 :root {
-  --page-bg: var(--color-base);
+  --page-bg: var(--color-canvas);
   --page-fg: var(--color-ink);
   --page-muted: var(--color-gray-600);
-  --grad-a: var(--color-gold-800);
-  --grad-b: var(--color-gold-700);
-  --logo-mark: var(--color-gold-500);
+  --grad-a: var(--color-blue-700);
+  --grad-b: var(--color-blue-500);
   --outline-fg: var(--color-blue-600);
+  --cta-bg: var(--color-blue-600);
+  --cta-fg: #ffffff;
   --gutter: 1rem;
   --nav-h: 4rem;
   color-scheme: light;
@@ -116,20 +78,38 @@
     --gutter: 2.5rem;
   }
 }
-:root[data-zone="ink"] {
-  --page-bg: var(--color-ink);
+:root[data-zone="navy"] {
+  --page-bg: var(--color-navy);
   --page-fg: #ffffff;
   --page-muted: var(--color-gray-300);
-  --grad-a: var(--color-gold-400);
-  --grad-b: var(--color-gold-200);
+  --grad-a: var(--color-sky-300);
+  --grad-b: var(--color-sky-100);
   --outline-fg: #ffffff;
+  --cta-bg: #ffffff;
+  --cta-fg: var(--color-blue-700);
 }
-:root[data-zone="gold"] {
-  --page-bg: var(--color-gold-500);
-  --page-fg: var(--color-ink);
-  --page-muted: var(--color-gray-800);
-  --logo-mark: var(--color-ink);
-  --outline-fg: var(--color-ink);
+:root[data-zone="brand"] {
+  --page-bg: var(--color-blue-600);
+  --page-fg: #ffffff;
+  --page-muted: var(--color-blue-100);
+  --grad-a: var(--color-sky-200);
+  --grad-b: #ffffff;
+  --outline-fg: #ffffff;
+  --cta-bg: #ffffff;
+  --cta-fg: var(--color-blue-700);
+}
+
+/* Logo swap: the slate wordmark on light pages, the white wordmark on dark zones. */
+.logo-auto.logo-on-dark {
+  display: none;
+}
+:root[data-zone="navy"] .logo-auto.logo-on-light,
+:root[data-zone="brand"] .logo-auto.logo-on-light {
+  display: none;
+}
+:root[data-zone="navy"] .logo-auto.logo-on-dark,
+:root[data-zone="brand"] .logo-auto.logo-on-dark {
+  display: block;
 }
 
 html {
@@ -153,7 +133,7 @@ body {
 }
 
 ::selection {
-  background: var(--color-gold-300);
+  background: var(--color-blue-100);
   color: var(--color-ink);
 }
 
@@ -167,25 +147,25 @@ body {
 @utility title-xl {
   font-size: clamp(2.75rem, 5.2vw, 4.5rem);
   line-height: 1.15;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.03em;
 }
 @utility title-l {
   font-size: clamp(2.25rem, 4.2vw, 3.625rem);
   line-height: 1.1;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.04em;
 }
 @utility title-m {
   font-size: clamp(1.625rem, 2.5vw, 2.25rem);
   line-height: 1.2;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.03em;
 }
 @utility title-s {
   font-size: clamp(1.375rem, 2vw, 1.75rem);
   line-height: 1.1;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.04em;
 }
 @utility title-xs {
@@ -208,12 +188,6 @@ body {
   font-size: 0.875rem;
   line-height: 1.5;
   letter-spacing: 0;
-}
-@utility text-number {
-  font-size: clamp(3rem, 4.6vw, 4.375rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
 }
 @utility text-step {
   font-size: clamp(2.25rem, 3.5vw, 3.125rem);
@@ -341,20 +315,23 @@ body {
   animation: accordion-up 0.3s ease-out;
 }
 
-/* Marquee pauses on hover and when off-screen */
-.marquee-row:hover .marquee-list,
-.marquee-row[data-paused="true"] .marquee-list {
-  animation-play-state: paused;
-}
-.marquee-mask {
-  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
-  mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
-}
-@media (max-width: 480px) {
-  .marquee-mask {
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+/* Solutions workflow: a dot travelling Inspect → Review along the connector */
+@keyframes workflow-pulse {
+  0% {
+    left: 0;
+    opacity: 0;
   }
+  12%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+.workflow-pulse {
+  animation: workflow-pulse 4s ease-in-out 1.4s infinite;
 }
 
 /* Lenis */
@@ -407,7 +384,7 @@ html.lenis body {
   .split-word > span {
     animation: fade-in 0.2s both;
   }
-  .marquee-list {
+  .workflow-pulse {
     animation: none !important;
   }
 }

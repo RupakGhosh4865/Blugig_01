@@ -3,7 +3,7 @@ import { LegalPage } from "@/components/sections/LegalPage";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  description: "How Blugig Global LLC collects, uses and protects personal information.",
+  description: "How Avantra Technologies collects, uses and protects personal information.",
   alternates: { canonical: "/privacy" },
 };
 

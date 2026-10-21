@@ -1,9 +1,9 @@
 import { ogSize, renderOg } from "@/lib/og";
 
-export const alt = "Blugig Global — Workflow, data & AI consulting";
+export const alt = "Avantra Technologies — Mitti implementation partner";
 export const size = ogSize;
 export const contentType = "image/png";
 
 export default function Image() {
-  return renderOg({ eyebrow: "Workflow, data & AI consulting", title: "Turn complexity into a competitive advantage." });
+  return renderOg({ eyebrow: "Mitti implementation partner", title: "Turn everyday checks into better operations." });
 }
