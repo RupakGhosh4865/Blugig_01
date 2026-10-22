@@ -1,7 +1,7 @@
 # Avantra Technologies — website
 
 Marketing site for Avantra Technologies, a Mitti (by SafetyCulture) implementation partner.
-Partner: [Bravas — The Mitti Experts](https://bravastech.com/).
+Workato Automation League Silver Partner. An SSPM IT Solutions Private Limited company.
 
 Next.js 16 (App Router, Cache Components) · Tailwind CSS v4 · Motion · Lenis · three.js / R3F.
 Layout and motion language modelled on zig.ai (see `references/zig-ai-teardown.md`) — the original

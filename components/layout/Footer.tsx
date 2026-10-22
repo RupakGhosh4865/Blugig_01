@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { LinkedInIcon } from "@/components/icons/Brand";
 import { FooterWordmark } from "@/components/layout/FooterWordmark";
@@ -7,6 +7,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { footerNav, primaryCta } from "@/content/navigation";
 import { services } from "@/content/services";
 import { site } from "@/content/site";
+import partnerBadge from "@/public/brand/workato-silver-partner.png";
 import { solutions } from "@/content/solutions";
 
 const linkCls = "text-sm leading-[1.3] font-medium text-ink transition-colors duration-300 hover:text-blue-700";
@@ -105,23 +106,13 @@ export function Footer() {
 
         <FooterCol title="Partner ecosystem">
           <li>
-            <a
-              href={site.partner.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex flex-col gap-1 rounded-2xl bg-white/45 px-4 py-3 transition-colors duration-300 hover:bg-white"
-            >
-              <span className="flex items-center gap-2 text-base font-medium text-ink">
-                {site.partner.name}
-                <ArrowUpRight
-                  aria-hidden
-                  className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  strokeWidth={1.6}
-                />
-              </span>
-              <span className="text-s text-gray-800">{site.partner.descriptor}</span>
-              <span className="sr-only">(opens in a new tab)</span>
-            </a>
+            <Image
+              src={partnerBadge}
+              alt={site.partner.name}
+              width={112}
+              height={112}
+              className="size-28 drop-shadow-[0_12px_24px_rgba(4,28,66,0.18)]"
+            />
           </li>
         </FooterCol>
       </div>
@@ -131,7 +122,7 @@ export function Footer() {
       </div>
 
       <div className="shell flex flex-col gap-3 border-t border-ink/15 py-6 text-sm text-gray-800 sm:flex-row sm:items-center sm:justify-between">
-        <p>© 2026 {site.legalName}. All rights reserved.</p>
+        <p>{site.copyright}</p>
         <ul className="flex gap-6">
           {footerNav.legal.map((l) => (
             <li key={l.href}>

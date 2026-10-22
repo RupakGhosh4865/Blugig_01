@@ -1,5 +1,6 @@
 import { ArrowUpRight, Award, Compass, Handshake, Users } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { DrawIcon } from "@/components/icons/DrawIcon";
@@ -14,6 +15,7 @@ import { Chip } from "@/components/ui/Chip";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { aboutCta, aboutHero, focus, partnerBand, story, values } from "@/content/about";
 import { site } from "@/content/site";
+import partnerBadge from "@/public/brand/workato-silver-partner.png";
 import { breadcrumbJsonLd, JsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -120,23 +122,13 @@ export default function AboutPage() {
               <Handshake aria-hidden className="size-7 text-blue-600" strokeWidth={1.4} />
               Partner ecosystem
             </p>
-            <a
-              href={site.partner.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-3 text-m text-gray-600 transition-colors hover:text-ink"
-            >
-              We work alongside
-              <span className="font-medium text-ink">
-                {site.partner.name} — {site.partner.descriptor}
-              </span>
-              <ArrowUpRight
-                aria-hidden
-                className="size-4 text-blue-600 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                strokeWidth={1.6}
-              />
-              <span className="sr-only">(opens in a new tab)</span>
-            </a>
+            <div className="flex items-center gap-5">
+              <Image src={partnerBadge} alt="" width={88} height={88} className="size-22" />
+              <p className="text-m text-gray-600">
+                <span className="block font-medium text-ink">{site.partner.short}</span>
+                Workato Automation League
+              </p>
+            </div>
           </div>
         </div>
       </section>

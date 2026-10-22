@@ -22,10 +22,13 @@ export const site = {
   social: {
     linkedin: "" as string,
   },
+  /** Partner programme shown as a badge (footer + About). */
   partner: {
-    name: "Bravas",
-    descriptor: "The Mitti Experts",
-    url: "https://bravastech.com/",
+    name: "Workato Automation League — Silver Partner",
+    short: "Workato Silver Partner",
   },
+  /** Parent company and the footer legal line (verbatim from the owner). */
+  parentCompany: "SSPM IT SOLUTIONS PRIVATE LIMITED",
+  copyright: "© 2026 Avantra Technologies. An SSPM IT SOLUTIONS PRIVATE LIMITED COMPANY. All rights reserved.",
   calendlyUrl: process.env.NEXT_PUBLIC_CALENDLY_URL ?? "",
 } as const;

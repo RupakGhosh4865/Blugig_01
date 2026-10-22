@@ -15,7 +15,7 @@ Each value is rendered only when set (footer, contact page, JSON-LD).
 
 ## Content to confirm
 - [ ] Home FAQ answers — `content/home.ts` (`homeFaqs`), written from the services/approach copy.
-- [ ] Partner wording for Bravas — About page partner block (`app/about/page.tsx`) and footer line (`components/layout/Footer.tsx`).
+- [ ] Workato partner badge — confirm usage per Workato's partner brand guidelines (`public/brand/workato-silver-partner.png`, footer + About).
 - [ ] "Mitti (by SafetyCulture)" naming and any partner-tier wording before publishing.
 - [ ] Testimonials — `content/testimonials.ts` (section hidden while empty).
 - [ ] Solution cards link to `/contact?topic=…`; add solution detail pages later if wanted.

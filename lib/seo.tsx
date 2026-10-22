@@ -15,6 +15,7 @@ export function organizationJsonLd() {
     url: absoluteUrl("/"),
     logo: absoluteUrl("/brand/avantra-logo.png"),
     description: site.description,
+    parentOrganization: { "@type": "Organization", name: site.parentCompany },
     ...(site.email ? { email: site.email } : {}),
     ...(site.social.linkedin ? { sameAs: [site.social.linkedin] } : {}),
   };
