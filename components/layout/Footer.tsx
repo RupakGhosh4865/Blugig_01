@@ -1,14 +1,16 @@
+import { Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { LinkedInIcon } from "@/components/icons/Brand";
 import { FooterWordmark } from "@/components/layout/FooterWordmark";
 import { Logo } from "@/components/layout/Logo";
 import { ButtonLink } from "@/components/ui/Button";
+import { CredentialPills } from "@/components/ui/CredentialPills";
 import { footerNav, primaryCta } from "@/content/navigation";
 import { services } from "@/content/services";
-import { site } from "@/content/site";
-import partnerBadge from "@/public/brand/workato-silver-partner.png";
+import { contactDetails, site } from "@/content/site";
 import { solutions } from "@/content/solutions";
+import partnerBadge from "@/public/brand/workato-silver-partner.png";
 
 const linkCls = "text-sm leading-[1.3] font-medium text-ink transition-colors duration-300 hover:text-blue-700";
 
@@ -17,8 +19,10 @@ const linkCls = "text-sm leading-[1.3] font-medium text-ink transition-colors du
  * then a link grid. Avantra: light logo-blue gradient, ink text, plus the
  * outlined wordmark.
  */
+const CONTACT_ICONS = { email: Mail, phone: Phone, address: MapPin } as const;
+
 export function Footer() {
-  const contact = [site.email, site.phone, site.address].filter(Boolean);
+  const contact = contactDetails();
 
   return (
     <footer
@@ -55,23 +59,36 @@ export function Footer() {
             {site.tagline} — implementation, enablement and ongoing support for Mitti by SafetyCulture.
           </p>
           {contact.length > 0 ? (
-            <ul className="flex flex-col gap-2">
-              {contact.map((c) => (
-                <li key={c} className="text-sm text-gray-800">
-                  {c}
-                </li>
-              ))}
+            <ul className="flex flex-col gap-2.5">
+              {contact.map((c) => {
+                const Glyph = CONTACT_ICONS[c.kind];
+                return (
+                  <li key={c.kind} className="flex items-center gap-2.5 text-sm text-gray-800">
+                    <Glyph aria-hidden className="size-4 shrink-0 text-ink" strokeWidth={1.6} />
+                    {c.href ? (
+                      <a href={c.href} className="transition-colors duration-300 hover:text-ink">
+                        {c.value}
+                      </a>
+                    ) : (
+                      c.value
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           ) : null}
           {site.social.linkedin ? (
             <a
               href={site.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex size-10 items-center justify-center rounded-lg bg-ink text-white transition-colors duration-300 hover:bg-white hover:text-ink"
-              aria-label={`${site.name} on LinkedIn`}
+              aria-label={`${site.name} on LinkedIn (opens in a new tab)`}
             >
               <LinkedInIcon className="size-5" />
             </a>
           ) : null}
+          <CredentialPills pillClassName="bg-white/85" />
         </div>
 
         <FooterCol title="Solutions">

@@ -17,6 +17,10 @@ export function organizationJsonLd() {
     description: site.description,
     parentOrganization: { "@type": "Organization", name: site.parentCompany },
     ...(site.email ? { email: site.email } : {}),
+    ...(site.phone ? { telephone: site.phone } : {}),
+    ...(site.address
+      ? { address: { "@type": "PostalAddress", addressLocality: "Bengaluru", addressRegion: "Karnataka", addressCountry: "IN" } }
+      : {}),
     ...(site.social.linkedin ? { sameAs: [site.social.linkedin] } : {}),
   };
 }

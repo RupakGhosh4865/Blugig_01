@@ -12,7 +12,7 @@ import { solutions, solutionsCta, solutionsHero, solutionsIndustries, solutionsI
 export const metadata: Metadata = {
   title: "Solutions",
   description:
-    "Practical Mitti solutions for inspections and audits, issue reporting, corrective actions, site standards, asset inspections and operational visibility.",
+    "Practical Mitti solutions for inspections and audits, issue reporting, corrective actions, site standards, asset inspections, operational visibility and Workato-connected workflows.",
   alternates: { canonical: "/solutions" },
 };
 
@@ -41,6 +41,7 @@ export default function SolutionsPage() {
           body: s.body,
           anchor: s.slug,
           href: `/contact?topic=${s.slug}`,
+          span: s.integration,
         }))}
       />
       <Delivery steps={workflow.steps} title={workflow.title} chip={workflow.chip} sub={workflow.sub} />

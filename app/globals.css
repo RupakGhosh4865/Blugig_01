@@ -403,6 +403,20 @@ html.lenis body {
   padding-left: 1.25rem;
   margin-top: 1rem;
 }
+.prose-legal li + li {
+  margin-top: 0.5rem;
+}
+.prose-legal ul + p {
+  margin-top: 1rem;
+}
+.prose-legal > section:first-child h2 {
+  margin-top: 0;
+}
+.prose-legal a {
+  color: var(--color-blue-700);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,

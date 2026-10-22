@@ -1,6 +1,17 @@
 "use client";
 
-import { CalendarCheck, Check, ClipboardCheck, TriangleAlert, UserRound, UserRoundCheck } from "lucide-react";
+import {
+  CalendarCheck,
+  Check,
+  CircleCheckBig,
+  ClipboardCheck,
+  FileText,
+  Ticket,
+  TriangleAlert,
+  UserRound,
+  UserRoundCheck,
+  Workflow,
+} from "lucide-react";
 import { animate, cubicBezier, useMotionValue, useMotionValueEvent, type AnimationPlaybackControls } from "motion/react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { LogoMark } from "@/components/layout/Logo";
@@ -15,6 +26,8 @@ import { cn } from "@/lib/utils";
  * radius and stay level while the hub turns: they rise and fan out, converge
  * into a stack, the top card morphs into the "did" summary pair, the pair
  * separates, then sweeps out while the next loop's cards rise from below.
+ * Avantra runs five cards (zig runs four) on spokes 16° apart, and the card
+ * copy crossfades in place when the hero stage changes — the loop never restarts.
  *
  * Time is expressed in the original 24 fps frames (0–192). Playback follows
  * the page script: 0→48 (2 s), hold 1 s, 48→124.8 (3.2 s), hold 1 s,
@@ -47,12 +60,14 @@ const HUB = track([
   { t: 132, v: 0, e: [0.333, 0, 0.689, 0.694] },
   { t: 191, v: 124.404 },
 ]);
-const S_NEXT = track([{ t: 60, v: -30, e: [0.333, 0, 0.34, 1] }, { t: 79, v: 0 }]);
-const S_CRM = track([{ t: 60, v: -10, e: STD }, { t: 79, v: 0 }]);
-const S_FOLLOW = track([{ t: 60, v: 10, e: STD }, { t: 79, v: 0 }, { t: 96, v: 0, e: STD }, { t: 120, v: -14 }]);
-const S_MEET = track([{ t: 60, v: 30, e: STD }, { t: 79, v: 0 }, { t: 96, v: 0, e: STD }, { t: 120, v: 14 }]);
-/** Spokes carrying the next loop's cards (relative to the hub). */
-const NEXT_LOOP = [-147.546, -167.546, -187.546, -207.546];
+// Rest angles top → bottom: 32, 16, 0, -16, -32 (zig: 30, 10, -10, -30 for four cards).
+const S_LAST = track([{ t: 60, v: -32, e: [0.333, 0, 0.34, 1] }, { t: 79, v: 0 }]);
+const S_NEXT = track([{ t: 60, v: -16, e: STD }, { t: 79, v: 0 }]);
+const S_CRM = track([{ t: 60, v: 0 }]);
+const S_FOLLOW = track([{ t: 60, v: 16, e: STD }, { t: 79, v: 0 }, { t: 96, v: 0, e: STD }, { t: 120, v: -14 }]);
+const S_MEET = track([{ t: 60, v: 32, e: STD }, { t: 79, v: 0 }, { t: 96, v: 0, e: STD }, { t: 120, v: 14 }]);
+/** Spokes carrying the next loop's cards (relative to the hub): rest angle − 177.546°. */
+const NEXT_LOOP = [-145.546, -161.546, -177.546, -193.546, -209.546];
 
 // Opacities (0–1).
 const O_FIRST_CONTENT = track([{ t: 82, v: 1, e: STD }, { t: 89, v: 0 }]);
@@ -62,6 +77,7 @@ const O_SECOND_NEXT = track([{ t: 180, v: 0, e: STD }, { t: 190.4, v: 0.6 }]);
 const O_THIRD = track([{ t: 9.6, v: 0.3, e: [0.333, 0.004, 0.667, 1] }, { t: 20.6, v: 1 }, { t: 85, v: 1, e: STD }, { t: 89, v: 0 }]);
 const O_THIRD_NEXT = track([{ t: 170, v: 0, e: STD }, { t: 181, v: 0.4 }]);
 const O_FOURTH = track([{ t: 11, v: 0, e: STD }, { t: 27, v: 1 }, { t: 85, v: 1, e: STD }, { t: 89, v: 0 }]);
+const O_FIFTH = track([{ t: 16, v: 0, e: STD }, { t: 32, v: 1 }, { t: 85, v: 1, e: STD }, { t: 89, v: 0 }]);
 const O_FIRST_NEXT = track([{ t: 154, v: 0, e: STD }, { t: 165, v: 1 }]);
 const O_B_CARD = track([{ t: 180, v: 1 }, { t: 191, v: 0 }]);
 
@@ -104,17 +120,35 @@ const TONES = {
   peach: { tile: "#f9ddd5", time: "#d0654b" },
   sky: { tile: "#d3e2f8", time: "#2f6ad0" },
   lilac: { tile: "#e8dcf7", time: "#8a58cf" },
+  teal: { tile: "#cdeef0", time: "#0e7f86" },
+  green: { tile: "#d3f0d9", time: "#1d8a43" },
 } as const;
-const ICONS = { inspect: ClipboardCheck, alert: TriangleAlert, person: UserRoundCheck, calendar: CalendarCheck } as const;
+const ICONS = {
+  inspect: ClipboardCheck,
+  alert: TriangleAlert,
+  person: UserRoundCheck,
+  calendar: CalendarCheck,
+  resolved: CircleCheckBig,
+  recipe: Workflow,
+  ticket: Ticket,
+  order: FileText,
+} as const;
 
 const CARD_SHADOW = "0 34px 50px -30px rgba(6,69,148,0.32), 0 14px 30px -18px rgba(6,69,148,0.16)";
+/** The outcome card (last on the wheel) sits on a faint green wash. */
+const OUTCOME = {
+  background: "#f3fbf5",
+  boxShadow: "inset 0 0 0 1px #c4e8cf, 0 34px 50px -30px rgba(29,138,67,0.34), 0 14px 30px -18px rgba(29,138,67,0.16)",
+};
+/** Card copy swap: outgoing lifts away, incoming follows, staggered top → bottom. */
+const SWAP = { duration: 0.45, stagger: 0.06, lag: 0.15, lift: 10 };
 const INK = "#041c42";
 const MUTED = "#626d81";
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-export function HeroWheel() {
+export function HeroWheel({ stage }: { stage: number }) {
   const wide = useMediaQuery("(min-width: 1280px)");
   const desk = useMediaQuery("(min-width: 992px)");
   const tablet = useMediaQuery("(min-width: 480px)");
@@ -124,7 +158,7 @@ export function HeroWheel() {
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0 select-none">
-      {variant ? <Scene key={variant} variant={variant} reduce={reduce} /> : null}
+      {variant ? <Scene key={variant} variant={variant} reduce={reduce} stage={stage} /> : null}
       {/* zig `.hero-animation_grad`: side fades on very wide screens, top fade when stacked */}
       <div className="absolute inset-y-0 left-0 hidden w-[30vw] bg-[linear-gradient(90deg,var(--color-canvas)_38%,transparent)] min-[1920px]:block" />
       <div className="absolute inset-y-0 right-0 hidden w-[10vw] bg-[linear-gradient(-90deg,var(--color-canvas),transparent)] min-[1920px]:block" />
@@ -133,7 +167,7 @@ export function HeroWheel() {
   );
 }
 
-function Scene({ variant, reduce }: { variant: Variant; reduce: boolean }) {
+function Scene({ variant, reduce, stage }: { variant: Variant; reduce: boolean; stage: number }) {
   const V = VARIANTS[variant];
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -179,14 +213,16 @@ function Scene({ variant, reduce }: { variant: Variant; reduce: boolean }) {
       if (node) node.style.visibility = on ? "visible" : "hidden";
     };
 
-    // Spokes: the four working spokes, then the next loop's spokes.
-    line(0, hub + S_NEXT(f), f < 94);
-    line(1, hub + S_CRM(f), f < 94);
-    line(2, hub + S_FOLLOW(f), true);
-    line(3, hub + S_MEET(f), true);
-    NEXT_LOOP.forEach((off, i) => line(4 + i, hub + off, f >= 157));
+    // Spokes: the five working spokes, then the next loop's spokes.
+    line(0, hub + S_LAST(f), f < 94);
+    line(1, hub + S_NEXT(f), f < 94);
+    line(2, hub + S_CRM(f), f < 94);
+    line(3, hub + S_FOLLOW(f), true);
+    line(4, hub + S_MEET(f), true);
+    NEXT_LOOP.forEach((off, i) => line(5 + i, hub + off, f >= 157));
 
     // Activity cards (each element also plays its copy in the next loop).
+    place(e.fifth, hub + S_LAST(f), f < 89 ? O_FIFTH(f) : 0);
     place(e.fourth, hub + S_NEXT(f), f < 89 ? O_FOURTH(f) : 0);
     place(e.third, f < 89 ? hub + S_CRM(f) : hub + NEXT_LOOP[2], f < 89 ? O_THIRD(f) : f >= 170 ? O_THIRD_NEXT(f) : 0);
     place(e.second, f < 79.2 ? hub + S_FOLLOW(f) : hub + NEXT_LOOP[1], f < 79.2 ? O_SECOND(f) : f >= 180 ? O_SECOND_NEXT(f) : 0);
@@ -243,7 +279,8 @@ function Scene({ variant, reduce }: { variant: Variant; reduce: boolean }) {
   }, [u, reduce, frame, render]);
 
   const stacked = variant === "tablet" || variant === "mobile";
-  const [first, second, third, fourth] = heroWheel.activity;
+  // Card k carries heroWheel.stages[s][k] for every stage s.
+  const [first, second, third, fourth, fifth] = heroWheel.stages[0].map((_, k) => heroWheel.stages.map((s) => s[k]));
 
   return (
     <div
@@ -266,7 +303,7 @@ function Scene({ variant, reduce }: { variant: Variant; reduce: boolean }) {
             <svg className="absolute top-0 left-0 overflow-visible" width="1" height="1" fill="none">
               <g stroke="#c3cbd8" strokeWidth="1">
                 <circle cx={ARC.x} cy={ARC.y} r={ARC.r} />
-                {Array.from({ length: 8 }, (_, i) => (
+                {Array.from({ length: 10 }, (_, i) => (
                   <line
                     key={i}
                     ref={(node) => {
@@ -282,26 +319,31 @@ function Scene({ variant, reduce }: { variant: Variant; reduce: boolean }) {
               </g>
             </svg>
 
-            {/* Back → front: 4th, 3rd, 2nd, next-loop 1st, B ("You did"), A */}
+            {/* Back → front: 5th, 4th, 3rd, 2nd, next-loop 1st, B ("You did"), A */}
+            <Positioned ref={(node) => {
+                el.current.fifth = node;
+              }}>
+              <ActivityCard items={fifth} stage={stage} order={4} outcome />
+            </Positioned>
             <Positioned ref={(node) => {
                 el.current.fourth = node;
               }}>
-              <ActivityCard item={fourth} />
+              <ActivityCard items={fourth} stage={stage} order={3} />
             </Positioned>
             <Positioned ref={(node) => {
                 el.current.third = node;
               }}>
-              <ActivityCard item={third} />
+              <ActivityCard items={third} stage={stage} order={2} />
             </Positioned>
             <Positioned ref={(node) => {
                 el.current.second = node;
               }}>
-              <ActivityCard item={second} />
+              <ActivityCard items={second} stage={stage} order={1} />
             </Positioned>
             <Positioned ref={(node) => {
                 el.current.firstNext = node;
               }}>
-              <ActivityCard item={first} />
+              <ActivityCard items={first} stage={stage} order={0} />
             </Positioned>
 
             <Positioned ref={(node) => {
@@ -340,7 +382,11 @@ function Scene({ variant, reduce }: { variant: Variant; reduce: boolean }) {
               <div ref={(node) => {
                 el.current.aActivity = node;
               }} className="absolute" style={{ left: BOX_FROM.l, top: BOX_FROM.t, width: BOX_FROM.w, height: BOX_FROM.h }}>
-                <ActivityContent item={first} />
+                {first.map((item, s) => (
+                  <SwapLayer key={s} active={s === stage} order={0}>
+                    <ActivityContent item={item} />
+                  </SwapLayer>
+                ))}
               </div>
               <div
                 ref={(node) => {
@@ -427,20 +473,59 @@ function Positioned({ ref, children }: { ref: (node: HTMLElement | null) => void
   );
 }
 
-type Activity = (typeof heroWheel.activity)[number];
+type Activity = (typeof heroWheel.stages)[number][number];
 
-function ActivityCard({ item }: { item: Activity }) {
+const cardWidth = (item: Activity) => ("w" in item ? item.w : BOX_FROM.w);
+
+/**
+ * One activity card holding every stage's copy. The white box eases to the
+ * active copy's width; each copy layer is laid out at its own width, centred
+ * on the spoke point.
+ */
+function ActivityCard({ items, stage, order, outcome }: { items: Activity[]; stage: number; order: number; outcome?: boolean }) {
+  const w = cardWidth(items[stage]);
   return (
-    <div className="absolute bg-white" style={{ ...boxStyle(0) }}>
-      <ActivityContent item={item} />
+    <>
+      <div
+        className="absolute bg-white transition-[left,width] duration-500 ease-out"
+        style={{ ...boxStyle(0), left: -w / 2, width: w, ...(outcome ? OUTCOME : null) }}
+      />
+      {items.map((item, s) => {
+        const iw = cardWidth(item);
+        return (
+          <div key={s} className="absolute" style={{ left: -iw / 2, top: BOX_FROM.t, width: iw, height: BOX_FROM.h }}>
+            <SwapLayer active={s === stage} order={order}>
+              <ActivityContent item={item} />
+            </SwapLayer>
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
+/** Crossfades one stage's copy in (rising into place) or out (lifting away). */
+function SwapLayer({ active, order, children }: { active: boolean; order: number; children: React.ReactNode }) {
+  const delay = order * SWAP.stagger + (active ? SWAP.lag : 0);
+  return (
+    <div
+      className="absolute inset-0"
+      style={{
+        opacity: active ? 1 : 0,
+        transform: `translate3d(0, ${active ? 0 : -SWAP.lift}px, 0)`,
+        transition: `opacity ${SWAP.duration}s ease ${delay}s, transform ${SWAP.duration}s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+      }}
+    >
+      {children}
     </div>
   );
 }
 
-/** 380 × 104 activity card content: tinted icon tile, time / title / detail, check badge. */
+/** 104px-tall activity card content: tinted icon tile, time / title / detail, check badge. */
 function ActivityContent({ item }: { item: Activity }) {
   const tone = TONES[item.tone];
   const Glyph = ICONS[item.icon];
+  const w = cardWidth(item);
   return (
     <>
       <span
@@ -458,7 +543,7 @@ function ActivityContent({ item }: { item: Activity }) {
       <p className="absolute font-medium whitespace-nowrap" style={{ ...text(93.3, 68.7, 13.2, -0.054), color: MUTED }}>
         {item.detail}
       </p>
-      <CheckBadge left={380 - 22 - 26.4} top={52 - 13.2} size={26.4} />
+      <CheckBadge left={w - 22 - 26.4} top={52 - 13.2} size={26.4} />
     </>
   );
 }

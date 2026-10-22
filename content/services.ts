@@ -122,6 +122,43 @@ export const supportOptions = {
   ],
 };
 
+/** Workato integration service — its own section, alongside the six implementation services. */
+export const integrationService = {
+  id: "integration-automation",
+  chip: "Integration & automation",
+  lead: "Integration & automation (Workato)",
+  sub: "Connect Mitti to the systems you already run. As a Workato Silver Partner, we design, build and hand over the automations.",
+  cta: { label: "Plan my integration", href: "/contact?topic=connected-workflows" },
+  steps: [
+    {
+      title: "Discovery",
+      body: "Map your systems, data and triggers — which inspections, issues and actions should flow where.",
+    },
+    {
+      title: "Recipe build",
+      body: "Build and test Workato recipes that sync Mitti with your ERP, HR and ticketing tools.",
+    },
+    {
+      title: "Monitoring & handover",
+      body: "Set up alerts and error handling, document every recipe and train your team to run it.",
+    },
+  ],
+};
+
+/** How an engagement can be shaped. Scope is agreed during discovery. */
+export const engagementModels = {
+  id: "ways-to-work",
+  chip: "Engagement models",
+  lead: "Ways to work",
+  accent: "with us",
+  sub: "Start small, roll out at scale, or keep us on hand — scope is agreed during discovery.",
+  items: [
+    { title: "Pilot", body: "Prove the setup on one site or team, with clear success measures before you scale." },
+    { title: "Enterprise rollout", body: "A phased, multi-site rollout with governance, training and change support." },
+    { title: "Retained support", body: "Ongoing administration, improvements and new workflows from a team that knows your setup." },
+  ],
+};
+
 export const servicesCta = {
   title: "Let's define your next step.",
   sub: "Tell us where your Mitti rollout stands. A short discovery conversation is enough to map the first step.",

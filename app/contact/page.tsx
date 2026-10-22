@@ -1,12 +1,13 @@
-import { Mail, MapPin, MessageSquare, Phone } from "lucide-react";
+import { CalendarDays, Mail, MapPin, MessageSquare, Phone } from "lucide-react";
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { ContactForm } from "@/app/contact/ContactForm";
 import { CalendlyEmbed } from "@/app/contact/CalendlyEmbed";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { HeroRays } from "@/components/sections/home/HeroArt";
+import { ButtonLink } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
-import { site } from "@/content/site";
+import { contactDetails, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -17,6 +18,8 @@ export const metadata: Metadata = {
 
 const d = (s: number) => ({ "--d": `${s}s` }) as CSSProperties;
 
+const CONTACT_ICONS = { email: Mail, phone: Phone, address: MapPin } as const;
+
 const nextSteps = [
   { title: `We reply within ${site.replyTime}`, body: "A real person reads every message." },
   { title: "Discovery conversation", body: "We talk through your processes, priority use cases and goals." },
@@ -24,11 +27,7 @@ const nextSteps = [
 ];
 
 export default function ContactPage() {
-  const details = [
-    { icon: Mail, value: site.email, href: site.email ? `mailto:${site.email}` : undefined },
-    { icon: Phone, value: site.phone, href: site.phone ? `tel:${site.phone.replace(/[^+d]/g, "")}` : undefined },
-    { icon: MapPin, value: site.address, href: undefined },
-  ].filter((x) => x.value);
+  const details = contactDetails();
 
   return (
     <section className="relative isolate overflow-hidden">
@@ -46,23 +45,6 @@ export default function ContactPage() {
               Tell us about your operations and what you want to improve. We&apos;ll help you find the right starting point.
             </p>
           </div>
-
-          {details.length > 0 ? (
-            <ul className="enter-fade flex flex-col gap-3 text-base" style={d(0.6)}>
-              {details.map(({ icon: Glyph, value, href }) => (
-                <li key={value} className="flex items-center gap-3">
-                  <Glyph aria-hidden className="size-5 text-sky-800" strokeWidth={1.5} />
-                  {href ? (
-                    <a href={href} className="hover:text-blue-700">
-                      {value}
-                    </a>
-                  ) : (
-                    value
-                  )}
-                </li>
-              ))}
-            </ul>
-          ) : null}
 
           <div className="enter-fade flex flex-col gap-6" style={d(0.7)}>
             <p className="eyebrow text-gray-600">What happens next</p>
@@ -86,6 +68,35 @@ export default function ContactPage() {
           <div className="relative rounded-[1.5rem] border border-white bg-white/80 p-6 shadow-[0_40px_80px_-40px_rgba(4,28,66,0.35)] backdrop-blur-xl sm:p-10">
             <h2 className="title-s mb-8">Talk to our team</h2>
             <ContactForm />
+            {details.length > 0 || site.calendlyUrl ? (
+              <div className="mt-8 flex flex-col gap-5 border-t border-gray-200 pt-6 sm:flex-row sm:items-end sm:justify-between">
+                {details.length > 0 ? (
+                  <ul className="flex flex-col gap-2.5 text-base">
+                    {details.map((c) => {
+                      const Glyph = CONTACT_ICONS[c.kind];
+                      return (
+                        <li key={c.kind} className="flex items-center gap-3">
+                          <Glyph aria-hidden className="size-5 shrink-0 text-sky-800" strokeWidth={1.5} />
+                          {c.href ? (
+                            <a href={c.href} className="hover:text-blue-700">
+                              {c.value}
+                            </a>
+                          ) : (
+                            c.value
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : null}
+                {site.calendlyUrl ? (
+                  <ButtonLink href={site.calendlyUrl} target="_blank" rel="noopener noreferrer" variant="outline" className="self-start sm:self-auto">
+                    <CalendarDays aria-hidden className="size-5" strokeWidth={1.6} />
+                    Book a call
+                  </ButtonLink>
+                ) : null}
+              </div>
+            ) : null}
           </div>
           {site.calendlyUrl ? <CalendlyEmbed url={site.calendlyUrl} /> : null}
         </div>

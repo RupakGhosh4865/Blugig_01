@@ -107,6 +107,9 @@ function ChartMock() {
   const bars = [38, 52, 46, 64, 58, 78, 92];
   return (
     <div className="w-[min(26rem,100%)] rounded-2xl bg-white p-4 text-[11px] text-ink shadow-[0_20px_40px_-18px_rgba(6,90,168,0.45)]">
+      <p className="mb-2 flex justify-end">
+        <span className="rounded-full bg-canvas px-2 py-0.5 font-mono text-[9px] tracking-wide text-gray-500 uppercase">Illustrative</span>
+      </p>
       <div className="grid grid-cols-3 gap-2">
         {[
           ["Checks done", "94%"],

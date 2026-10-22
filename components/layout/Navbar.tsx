@@ -10,7 +10,7 @@ import { DrawIcon, type IconName } from "@/components/icons/DrawIcon";
 import { Logo } from "@/components/layout/Logo";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { ButtonLink } from "@/components/ui/Button";
-import { mainNav, primaryCta } from "@/content/navigation";
+import { integrationsMenu, mainNav, primaryCta } from "@/content/navigation";
 import { services } from "@/content/services";
 import { site } from "@/content/site";
 import { solutions } from "@/content/solutions";
@@ -22,11 +22,19 @@ const navlink =
 /**
  * zig navbar: logo left · white pill of links centred · two pill buttons right.
  * The `.nav_bg` layer fades in after 200px of scroll and follows the page colour.
+ * Solutions / Services open their mega menu on hover and go to their page on click.
  */
 export function Navbar() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
+  // Open mega menu (its trigger href, or ""). Closed on every route change, since the nav persists across pages.
+  const [menu, setMenu] = useState("");
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
+    setMenu("");
+  }
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const next = y >= 200;
@@ -50,22 +58,27 @@ export function Navbar() {
           <Logo eager height={32} className="h-7 w-auto lg:h-8" />
         </Link>
 
-        <NavigationMenu.Root delayDuration={120} className="relative hidden lg:block">
-          <NavigationMenu.List className="flex h-10 items-center gap-[2.375rem] rounded-full bg-white px-8">
-            <MenuItem label="Solutions">
+        <NavigationMenu.Root value={menu} onValueChange={setMenu} delayDuration={120} className="relative hidden lg:block">
+          <NavigationMenu.List className="flex h-10 items-center gap-6 rounded-full bg-white px-7 xl:gap-[2.375rem] xl:px-8">
+            <MenuItem label="Solutions" href="/solutions" open={menu === "/solutions"} onOpen={setMenu}>
               <MegaMenu
-                items={solutions.map((s, i) => ({
-                  key: s.slug,
-                  href: `/solutions#${s.slug}`,
-                  number: String(i + 1).padStart(2, "0"),
-                  icon: s.icon,
-                  title: s.title,
-                  line: s.body,
-                }))}
+                items={[
+                  ...solutions
+                    .filter((s) => !s.integration)
+                    .map((s, i) => ({
+                      key: s.slug,
+                      href: `/solutions#${s.slug}`,
+                      number: String(i + 1).padStart(2, "0"),
+                      icon: s.icon,
+                      title: s.title,
+                      line: s.body,
+                    })),
+                  { key: "integrations", href: integrationsMenu.href, number: "", icon: "refresh", title: integrationsMenu.title, line: integrationsMenu.line, wide: true },
+                ]}
                 aside={{ eyebrow: "Solutions with Mitti", title: "Which process should we improve first?", cta: "Discuss your use case", href: "/contact" }}
               />
             </MenuItem>
-            <MenuItem label="Services">
+            <MenuItem label="Services" href="/services" open={menu === "/services"} onOpen={setMenu}>
               <MegaMenu
                 items={services.map((s) => ({
                   key: s.slug,
@@ -102,9 +115,6 @@ export function Navbar() {
         </NavigationMenu.Root>
 
         <div className="hidden items-center gap-3 justify-self-end lg:flex">
-          <ButtonLink href="/services" variant="outline-adaptive" size="sm">
-            Explore services
-          </ButtonLink>
           <ButtonLink href={primaryCta.href} size="sm">
             {primaryCta.label}
           </ButtonLink>
@@ -116,19 +126,46 @@ export function Navbar() {
   );
 }
 
-function MenuItem({ label, children }: { label: string; children: React.ReactNode }) {
+/**
+ * Hover opens the mega menu; click navigates to `href` (Next's Link handles the
+ * click first, so Radix skips its toggle). ArrowDown opens it from the keyboard.
+ */
+function MenuItem({
+  label,
+  href,
+  open,
+  onOpen,
+  children,
+}: {
+  label: string;
+  href: string;
+  open: boolean;
+  onOpen: (value: string) => void;
+  children: React.ReactNode;
+}) {
   return (
-    <NavigationMenu.Item>
-      <NavigationMenu.Trigger className={cn(navlink, "group flex items-center gap-1 data-[state=open]:text-blue-600")}>
-        {label}
-        <ChevronDown aria-hidden className="size-3.5 transition-transform duration-300 group-data-[state=open]:rotate-180" />
+    <NavigationMenu.Item value={href}>
+      <NavigationMenu.Trigger asChild>
+        <Link
+          href={href}
+          className={cn(navlink, "group flex items-center gap-1 data-[state=open]:text-blue-600")}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown" && !open) {
+              e.preventDefault();
+              onOpen(href);
+            }
+          }}
+        >
+          {label}
+          <ChevronDown aria-hidden className="size-3.5 transition-transform duration-300 group-data-[state=open]:rotate-180" />
+        </Link>
       </NavigationMenu.Trigger>
       <NavigationMenu.Content className="w-[min(60rem,calc(100vw-5rem))] p-3">{children}</NavigationMenu.Content>
     </NavigationMenu.Item>
   );
 }
 
-type MenuEntry = { key: string; href: string; number: string; icon: IconName; title: string; line: string };
+type MenuEntry = { key: string; href: string; number: string; icon: IconName; title: string; line: string; wide?: boolean };
 
 function MegaMenu({
   items,
@@ -141,19 +178,35 @@ function MegaMenu({
     <div className="grid grid-cols-[1fr_15rem] gap-3">
       <ul className="grid grid-cols-3 gap-1">
         {items.map((s) => (
-          <li key={s.key}>
+          <li key={s.key} className={cn(s.wide && "col-span-3")}>
             <NavigationMenu.Link asChild>
-              <Link
-                href={s.href}
-                className="group flex h-full flex-col gap-3 rounded-2xl p-4 transition-colors duration-300 hover:bg-canvas"
-              >
-                <span className="flex items-center justify-between">
-                  <span className="text-mono text-sm text-sky-800">{s.number}</span>
-                  <DrawIcon id={s.icon} className="size-7 text-blue-600" />
-                </span>
-                <span className="text-[1.0625rem] leading-tight font-medium text-ink">{s.title}</span>
-                <span className="text-s text-gray-500">{s.line}</span>
-              </Link>
+              {s.wide ? (
+                <Link
+                  href={s.href}
+                  className="group flex items-center gap-4 rounded-2xl bg-canvas p-4 transition-colors duration-300 hover:bg-sky-50"
+                >
+                  <DrawIcon id={s.icon} className="size-7 shrink-0 text-blue-600" />
+                  <span className="flex flex-col gap-1">
+                    <span className="text-[1.0625rem] leading-tight font-medium text-ink">{s.title}</span>
+                    <span className="text-s text-gray-500">{s.line}</span>
+                  </span>
+                  <span aria-hidden className="ml-auto text-blue-600 transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </Link>
+              ) : (
+                <Link
+                  href={s.href}
+                  className="group flex h-full flex-col gap-3 rounded-2xl p-4 transition-colors duration-300 hover:bg-canvas"
+                >
+                  <span className="flex items-center justify-between">
+                    <span className="text-mono text-sm text-sky-800">{s.number}</span>
+                    <DrawIcon id={s.icon} className="size-7 text-blue-600" />
+                  </span>
+                  <span className="text-[1.0625rem] leading-tight font-medium text-ink">{s.title}</span>
+                  <span className="text-s text-gray-500">{s.line}</span>
+                </Link>
+              )}
             </NavigationMenu.Link>
           </li>
         ))}
