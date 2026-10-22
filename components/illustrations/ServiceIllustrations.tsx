@@ -56,7 +56,7 @@ function SheetMock() {
           ))}
         </div>
       </div>
-      <div className="absolute -top-5 right-2 flex items-center gap-2 rounded-full bg-white px-3 py-2 text-[11px] text-ink shadow-[0_12px_30px_-8px_rgba(17,29,51,0.25)]">
+      <div className="absolute -top-5 right-2 flex items-center gap-2 rounded-full bg-white px-3 py-2 text-[11px] text-ink shadow-[0_12px_30px_-8px_rgba(4,28,66,0.25)]">
         <span className="flex size-5 items-center justify-center rounded-full bg-sky-500">
           <Zap className="size-3" strokeWidth={2} />
         </span>
@@ -81,7 +81,7 @@ function InspectionMock() {
         </div>
         <div
           className="flex size-12 items-center justify-center rounded-full text-[11px] font-semibold"
-          style={{ background: "conic-gradient(#003fa9 0 86%, #e7ebf2 86% 100%)" }}
+          style={{ background: "conic-gradient(#0a80fb 0 86%, #e7ebf2 86% 100%)" }}
         >
           <span className="flex size-9 items-center justify-center rounded-full bg-white">86%</span>
         </div>
@@ -106,7 +106,7 @@ function InspectionMock() {
 function ChartMock() {
   const bars = [38, 52, 46, 64, 58, 78, 92];
   return (
-    <div className="w-[min(26rem,100%)] rounded-2xl bg-white p-4 text-[11px] text-ink shadow-[0_20px_40px_-18px_rgba(13,71,168,0.45)]">
+    <div className="w-[min(26rem,100%)] rounded-2xl bg-white p-4 text-[11px] text-ink shadow-[0_20px_40px_-18px_rgba(6,90,168,0.45)]">
       <div className="grid grid-cols-3 gap-2">
         {[
           ["Checks done", "94%"],
@@ -151,7 +151,7 @@ function PipelineMock() {
         ))}
       </div>
       <Connector />
-      <div className="flex flex-col items-center gap-1 rounded-xl bg-white px-3 py-3 shadow-[0_12px_30px_-8px_rgba(17,29,51,0.25)]">
+      <div className="flex flex-col items-center gap-1 rounded-xl bg-white px-3 py-3 shadow-[0_12px_30px_-8px_rgba(4,28,66,0.25)]">
         <span className="block size-8 overflow-hidden rounded-lg">
           <LogoMark className="size-full" />
         </span>
@@ -201,7 +201,7 @@ function MigrationMock() {
       </div>
       <ul className="mt-3 flex flex-col gap-1.5">
         {["Administrators trained", "Managers onboarded", "Frontline teams live"].map((t) => (
-          <li key={t} className="flex items-center justify-between rounded-lg bg-white px-3 py-2 shadow-[0_6px_16px_-10px_rgba(17,29,51,0.3)]">
+          <li key={t} className="flex items-center justify-between rounded-lg bg-white px-3 py-2 shadow-[0_6px_16px_-10px_rgba(4,28,66,0.3)]">
             {t}
             <span className="flex size-4 items-center justify-center rounded-full bg-sky-500">
               <Check className="size-2.5" strokeWidth={3} />

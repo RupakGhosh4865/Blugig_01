@@ -10,7 +10,7 @@ Each value is rendered only when set (footer, contact page, JSON-LD).
 - [ ] Production domain → `NEXT_PUBLIC_SITE_URL` (falls back to the Vercel production URL, then localhost).
 
 ## Brand
-- [ ] Vector logo, if available — the site uses the supplied PNGs (`public/brand/avantra-logo*.png`) and a traced SVG mark (`public/brand/avantra-mark.svg`, `app/icon.svg`).
+- [ ] Vector logo (SVG), if available — the site uses the supplied PNGs (`public/brand/avantra-logo*.png`); the wordmark, one-colour navy and mark/favicon files are derived from them.
 - [ ] Client logos (with permission) — the marquee under the statement shows Mitti services/use cases until then (`content/home.ts` → `platforms`).
 
 ## Content to confirm

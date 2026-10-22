@@ -107,8 +107,8 @@ const TONES = {
 } as const;
 const ICONS = { inspect: ClipboardCheck, alert: TriangleAlert, person: UserRoundCheck, calendar: CalendarCheck } as const;
 
-const CARD_SHADOW = "0 34px 50px -30px rgba(0,43,117,0.32), 0 14px 30px -18px rgba(0,43,117,0.16)";
-const INK = "#2c3a52";
+const CARD_SHADOW = "0 34px 50px -30px rgba(6,69,148,0.32), 0 14px 30px -18px rgba(6,69,148,0.16)";
+const INK = "#041c42";
 const MUTED = "#626d81";
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -375,8 +375,8 @@ function Scene({ variant, reduce }: { variant: Variant; reduce: boolean }) {
                         fontSize: 11.5,
                         letterSpacing: "-0.02em",
                         border: "2.5px solid #fff",
-                        background: ["#dbe5f8", "#deebff", "#e7ebf2"][i],
-                        color: ["#00358f", "#0d47a8", "#3d4657"][i],
+                        background: ["#d9ebff", "#d9f3ff", "#e7ebf2"][i],
+                        color: ["#0058b8", "#065aa8", "#3d4657"][i],
                       }}
                     >
                       {initials}

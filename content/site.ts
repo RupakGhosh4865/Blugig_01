@@ -4,6 +4,8 @@ export const site = {
   shortName: "Avantra",
   legalName: "Avantra Technologies",
   tagline: "Mitti Implementation Partner",
+  /** Brand line from the logo lockup. */
+  slogan: "Smarter operations. Safer teams.",
   /** Explicit domain → Vercel production URL (system env) → local dev. */
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??

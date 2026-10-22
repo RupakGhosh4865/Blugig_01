@@ -167,7 +167,7 @@ function Success({ message }: { message: string }) {
           cy="32"
           r="30"
           fill="none"
-          stroke="#72a6fa"
+          stroke="#29b9fa"
           strokeWidth="3"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
@@ -176,7 +176,7 @@ function Success({ message }: { message: string }) {
         <motion.path
           d="M20 33l8 8 16-17"
           fill="none"
-          stroke="#172033"
+          stroke="#0b1a36"
           strokeWidth="3.5"
           strokeLinecap="round"
           strokeLinejoin="round"

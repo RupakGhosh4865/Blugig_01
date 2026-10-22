@@ -24,7 +24,7 @@ export function Footer() {
       className="relative isolate overflow-hidden text-ink"
       style={{
         backgroundImage:
-          "radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,0.35), transparent 60%), linear-gradient(248deg, #4d89ea 10%, #72a6fa 60%, #9cc3ff)",
+          "radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,0.35), transparent 60%), linear-gradient(248deg, #0b9de3 10%, #29b9fa 60%, #7fd6fc)",
       }}
     >
       <FooterArt />
@@ -47,8 +47,9 @@ export function Footer() {
       <div className="shell grid gap-12 pt-4 pb-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1.1fr]">
         <div className="flex flex-col gap-5">
           <Link href="/" aria-label={`${site.name} — home`} className="w-fit">
-            <Logo variant="onLight" height={44} className="h-11 w-auto" />
+            <Logo variant="onBrand" height={40} className="h-10 w-auto" />
           </Link>
+          <p className="-mt-2.5 text-[0.5625rem] leading-none font-medium tracking-[0.2em] whitespace-nowrap text-slate uppercase">{site.slogan}</p>
           <p className="text-s max-w-[18rem] text-gray-800">
             {site.tagline} — implementation, enablement and ongoing support for Mitti by SafetyCulture.
           </p>
@@ -164,7 +165,7 @@ function FooterArt() {
       viewBox="0 0 1440 1100"
       fill="none"
     >
-      <g stroke="rgba(23,32,51,0.09)" strokeWidth="1.5">
+      <g stroke="rgba(11,26,54,0.09)" strokeWidth="1.5">
         <rect x="-220" y="160" width="1300" height="230" rx="115" transform="rotate(-18 430 275)" />
         <rect x="520" y="40" width="1300" height="230" rx="115" transform="rotate(-18 1170 155)" />
         <rect x="360" y="620" width="1500" height="260" rx="130" transform="rotate(32 1110 750)" />

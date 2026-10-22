@@ -83,7 +83,7 @@ export function Approach({
 function StepItem({ index, step, pinned = false }: { index: number; step: Step; pinned?: boolean }) {
   return (
     <li className={cn("flex flex-col gap-8 lg:gap-12", pinned && "gap-[clamp(1rem,4vh,3rem)] lg:gap-[clamp(1rem,4vh,3rem)]")}>
-      <span className="relative flex size-14 items-center justify-center rounded-full bg-white font-mono text-sm text-ink shadow-[0_22px_22px_rgba(13,71,168,0.09),0_5px_12px_rgba(13,71,168,0.1)] max-sm:-ml-[3.75rem]">
+      <span className="relative flex size-14 items-center justify-center rounded-full bg-white font-mono text-sm text-ink shadow-[0_22px_22px_rgba(6,90,168,0.09),0_5px_12px_rgba(6,90,168,0.1)] max-sm:-ml-[3.75rem]">
         {String(index + 1).padStart(2, "0")}
       </span>
       <div className={cn("flex flex-col gap-4", pinned && "gap-[clamp(0.5rem,1.8vh,1rem)]")}>

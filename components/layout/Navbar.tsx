@@ -47,7 +47,7 @@ export function Navbar() {
         className="relative mx-auto grid h-16 max-w-[85rem] grid-cols-[1fr_auto] items-center gap-4 lg:grid-cols-[1fr_auto_1fr]"
       >
         <Link href="/" aria-label={`${site.name} — home`} className="justify-self-start">
-          <Logo eager height={36} className="h-8 w-auto lg:h-9" />
+          <Logo eager height={32} className="h-7 w-auto lg:h-8" />
         </Link>
 
         <NavigationMenu.Root delayDuration={120} className="relative hidden lg:block">
@@ -97,7 +97,7 @@ export function Navbar() {
           </NavigationMenu.List>
 
           <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3">
-            <NavigationMenu.Viewport className="h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)] origin-top overflow-hidden rounded-[1.5rem] bg-white shadow-[0_24px_60px_-12px_rgba(23,32,51,0.22)] transition-[width,height] duration-300 data-[state=closed]:animate-[fade-in_0.15s_reverse] data-[state=open]:animate-[fade-up_0.25s_var(--ease-out-expo)]" />
+            <NavigationMenu.Viewport className="h-[var(--radix-navigation-menu-viewport-height)] w-[var(--radix-navigation-menu-viewport-width)] origin-top overflow-hidden rounded-[1.5rem] bg-white shadow-[0_24px_60px_-12px_rgba(11,26,54,0.22)] transition-[width,height] duration-300 data-[state=closed]:animate-[fade-in_0.15s_reverse] data-[state=open]:animate-[fade-up_0.25s_var(--ease-out-expo)]" />
           </div>
         </NavigationMenu.Root>
 

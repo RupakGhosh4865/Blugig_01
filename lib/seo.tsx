@@ -11,7 +11,7 @@ export function organizationJsonLd() {
     "@id": absoluteUrl("/#organization"),
     name: site.legalName,
     alternateName: site.shortName,
-    slogan: site.tagline,
+    slogan: site.slogan,
     url: absoluteUrl("/"),
     logo: absoluteUrl("/brand/avantra-logo.png"),
     description: site.description,

@@ -22,8 +22,8 @@ export function FooterWordmark() {
             <motion.rect x="0" y="0" width="1000" height="190" style={{ scaleX, originX: 0, originY: 0 }} />
           </clipPath>
           <linearGradient id={gradId} x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0%" stopColor="#172033" />
-            <stop offset="100%" stopColor="#003fa9" />
+            <stop offset="0%" stopColor="#0b1a36" />
+            <stop offset="100%" stopColor="#0a80fb" />
           </linearGradient>
         </defs>
         <text
@@ -36,7 +36,7 @@ export function FooterWordmark() {
           fontSize="200"
           fontWeight="700"
           fill="none"
-          stroke="rgba(23,32,51,0.35)"
+          stroke="rgba(11,26,54,0.35)"
           strokeWidth="1.5"
         >
           AVANTRA

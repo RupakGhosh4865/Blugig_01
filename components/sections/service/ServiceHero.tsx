@@ -25,7 +25,7 @@ export function ServiceHero({
   primary,
   secondary,
   shape,
-  accent = "#003fa9",
+  accent = "#0a80fb",
 }: {
   crumb: string;
   path: string;
@@ -94,8 +94,8 @@ export function ServiceHero({
             <ParticleField
               shape={shape}
               colorA={shade(accent, 0.22)}
-              colorB="#111d33"
-              sparkle="#72a6fa"
+              colorB="#041c42"
+              sparkle="#29b9fa"
               pointSize={3.3}
               density={0.85}
               className="absolute inset-0"

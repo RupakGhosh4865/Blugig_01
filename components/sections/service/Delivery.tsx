@@ -53,7 +53,7 @@ export function Delivery({
                 show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: power4Out, delay: 0.25 + i * 0.12 } },
               }}
             >
-              <span className="flex size-14 items-center justify-center rounded-full bg-white font-mono text-sm shadow-[0_22px_22px_rgba(13,71,168,0.09),0_5px_12px_rgba(13,71,168,0.1)]">
+              <span className="flex size-14 items-center justify-center rounded-full bg-white font-mono text-sm shadow-[0_22px_22px_rgba(6,90,168,0.09),0_5px_12px_rgba(6,90,168,0.1)]">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <div className="flex flex-col gap-3">

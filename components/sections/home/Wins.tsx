@@ -19,7 +19,7 @@ const CX = W / 2;
 const CY = H / 2;
 const R = 250;
 const HALF_SEP = 175;
-const SKY = "#86b4fd";
+const SKY = "#4cc6fb";
 const SILVER = "#d4dae5";
 
 type Tip = { title: string; body: string };
@@ -135,7 +135,7 @@ export function Wins() {
                   <CircleTitle x={CX - HALF_SEP - 30}>{wins.left.title}</CircleTitle>
                   <CircleTitle x={CX + HALF_SEP + 30}>{wins.right.title}</CircleTitle>
                   <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <LogoMark className="size-[clamp(2.75rem,4.6vw,4rem)] shadow-[0_0_60px_rgba(114,166,250,0.45)]" />
+                    <LogoMark className="size-[clamp(2.75rem,4.6vw,4rem)] rounded-[22%] shadow-[0_0_60px_rgba(41,185,250,0.45)]" />
                   </span>
                 </motion.div>
 

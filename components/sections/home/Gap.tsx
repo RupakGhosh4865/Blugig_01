@@ -58,7 +58,7 @@ function List({ list, className }: { list: GapList; className?: string }) {
         )}
       >
         {list.label}
-        {list.withLogo ? <Logo variant={brand ? "onLight" : "onDark"} height={20} className="h-[1.1rem] w-auto" /> : null}
+        {list.withLogo ? <Logo variant={brand ? "onBrand" : "onDark"} height={20} className="h-[1.1rem] w-auto" /> : null}
         <Tag aria-hidden className="size-4 opacity-60" strokeWidth={1.6} />
       </p>
       <RevealGroup as="ul" className="flex flex-col">

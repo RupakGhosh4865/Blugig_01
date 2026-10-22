@@ -1,8 +1,13 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
+
+/** Full Avantra lockup (with tagline), embedded so the card renders without network access. */
+const LOGO = `data:image/png;base64,${readFileSync(join(process.cwd(), "public/brand/avantra-logo.png")).toString("base64")}`;
 
 export const ogSize = { width: 1200, height: 630 };
 
-/** Shared OG card: cool off-white, hairline rays, logo-blue glow, the Avantra mark + name. */
+/** Shared OG card: cool off-white, hairline ring, logo-blue glow, the Avantra lockup. */
 export function renderOg({ eyebrow, title }: { eyebrow: string; title: string }) {
   return new ImageResponse(
     (
@@ -26,7 +31,7 @@ export function renderOg({ eyebrow, title }: { eyebrow: string; title: string })
             top: 0,
             width: 1200,
             height: 630,
-            background: "radial-gradient(circle at 88% 20%, rgba(29,88,196,0.3) 0%, rgba(29,88,196,0) 48%)",
+            background: "radial-gradient(circle at 88% 20%, rgba(10,128,251,0.3) 0%, rgba(10,128,251,0) 48%)",
             display: "flex",
           }}
         />
@@ -42,21 +47,15 @@ export function renderOg({ eyebrow, title }: { eyebrow: string; title: string })
             display: "flex",
           }}
         />
-        <div style={{ display: "flex", alignItems: "center", gap: 18, color: "#2c3a52" }}>
-          <svg width="56" height="56" viewBox="0 0 240 240">
-            <rect width="240" height="240" fill="#003FA9" />
-            <path d="M120 22 234 224 134.5 178.5V151H157.5L120 101 82.5 151H105.5V178.5L6 224Z" fill="#fff" />
-          </svg>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-            <span style={{ fontSize: 44, fontWeight: 700, letterSpacing: -1 }}>Avantra</span>
-            <span style={{ fontSize: 30 }}>Technologies</span>
-          </div>
+        <div style={{ display: "flex" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse renders plain <img> */}
+          <img src={LOGO} width={406} height={100} alt="Avantra — Smarter operations. Safer teams." />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 900 }}>
-          <div style={{ fontSize: 22, letterSpacing: 4, textTransform: "uppercase", color: "#003fa9", display: "flex" }}>
+          <div style={{ fontSize: 22, letterSpacing: 4, textTransform: "uppercase", color: "#0a80fb", display: "flex" }}>
             {eyebrow}
           </div>
-          <div style={{ fontSize: 68, lineHeight: 1.08, letterSpacing: -2, color: "#172033", display: "flex" }}>{title}</div>
+          <div style={{ fontSize: 68, lineHeight: 1.08, letterSpacing: -2, color: "#0b1a36", display: "flex" }}>{title}</div>
         </div>
       </div>
     ),

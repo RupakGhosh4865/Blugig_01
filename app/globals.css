@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 /*
- * Avantra Technologies design tokens.
+ * Avantra design tokens.
  * Layout + motion language mirrors zig.ai (light base, pill buttons, chips,
- * scroll-driven page background) — unchanged from the original build. Only the
- * palette follows the Avantra logo: `sky` is the light brand blue (the old
- * yellow's role, ink text on it), `blue` is the logo blue #003FA9 for actions,
- * `slate` is the wordmark colour.
+ * scroll-driven page background) — unchanged from the original build. The
+ * palette follows the Avantra logo (public/brand): `blue-500` is the logo's
+ * "a" blue #0A80FB, `sky` comes from the cyan end of that gradient (the light
+ * brand surface, ink text on it), `navy`/`slate` are the wordmark navy #041C42.
  */
 @theme {
   --font-sans: var(--font-archivo), "Archivo", Arial, sans-serif;
   --font-mono: var(--font-azeret), "Azeret Mono", ui-monospace, monospace;
 
-  /* Neutrals (cool, to sit with the logo blue) */
+  /* Neutrals (cool, to sit with the logo blues) */
   --color-canvas: #f4f6fa; /* page background (zig gray-50 analogue) */
   --color-white: #ffffff;
-  --color-ink: #172033;
-  --color-slate: #2c3a52; /* logo wordmark */
+  --color-ink: #0b1a36;
+  --color-slate: #041c42; /* logo wordmark */
   --color-gray-100: #e7ebf2;
   --color-gray-200: #d4dae5;
   --color-gray-300: #b4bdcc;
@@ -26,32 +26,33 @@
   --color-gray-700: #3d4657;
   --color-gray-800: #2a3140;
 
-  /* Light brand blue (the old yellow's role) — ink text on 400–500 */
-  --color-sky-50: #f0f6ff;
-  --color-sky-100: #deebff;
-  --color-sky-200: #bdd7ff;
-  --color-sky-300: #9cc3ff;
-  --color-sky-400: #86b4fd;
-  --color-sky-500: #72a6fa; /* brand surface */
-  --color-sky-600: #4d89ea;
-  --color-sky-700: #2563c9; /* large text on light (≥3:1) */
-  --color-sky-800: #0d47a8; /* small text on light (≥4.5:1) */
-  --color-sky-900: #0a326f;
+  /* Light brand cyan-blue (logo gradient's cyan end) — ink text on 400–500 */
+  --color-sky-50: #effaff;
+  --color-sky-100: #d9f3ff;
+  --color-sky-200: #b2e7fe;
+  --color-sky-300: #7fd6fc;
+  --color-sky-400: #4cc6fb;
+  --color-sky-500: #29b9fa; /* brand surface */
+  --color-sky-600: #0b9de3;
+  --color-sky-700: #0771cf; /* text on light (≥4.5:1) */
+  --color-sky-800: #065aa8; /* small text on light (≥6:1) */
+  --color-sky-900: #054079;
 
-  /* Action blue = the logo mark (replaces zig coral) */
-  --color-blue-50: #eef3fc;
-  --color-blue-100: #dbe5f8;
-  --color-blue-200: #b7cbf1;
-  --color-blue-300: #85a6e6;
-  --color-blue-400: #4c7cd6;
-  --color-blue-500: #1d58c4;
-  --color-blue-600: #003fa9; /* logo blue · buttons with white text (AAA) */
-  --color-blue-700: #00358f;
-  --color-blue-800: #002b75;
+  /* Action blue — 500 is the logo "a" blue */
+  --color-blue-50: #eef6ff;
+  --color-blue-100: #d9ebff;
+  --color-blue-200: #b6d8ff;
+  --color-blue-300: #84bdfd;
+  --color-blue-400: #4a9dfc;
+  --color-blue-500: #0a80fb; /* logo blue · accents, large text */
+  --color-blue-600: #006de0; /* buttons with white text (AA) */
+  --color-blue-700: #0058b8;
+  --color-blue-800: #064594;
+  --color-blue-900: #0a336b;
 
-  /* Deep navy (replaces zig blue-700 sections) */
-  --color-navy: #111d33;
-  --color-navy-2: #1a2a47;
+  /* Deep navy (the wordmark colour) */
+  --color-navy: #041c42;
+  --color-navy-2: #0b2b5c;
 
   --radius-card: 1.5rem;
   --radius-input: 0.75rem;
@@ -93,8 +94,8 @@
   --page-bg: var(--color-canvas);
   --page-fg: var(--color-ink);
   --page-muted: var(--color-gray-600);
-  --grad-a: var(--color-sky-800);
-  --grad-b: var(--color-sky-700);
+  --grad-a: var(--color-blue-600);
+  --grad-b: var(--color-blue-500);
   --outline-fg: var(--color-blue-600);
   --gutter: 1rem;
   --nav-h: 4rem;
@@ -127,14 +128,17 @@
   --outline-fg: var(--color-ink);
 }
 
-/* Logo swap: slate wordmark on light/sky pages, white wordmark on the ink zone. */
-.logo-auto.logo-on-dark {
+/* Logo swap: full colour on light pages, white on the ink zone, one-colour navy on the sky zone. */
+.logo-auto.logo-on-dark,
+.logo-auto.logo-on-brand {
   display: none;
 }
-:root[data-zone="ink"] .logo-auto.logo-on-light {
+:root[data-zone="ink"] .logo-auto.logo-on-light,
+:root[data-zone="sky"] .logo-auto.logo-on-light {
   display: none;
 }
-:root[data-zone="ink"] .logo-auto.logo-on-dark {
+:root[data-zone="ink"] .logo-auto.logo-on-dark,
+:root[data-zone="sky"] .logo-auto.logo-on-brand {
   display: block;
 }
 

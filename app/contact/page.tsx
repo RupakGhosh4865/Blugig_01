@@ -83,7 +83,7 @@ export default function ContactPage() {
         </div>
 
         <div className="enter-fade flex flex-col gap-6" style={d(0.4)}>
-          <div className="relative rounded-[1.5rem] border border-white bg-white/80 p-6 shadow-[0_40px_80px_-40px_rgba(17,29,51,0.35)] backdrop-blur-xl sm:p-10">
+          <div className="relative rounded-[1.5rem] border border-white bg-white/80 p-6 shadow-[0_40px_80px_-40px_rgba(4,28,66,0.35)] backdrop-blur-xl sm:p-10">
             <h2 className="title-s mb-8">Talk to our team</h2>
             <ContactForm />
           </div>

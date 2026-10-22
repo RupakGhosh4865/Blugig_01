@@ -34,8 +34,8 @@ export function ShapeLab() {
           shape="globe"
           morphTo={shape === "globe" ? null : shape}
           blending={dark ? "additive" : "normal"}
-          colorA={dark ? "#2f7bff" : "#1f5fe0"}
-          colorB={dark ? "#5ce1ff" : "#13213d"}
+          colorA={dark ? "#0a80fb" : "#006de0"}
+          colorB={dark ? "#7fd6fc" : "#041c42"}
           className="absolute inset-0"
         />
       </div>

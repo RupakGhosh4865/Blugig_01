@@ -1,48 +1,68 @@
 import Image from "next/image";
 import logoOnLight from "@/public/brand/avantra-logo.png";
+import logoMono from "@/public/brand/avantra-logo-mono.png";
 import logoOnDark from "@/public/brand/avantra-logo-white.png";
+import mark from "@/public/brand/avantra-mark.png";
+import wordmarkOnLight from "@/public/brand/avantra-wordmark.png";
+import wordmarkMono from "@/public/brand/avantra-wordmark-mono.png";
+import wordmarkOnDark from "@/public/brand/avantra-wordmark-white.png";
 import { cn } from "@/lib/utils";
 
-const RATIO = logoOnLight.width / logoOnLight.height;
+const ART = {
+  /** Full lockup with the "Smarter operations. Safer teams." tagline. */
+  lockup: { light: logoOnLight, dark: logoOnDark, brand: logoMono },
+  /** Wordmark only — for small sizes (navbar, menus) where the tagline would be illegible. */
+  wordmark: { light: wordmarkOnLight, dark: wordmarkOnDark, brand: wordmarkMono },
+} as const;
 
 /**
- * The Avantra Technologies logo (public/brand). `auto` renders both versions and
- * lets globals.css show the white wordmark while a navy/brand scroll zone is active.
- * `height` is the largest rendered height (sizes the srcset); `className` sets the
- * displayed size. Callers wrap it in a link that carries the accessible name.
+ * The Avantra logo (public/brand) in three colourways: full colour on light
+ * backgrounds, white on dark, and one-colour navy on the cyan brand surfaces
+ * (where the logo's own cyan "a" would disappear). `auto` renders all three and
+ * lets globals.css pick one for the active scroll zone (ink → white, sky → navy).
+ * `height` is the largest rendered height (sizes the srcset); `className` sets
+ * the displayed size. Callers wrap it in a link that carries the accessible name.
  */
 export function Logo({
   variant = "auto",
+  kind = "wordmark",
   height = 36,
   alt = "",
   eager = false,
   className = "h-9 w-auto",
 }: {
-  variant?: "auto" | "onLight" | "onDark";
+  variant?: "auto" | "onLight" | "onDark" | "onBrand";
+  kind?: keyof typeof ART;
   height?: number;
   alt?: string;
   eager?: boolean;
   className?: string;
 }) {
-  const size = { width: Math.round(height * RATIO), height, loading: eager ? ("eager" as const) : undefined };
+  const art = ART[kind];
+  const size = {
+    width: Math.round((height * art.light.width) / art.light.height),
+    height,
+    loading: eager ? ("eager" as const) : undefined,
+  };
 
   if (variant !== "auto") {
-    return <Image src={variant === "onDark" ? logoOnDark : logoOnLight} alt={alt} className={cn("block", className)} {...size} />;
+    const src = variant === "onDark" ? art.dark : variant === "onBrand" ? art.brand : art.light;
+    return <Image src={src} alt={alt} className={cn("block", className)} {...size} />;
   }
   return (
     <span className="block">
-      <Image src={logoOnLight} alt={alt} className={cn("logo-auto logo-on-light block", className)} {...size} />
-      <Image src={logoOnDark} alt="" aria-hidden className={cn("logo-auto logo-on-dark", className)} {...size} />
+      <Image src={art.light} alt={alt} className={cn("logo-auto logo-on-light block", className)} {...size} />
+      <Image src={art.dark} alt="" aria-hidden className={cn("logo-auto logo-on-dark", className)} {...size} />
+      <Image src={art.brand} alt="" aria-hidden className={cn("logo-auto logo-on-brand", className)} {...size} />
     </span>
   );
 }
 
-/** Mark-only version (blue square, white "A" with the rising arrow), traced from the logo. */
+/** App-icon style mark: the gradient "a" on a logo-navy tile. Size it with className. */
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 240 240" aria-hidden className={cn("block", className)}>
-      <rect width="240" height="240" fill="#003FA9" />
-      <path d="M120 22 234 224 134.5 178.5V151H157.5L120 101 82.5 151H105.5V178.5L6 224Z" fill="#fff" />
-    </svg>
+    <span aria-hidden className={cn("flex items-center justify-center bg-navy", className)}>
+      <Image src={mark} alt="" className="h-[74%] w-[74%] object-contain" sizes="96px" />
+    </span>
   );
 }

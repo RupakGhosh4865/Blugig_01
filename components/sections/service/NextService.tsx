@@ -55,8 +55,8 @@ export function NextService({
           <ParticleField
             shape={shape}
             morphTo={fine && hover ? nextShape : null}
-            colorA={hover ? "#003fa9" : "#2563c9"}
-            colorB="#111d33"
+            colorA={hover ? "#0a80fb" : "#0771cf"}
+            colorB="#041c42"
             density={0.45}
             pointSize={3}
             interactive={false}

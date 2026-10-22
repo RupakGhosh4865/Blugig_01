@@ -155,9 +155,9 @@ export default function AboutPage() {
           <ParticleField
             shape="globe"
             blending="additive"
-            colorA="#1d58c4"
-            colorB="#9cc3ff"
-            sparkle="#72a6fa"
+            colorA="#0a80fb"
+            colorB="#7fd6fc"
+            sparkle="#29b9fa"
             pointSize={3.6}
             opacity={0.9}
             density={0.7}

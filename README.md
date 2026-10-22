@@ -5,8 +5,9 @@ Partner: [Bravas — The Mitti Experts](https://bravastech.com/).
 
 Next.js 16 (App Router, Cache Components) · Tailwind CSS v4 · Motion · Lenis · three.js / R3F.
 Layout and motion language modelled on zig.ai (see `references/zig-ai-teardown.md`) — the original
-Blugig build's design, recoloured to the Avantra logo: light brand blue `sky-*` (the old yellow's role),
-logo blue `#003FA9` for actions, wordmark slate `#2C3A52`. Open items: `TODO.md`.
+Blugig build's design, recoloured to the Avantra logo: the logo "a" blue `#0A80FB` (`blue-500`; buttons use
+`blue-600 #006DE0`), its cyan end as the light brand surface (`sky-*`, the old yellow's role) and the
+wordmark navy `#041C42`. Open items: `TODO.md`.
 
 ## Run
 
@@ -26,8 +27,8 @@ submissions are logged to the server console.
 
 ## Where things live
 - **Copy** — `content/*.ts`: `site`, `navigation`, `home`, `solutions`, `services`, `howWeWork`, `about`, `industries`, `testimonials`
-- **Logo** — `public/brand/` (`avantra-logo.png` for light backgrounds, `avantra-logo-white.png` for dark, `avantra-mark.svg`); rendered by `components/layout/Logo.tsx`. Favicon: `app/icon.svg` + `app/apple-icon.png`
-- **Brand tokens** — `app/globals.css` (`@theme`): `sky-*` (500 = brand surface, ink text on it), `blue-*` (600 = logo blue), `navy`, `slate`, `canvas`
+- **Logo** — `public/brand/`: lockups with tagline (`avantra-logo.png` light, `-white` dark, `-mono` one-colour navy for cyan surfaces), the same three as `avantra-wordmark*.png` without the tagline (navbar/menus), and `avantra-mark.png` (gradient "a"); rendered by `components/layout/Logo.tsx`. Favicon: `app/icon.png` + `app/apple-icon.png`
+- **Brand tokens** — `app/globals.css` (`@theme`): `sky-*` (500 = brand surface, ink text on it), `blue-*` (500 = logo blue, 600 = buttons), `navy`/`slate` (wordmark navy), `canvas`
 - **Icons** — content refers to icons by name; `components/icons/DrawIcon.tsx` draws them (geometry in `iconData.ts`, from lucide)
 - **Home sections** — `components/sections/home/*` in zig's order (several take props and are reused: `Gap`, `Expertise`, `Approach`)
 - **Page template blocks** — `components/sections/service/*` (`ServiceHero`, `Capabilities`, `Delivery`, `Tools`, `Related`, `CtaBand`, `NextService`) used by Solutions, Services and How we work
@@ -40,4 +41,4 @@ submissions are logged to the server console.
 Reduced motion is respected everywhere: `<MotionConfig reducedMotion="user">`, Lenis off, the pinned
 approach section falls back to a static timeline, hero loops render their final state, CSS animations
 shorten. Pinned scroll sections only run at ≥1024px wide and ≥640px tall. Elements with `data-bg-zone="sky" | "ink"`
-recolour the page (the ink zone also swaps the nav logo to its white version) while they cross the viewport centre.
+recolour the page while they cross the viewport centre; the nav logo follows (white on ink, one-colour navy on sky).
