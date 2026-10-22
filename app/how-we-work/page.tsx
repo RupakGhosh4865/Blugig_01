@@ -1,12 +1,14 @@
+import { Landmark } from "lucide-react";
 import type { Metadata } from "next";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
+import { CardRow } from "@/components/sections/CardRow";
 import { Approach } from "@/components/sections/home/Approach";
 import { Gap } from "@/components/sections/home/Gap";
 import { Capabilities } from "@/components/sections/service/Capabilities";
 import { CtaBand } from "@/components/sections/service/CtaBand";
 import { NextService } from "@/components/sections/service/NextService";
 import { ServiceHero } from "@/components/sections/service/ServiceHero";
-import { howCta, howHero, ownership, phases, readiness } from "@/content/howWeWork";
+import { governance, howCta, howHero, ownership, phases, readiness } from "@/content/howWeWork";
 
 export const metadata: Metadata = {
   title: "How we work",
@@ -46,9 +48,19 @@ export default function HowWeWorkPage() {
         id="readiness"
         chip={readiness.chip}
         lead={readiness.title}
-        sub={readiness.sub}
+        sub={readiness.pilotTiming ? `${readiness.sub} Typical pilot: ${readiness.pilotTiming}.` : readiness.sub}
         items={readiness.items}
         feature={false}
+      />
+      <CardRow
+        id="governance"
+        chip={governance.chip}
+        icon={Landmark}
+        lead={governance.lead}
+        accent={governance.accent}
+        sub={governance.sub}
+        items={governance.items}
+        surface="white"
       />
       <CtaBand title={howCta.title} sub={howCta.sub} label={howCta.label} href={howCta.href} />
       <NextService

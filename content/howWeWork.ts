@@ -57,10 +57,24 @@ export const readiness = {
   chip: "Readiness",
   title: "Designed around your readiness.",
   sub: "Timing depends on scope, team availability, and rollout requirements.",
+  /** Typical pilot length, appended to `sub` (shown only when set). */
+  pilotTiming: "3–4 weeks" as string,
   items: [
     { title: "Agreed milestones", body: "We set clear milestones based on your scope and priorities." },
     { title: "Regular check-ins", body: "We stay aligned through structured check-ins with your team." },
     { title: "Practical handover", body: "We make sure your team is confident to run and build on the solution." },
+  ],
+};
+
+export const governance = {
+  chip: "Governance",
+  lead: "Clear governance",
+  accent: "from day one.",
+  sub: "Every engagement runs on a simple structure, so decisions are quick and nothing goes quiet.",
+  items: [
+    { title: "Named delivery lead", body: "One accountable Avantra lead who owns the plan, the team and the outcomes." },
+    { title: "Steering cadence", body: "Regular check-ins with your project owner, and a steering review at every phase gate." },
+    { title: "Risk escalation", body: "Risks and blockers are logged, owned and raised early — with a clear path to decision-makers." },
   ],
 };
 

@@ -6,12 +6,14 @@ export type Solution = {
   title: string;
   body: string;
   icon: IconName;
+  /** The Workato use case: menus show the Integrations entry in its place. */
+  integration?: true;
 };
 
 export const solutionsHero = {
   eyebrow: "Solutions with Mitti",
-  titleLead: "Better ways to manage",
-  titleAccent: "everyday operations.",
+  titleLead: "Solve the operational problems",
+  titleAccent: "that cost you most.",
   sub: "Practical Mitti solutions for inspections, follow-up, and visibility across your sites.",
   primary: { label: "Find your starting point", href: "#use-cases" },
   secondary: { label: "Talk to our team", href: "/contact" },
@@ -59,6 +61,13 @@ export const solutions: Solution[] = [
     title: "Operational visibility",
     body: "Review activity and trends across your operations.",
     icon: "chart",
+  },
+  {
+    slug: "connected-workflows",
+    title: "Connected workflows (Workato)",
+    body: "Sync inspections, issues and actions with your ERP, HR and ticketing tools — no re-keying.",
+    icon: "refresh",
+    integration: true,
   },
 ];
 

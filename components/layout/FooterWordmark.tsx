@@ -5,12 +5,14 @@ import { useId, useRef } from "react";
 
 /**
  * Giant outlined "AVANTRA" (BUILD_SPEC §7.2). The outline fills left → right,
- * scroll-linked (0 → 1) as the wordmark travels through the viewport.
+ * scroll-linked (0 → 1) as the wordmark travels through the viewport. The word
+ * is defined once and drawn twice via <use>, so the page text holds it once.
  */
 export function FooterWordmark() {
   const ref = useRef<HTMLDivElement>(null);
   const clipId = useId();
   const gradId = useId();
+  const textId = useId();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
@@ -25,36 +27,22 @@ export function FooterWordmark() {
             <stop offset="0%" stopColor="#0b1a36" />
             <stop offset="100%" stopColor="#0a80fb" />
           </linearGradient>
+          <text
+            id={textId}
+            x="500"
+            y="160"
+            textAnchor="middle"
+            textLength="980"
+            lengthAdjust="spacingAndGlyphs"
+            className="font-sans"
+            fontSize="200"
+            fontWeight="700"
+          >
+            AVANTRA
+          </text>
         </defs>
-        <text
-          x="500"
-          y="160"
-          textAnchor="middle"
-          textLength="980"
-          lengthAdjust="spacingAndGlyphs"
-          className="font-sans"
-          fontSize="200"
-          fontWeight="700"
-          fill="none"
-          stroke="rgba(11,26,54,0.35)"
-          strokeWidth="1.5"
-        >
-          AVANTRA
-        </text>
-        <text
-          x="500"
-          y="160"
-          textAnchor="middle"
-          textLength="980"
-          lengthAdjust="spacingAndGlyphs"
-          className="font-sans"
-          fontSize="200"
-          fontWeight="700"
-          fill={`url(#${gradId})`}
-          clipPath={`url(#${clipId})`}
-        >
-          AVANTRA
-        </text>
+        <use href={`#${textId}`} fill="none" stroke="rgba(11,26,54,0.35)" strokeWidth="1.5" />
+        <use href={`#${textId}`} fill={`url(#${gradId})`} clipPath={`url(#${clipId})`} />
       </svg>
     </div>
   );

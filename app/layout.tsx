@@ -1,5 +1,3 @@
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Archivo, Azeret_Mono } from "next/font/google";
 import { BackToTop } from "@/components/layout/BackToTop";
@@ -68,8 +66,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Providers>
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd()} />
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

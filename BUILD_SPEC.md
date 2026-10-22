@@ -43,8 +43,8 @@
 | Forms | `react-hook-form` + `zod` + Server Action |
 | Email / leads | Server Action → `CONTACT_WEBHOOK_URL` (n8n/Zapier/Make) and/or Resend (`RESEND_API_KEY`) — both optional via env |
 | Icons | `lucide-react` for UI; custom animated SVG line icons for the 6 services |
-| Analytics | `@vercel/analytics` + `@vercel/speed-insights` |
-| Hosting | Vercel |
+| Analytics | None for now (Vercel Analytics removed with the move to Railway) |
+| Hosting | Railway (Node server via `next start`, `railway.json`) |
 
 Component sources allowed: 21st.dev (via Magic MCP or pasted), shadcn/ui, Aceternity UI, Magic UI, React Bits, Motion Primitives — **always re-themed to our tokens** and converted to `motion/react`.
 
@@ -416,7 +416,7 @@ Work strictly phase by phase. At the start of each phase: list files to create/c
 | 6 | About, Contact (+ Server Action), legal, 404 | Form submits end-to-end to webhook (or logs in dev) |
 | 7 | SEO: metadata, OG images, JSON-LD, sitemap, robots | Valid structured data, every page has unique title/description |
 | 8 | Polish & QA: motion audit, responsive, a11y, performance | Targets in §14 met |
-| 9 | Deploy to Vercel, env vars, domain | Live URL passes §14 on production |
+| 9 | Deploy to Railway, env vars, domain | Live URL passes §14 on production |
 
 ## 14. Performance, accessibility, SEO requirements
 

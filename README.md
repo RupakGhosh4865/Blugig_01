@@ -21,6 +21,19 @@ npm run build && npm run start
 Copy `.env.example` → `.env.local` to wire the contact form (webhook and/or Resend). Without it,
 submissions are logged to the server console.
 
+## Deploy (Railway)
+
+Runs as a plain Node server (`next build` → `next start`), configured in `railway.json`; Node 24 is
+pinned in `package.json` → `engines`.
+
+1. Railway → **New Project → Deploy from GitHub repo** → pick this repository (each push to `main` redeploys).
+2. **Settings → Networking → Generate Domain** (or add your custom domain).
+3. **Variables** — copy the keys from `.env.example`. Set `NEXT_PUBLIC_SITE_URL` to the final domain
+   (e.g. `https://avantra.example`); `NEXT_PUBLIC_*` values are baked in at build time, so redeploy after changing them.
+
+`next start` listens on Railway's `PORT` automatically. The contact form's rate limit is in-memory, which suits a
+single replica.
+
 ## Pages
 `/` · `/solutions` · `/services` · `/how-we-work` · `/about` · `/contact` · `/privacy` · `/terms`
 (old `/services/:slug` URLs redirect to `/services` — `next.config.ts`).

@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 
 const tones = ["bg-blue-600 text-white", "bg-white", "bg-white", "bg-sky-500 text-ink", "bg-white", "bg-navy text-white"];
 
-type Item = { title: string; body: string; href?: string; anchor?: string };
+/** `span` widens a card to two columns on large screens (to fill a short last row). */
+type Item = { title: string; body: string; href?: string; anchor?: string; span?: boolean };
 
 /**
  * Capabilities bento — zig built-card styling. With `feature` (default) the
@@ -72,7 +73,7 @@ export function Capabilities({
               </article>
             );
             return (
-              <div key={c.title} id={c.anchor} className={cn("scroll-mt-24", wide && "md:col-span-2")}>
+              <div key={c.title} id={c.anchor} className={cn("scroll-mt-24", wide && "md:col-span-2", c.span && "lg:col-span-2")}>
                 <CardZoom className="h-full">
                   {c.href ? (
                     <Link href={c.href} className="group block h-full">

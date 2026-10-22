@@ -6,29 +6,42 @@ export const site = {
   tagline: "Mitti Implementation Partner",
   /** Brand line from the logo lockup. */
   slogan: "Smarter operations. Safer teams.",
-  /** Explicit domain → Vercel production URL (system env) → local dev. */
+  /** Explicit domain → Railway public domain (provided at build and run time) → local dev. */
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : "http://localhost:3000"),
+    (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : "http://localhost:3000"),
   description:
     "Avantra Technologies is a Mitti implementation partner. We help operations teams plan, configure and roll out Mitti by SafetyCulture — from setup to site-wide adoption.",
-  /** [TODO] owner to supply — each is rendered only when set. */
-  email: "" as string,
-  phone: "" as string,
-  address: "" as string,
+  /** Each contact value is rendered only when set (footer, contact page, JSON-LD). */
+  email: "info@sspmconsultants.com" as string,
+  phone: "+91 6309789829" as string,
+  address: "Bangalore, Karnataka, India" as string,
   replyTime: "1 business day",
   social: {
-    linkedin: "" as string,
+    linkedin: "https://www.linkedin.com/company/sspmconsultants" as string,
   },
   /** Partner programme shown as a badge (footer + About). */
   partner: {
     name: "Workato Automation League — Silver Partner",
     short: "Workato Silver Partner",
   },
+  /** Text credentials shown as badges (hero, footer, About). */
+  credentials: [
+    { kind: "mitti", name: "Mitti", line: "Certified Expert" },
+    { kind: "workato", name: "Workato", line: "Silver Partner" },
+  ],
   /** Parent company and the footer legal line (verbatim from the owner). */
   parentCompany: "SSPM IT SOLUTIONS PRIVATE LIMITED",
   copyright: "© 2026 Avantra Technologies. An SSPM IT SOLUTIONS PRIVATE LIMITED COMPANY. All rights reserved.",
   calendlyUrl: process.env.NEXT_PUBLIC_CALENDLY_URL ?? "",
 } as const;
+
+/** Contact lines that are set, with their link (footer + contact page). */
+export function contactDetails() {
+  const lines = [
+    { kind: "email", value: site.email, href: `mailto:${site.email}` },
+    { kind: "phone", value: site.phone, href: `tel:${site.phone.replace(/[^+\d]/g, "")}` },
+    { kind: "address", value: site.address, href: undefined },
+  ] as const;
+  return lines.filter((l) => l.value);
+}

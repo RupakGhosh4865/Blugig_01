@@ -7,7 +7,7 @@ import { Accordion, Dialog, VisuallyHidden } from "radix-ui";
 import { useState } from "react";
 import { Logo } from "@/components/layout/Logo";
 import { ButtonLink } from "@/components/ui/Button";
-import { mainNav, primaryCta } from "@/content/navigation";
+import { integrationsMenu, mainNav, primaryCta } from "@/content/navigation";
 import { services } from "@/content/services";
 import { site } from "@/content/site";
 import { solutions } from "@/content/solutions";
@@ -21,7 +21,8 @@ const item = {
 /**
  * Full-screen overlay (BUILD_SPEC §7.1): blurred background, links stagger in
  * (0.05s), services as an accordion, CTA pinned to the bottom. Radix Dialog
- * provides the focus trap, Esc to close and body scroll lock.
+ * provides the focus trap, Esc to close and body scroll lock. Group labels
+ * link to their page; the +/− button beside them expands the group.
  */
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -32,7 +33,12 @@ export function MobileMenu() {
       value: "solutions",
       label: "Solutions",
       all: { label: "All solutions", href: "/solutions" },
-      links: solutions.map((s, i) => ({ href: `/solutions#${s.slug}`, number: String(i + 1).padStart(2, "0"), label: s.title })),
+      links: [
+        ...solutions
+          .filter((s) => !s.integration)
+          .map((s, i) => ({ href: `/solutions#${s.slug}`, number: String(i + 1).padStart(2, "0"), label: s.title })),
+        { href: integrationsMenu.href, number: "→", label: integrationsMenu.title },
+      ],
     },
     {
       value: "services",
@@ -86,9 +92,11 @@ export function MobileMenu() {
               {groups.map((g) => (
                 <motion.div key={g.value} variants={item}>
                   <Accordion.Item value={g.value} className="border-b border-gray-200">
-                    <Accordion.Header>
-                      <Accordion.Trigger className="group flex w-full items-center justify-between py-5 title-m">
+                    <Accordion.Header className="flex items-center justify-between">
+                      <Link href={g.all.href} onClick={close} className="flex-1 py-5 title-m">
                         {g.label}
+                      </Link>
+                      <Accordion.Trigger className="group -mr-2 flex size-11 items-center justify-center" aria-label={`Show ${g.label} links`}>
                         <span aria-hidden className="relative size-5">
                           <span className="absolute top-1/2 left-0 h-px w-5 bg-current" />
                           <span className="absolute top-0 left-1/2 h-5 w-px bg-current transition-transform duration-300 group-data-[state=open]:scale-y-0" />
@@ -125,12 +133,9 @@ export function MobileMenu() {
             ))}
           </motion.nav>
 
-          <div className="sticky bottom-0 mt-8 flex flex-col gap-3 bg-transparent pt-4">
+          <div className="sticky bottom-0 mt-8 flex flex-col gap-3 bg-[linear-gradient(0deg,var(--color-canvas)_70%,transparent)] pt-8">
             <ButtonLink href={primaryCta.href} onClick={close} className="w-full">
               {primaryCta.label}
-            </ButtonLink>
-            <ButtonLink href="/services" onClick={close} variant="outline" className="w-full">
-              Explore services
             </ButtonLink>
           </div>
         </Dialog.Content>

@@ -1,7 +1,8 @@
-import { Lightbulb } from "lucide-react";
+import { Handshake, Lightbulb, Workflow } from "lucide-react";
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { SplitWords } from "@/components/motion/SplitWords";
+import { CardRow } from "@/components/sections/CardRow";
 import { HeroRays } from "@/components/sections/home/HeroArt";
 import { Expertise } from "@/components/sections/home/Expertise";
 import { CtaBand } from "@/components/sections/service/CtaBand";
@@ -11,13 +12,21 @@ import { Related } from "@/components/sections/service/Related";
 import { ButtonLink } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { phases } from "@/content/howWeWork";
-import { services, servicesCta, servicesHero, servicesIntro, supportOptions } from "@/content/services";
+import {
+  engagementModels,
+  integrationService,
+  services,
+  servicesCta,
+  servicesHero,
+  servicesIntro,
+  supportOptions,
+} from "@/content/services";
 import { breadcrumbJsonLd, JsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Mitti implementation services — discovery and planning, platform configuration, inspections and workflows, reporting setup, training and launch, and ongoing optimization.",
+    "Mitti implementation services — discovery and planning, platform configuration, inspections and workflows, reporting setup, training and launch, ongoing optimization, and Workato integration and automation.",
   alternates: { canonical: "/services" },
 };
 
@@ -66,6 +75,25 @@ export default function ServicesPage() {
           bullets: s.deliverables,
           illustration: s.illustration,
         }))}
+      />
+      <CardRow
+        id={integrationService.id}
+        chip={integrationService.chip}
+        icon={Workflow}
+        lead={integrationService.lead}
+        sub={integrationService.sub}
+        cta={integrationService.cta}
+        items={integrationService.steps}
+      />
+      <CardRow
+        id={engagementModels.id}
+        chip={engagementModels.chip}
+        icon={Handshake}
+        lead={engagementModels.lead}
+        accent={engagementModels.accent}
+        sub={engagementModels.sub}
+        items={engagementModels.items}
+        surface="white"
       />
       <Delivery
         steps={phases.steps.map(({ title, body }) => ({ title, body }))}
