@@ -264,7 +264,7 @@ function Scene({ variant, reduce, stage }: { variant: Variant; reduce: boolean; 
               density={0.32}
               pointSize={1.8}
               cameraZ={3.15}
-              interactive={false}
+              mouseStrength={1.6}
               className="absolute inset-[5%]"
             />
           </div>

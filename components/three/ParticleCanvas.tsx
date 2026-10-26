@@ -19,6 +19,7 @@ export type ParticleCanvasProps = {
   count: number;
   dpr: [number, number];
   interactive: boolean;
+  mouseStrength: number;
   active: boolean;
   pointSize: number;
   opacity: number;
@@ -64,6 +65,7 @@ function Particles({
   blending,
   count,
   interactive,
+  mouseStrength,
   pointSize,
   opacity,
   spin,
@@ -106,7 +108,7 @@ function Particles({
       uPointSize: { value: pointSize },
       uPixelRatio: { value: 1 },
       uMouse: { value: new THREE.Vector2(10, 10) },
-      uMouseStrength: { value: interactive ? 1 : 0 },
+      uMouseStrength: { value: interactive ? mouseStrength : 0 },
       uColorA: { value: hexToVec3(colorA) },
       uColorB: { value: hexToVec3(colorB) },
       uSparkle: { value: hexToVec3(sparkle) },
@@ -126,8 +128,8 @@ function Particles({
     m.uniforms.uSparkle.value = hexToVec3(sparkle);
     m.uniforms.uOpacity.value = opacity;
     m.uniforms.uPointSize.value = pointSize;
-    m.uniforms.uMouseStrength.value = interactive ? 1 : 0;
-  }, [colorA, colorB, sparkle, opacity, pointSize, interactive]);
+    m.uniforms.uMouseStrength.value = interactive ? mouseStrength : 0;
+  }, [colorA, colorB, sparkle, opacity, pointSize, interactive, mouseStrength]);
 
   // setShape(next): snapshot current positions into aFrom, write the target into aTo,
   // animate uProgress 0 → 1 (1.2s easeInOut) while uNoise bumps and settles, and the
