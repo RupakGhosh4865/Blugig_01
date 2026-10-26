@@ -33,18 +33,18 @@ export function MobileMenu() {
       value: "solutions",
       label: "Solutions",
       all: { label: "All solutions", href: "/solutions" },
-      links: [
-        ...solutions
-          .filter((s) => !s.integration)
-          .map((s, i) => ({ href: `/solutions#${s.slug}`, number: String(i + 1).padStart(2, "0"), label: s.title })),
-        { href: integrationsMenu.href, number: "→", label: integrationsMenu.title },
-      ],
+      links: solutions
+        .filter((s) => !s.integration)
+        .map((s, i) => ({ href: `/solutions#${s.slug}`, number: String(i + 1).padStart(2, "0"), label: s.title })),
     },
     {
       value: "services",
       label: "Services",
       all: { label: "All services", href: "/services" },
-      links: services.map((s) => ({ href: `/services#${s.slug}`, number: s.number, label: s.title })),
+      links: [
+        ...services.map((s) => ({ href: `/services#${s.slug}`, number: s.number, label: s.title })),
+        { href: integrationsMenu.href, number: "→", label: integrationsMenu.title },
+      ],
     },
   ];
 

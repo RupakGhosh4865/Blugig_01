@@ -1,4 +1,4 @@
-import { ArrowUpRight, Award, Compass, Handshake, ShieldCheck, Users } from "lucide-react";
+import { ArrowUpRight, Award, Compass, Handshake, Users } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,10 +12,10 @@ import { HeroRays } from "@/components/sections/home/HeroArt";
 import { CtaBand } from "@/components/sections/service/CtaBand";
 import { ParticleField } from "@/components/three/ParticleField";
 import { Chip } from "@/components/ui/Chip";
-import { CredentialPills } from "@/components/ui/CredentialPills";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { aboutCta, aboutHero, focus, partnerBand, story, values } from "@/content/about";
 import { site } from "@/content/site";
+import mittiLogo from "@/public/brand/mitti-logo.png";
 import partnerBadge from "@/public/brand/workato-silver-partner.png";
 import { breadcrumbJsonLd, JsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -33,11 +33,6 @@ const valueTones = ["bg-white", "bg-sky-500 text-ink", "bg-blue-600 text-white",
 
 export default function AboutPage() {
   const leadCount = aboutHero.titleLead.split(/\s+/).length;
-  const facts = [
-    { label: "Founded", value: aboutHero.founded },
-    { label: "Location", value: site.address },
-    { label: "Legal entity", value: site.parentCompany },
-  ].filter((f) => f.value);
   return (
     <>
       <section className="relative isolate overflow-hidden">
@@ -53,17 +48,6 @@ export default function AboutPage() {
           <p className="enter-fade text-l max-w-[36rem]" style={d(0.5)}>
             {aboutHero.sub}
           </p>
-          <dl className="enter-fade flex flex-wrap gap-x-8 gap-y-2 text-base" style={d(0.6)}>
-            {facts.map((f) => (
-              <div key={f.label} className="flex gap-2">
-                <dt className="font-medium text-ink">{f.label}:</dt>
-                <dd className="text-gray-600">{f.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <div className="enter-fade" style={d(0.7)}>
-            <CredentialPills />
-          </div>
         </div>
       </section>
 
@@ -141,9 +125,7 @@ export default function AboutPage() {
             </p>
             <ul className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
               <li className="flex items-center gap-4">
-                <span className="flex size-16 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                  <ShieldCheck aria-hidden className="size-8" strokeWidth={1.5} />
-                </span>
+                <Image src={mittiLogo} alt="" width={120} height={46} className="h-auto w-30" />
                 <p className="text-m text-gray-600">
                   <span className="block font-medium text-ink">Mitti Certified Expert</span>
                   Implementation partner for Mitti

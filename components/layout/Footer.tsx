@@ -5,7 +5,6 @@ import { LinkedInIcon } from "@/components/icons/Brand";
 import { FooterWordmark } from "@/components/layout/FooterWordmark";
 import { Logo } from "@/components/layout/Logo";
 import { ButtonLink } from "@/components/ui/Button";
-import { CredentialPills } from "@/components/ui/CredentialPills";
 import { footerNav, primaryCta } from "@/content/navigation";
 import { services } from "@/content/services";
 import { contactDetails, site } from "@/content/site";
@@ -88,7 +87,6 @@ export function Footer() {
               <LinkedInIcon className="size-5" />
             </a>
           ) : null}
-          <CredentialPills pillClassName="bg-white/85" />
         </div>
 
         <FooterCol title="Solutions">

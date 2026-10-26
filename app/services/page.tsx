@@ -1,6 +1,7 @@
-import { Handshake, Lightbulb, Workflow } from "lucide-react";
+import { Handshake, Lightbulb } from "lucide-react";
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
+import { IntegrateIcon } from "@/components/icons/IntegrateIcon";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { CardRow } from "@/components/sections/CardRow";
 import { HeroRays } from "@/components/sections/home/HeroArt";
@@ -79,7 +80,7 @@ export default function ServicesPage() {
       <CardRow
         id={integrationService.id}
         chip={integrationService.chip}
-        icon={Workflow}
+        icon={IntegrateIcon}
         lead={integrationService.lead}
         sub={integrationService.sub}
         cta={integrationService.cta}

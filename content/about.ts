@@ -3,8 +3,6 @@ import type { IconName } from "@/components/icons/DrawIcon";
 /** About page copy. */
 export const aboutHero = {
   chip: "About Avantra",
-  /** Shown with location and legal entity (those come from `site`). */
-  founded: "2026" as string,
   titleLead: "Technology works best",
   titleAccent: "when people can use it well.",
   sub: "We help organizations put Mitti into practice—with thoughtful implementation, practical training, and ongoing improvement.",

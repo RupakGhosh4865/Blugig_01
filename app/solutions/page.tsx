@@ -29,7 +29,7 @@ export default function SolutionsPage() {
         summary={solutionsHero.sub}
         primary={solutionsHero.primary}
         secondary={solutionsHero.secondary}
-        shape="shield"
+        shape="mitti"
       />
       <Capabilities
         id="use-cases"
@@ -65,7 +65,7 @@ export default function SolutionsPage() {
         eyebrow="Services"
         title="Services"
         line="Expert support. Every step of your Mitti journey."
-        shape="shield"
+        shape="mitti"
         nextShape="grid"
       />
     </>

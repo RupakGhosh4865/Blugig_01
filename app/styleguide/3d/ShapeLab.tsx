@@ -5,7 +5,7 @@ import { ParticleField } from "@/components/three/ParticleField";
 import type { ShapeName } from "@/lib/three/shapes";
 import { cn } from "@/lib/utils";
 
-const shapes: ShapeName[] = ["globe", "grid", "shield", "bars", "stream", "migrate", "wave", "scatter"];
+const shapes: ShapeName[] = ["globe", "grid", "shield", "mitti", "bars", "stream", "migrate", "wave", "scatter"];
 
 /** Morph one field through every shape to verify the engine (BUILD_SPEC phase 3). */
 export function ShapeLab() {

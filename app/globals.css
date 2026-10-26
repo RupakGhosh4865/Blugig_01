@@ -323,6 +323,78 @@ body {
   animation: fade-up 0.5s var(--ease-out-expo) both;
 }
 
+/*
+ * Home hero headline (SplitChars): the stages swap letter by letter in a
+ * left-to-right wave. The outgoing line dissolves (blur, fade, drift away)
+ * while the incoming one pulls into focus just behind it. [data-swap] on each
+ * stage's copy: in | out | idle (never shown yet, so no exit plays on load).
+ * --dir is 1 scrolling forward and -1 back; --lag gives the outgoing wave a
+ * head start.
+ */
+@keyframes char-in {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translate3d(calc(var(--dir, 1) * 0.42em), 0, 0) scale(1.08);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+@keyframes char-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+  /* Fade early so each old letter has cleared before its replacement focuses in. */
+  55% {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translate3d(calc(var(--dir, 1) * -0.3em), 0, 0) scale(0.94);
+  }
+}
+.split-char {
+  display: inline-block;
+  /* Room for glyph overhang, so a per-letter gradient never clips. */
+  padding: 0.14em 0.08em;
+  margin: -0.14em -0.08em;
+}
+.split-char.text-grad {
+  background-size: calc(var(--gn, 1) * 100%) 100%;
+  background-position: calc(var(--g, 0) * 100%) 0;
+}
+[data-swap="in"] .split-char {
+  animation: char-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--lag, 0s) + var(--c, 0) * 15ms);
+}
+[data-swap="out"] .split-char {
+  animation: char-out 0.4s cubic-bezier(0.4, 0, 0.7, 1) both;
+  animation-delay: calc(var(--c, 0) * 10ms);
+}
+[data-swap="idle"] .split-char {
+  opacity: 0;
+}
+/* The rest of the stage's copy blurs out with the letters and back in after them. */
+.hero-swap {
+  transition:
+    opacity 0.7s var(--ease-out-expo),
+    filter 0.7s var(--ease-out-expo);
+  transition-delay: var(--sd, 0s);
+}
+[data-swap="out"] .hero-swap,
+[data-swap="idle"] .hero-swap {
+  opacity: 0;
+  filter: blur(6px);
+  transition-duration: 0.3s;
+  transition-delay: 0s;
+}
+
 /* Accordion height animation (Radix exposes the measured height) */
 @keyframes accordion-down {
   from {
@@ -430,6 +502,13 @@ html.lenis body {
   }
   .split-word > span {
     animation: fade-in 0.2s both;
+  }
+  [data-swap="in"] .split-char {
+    animation: fade-in 0.2s both;
+  }
+  [data-swap="out"] .split-char {
+    animation: none;
+    opacity: 0;
   }
   .marquee-list {
     animation: none !important;

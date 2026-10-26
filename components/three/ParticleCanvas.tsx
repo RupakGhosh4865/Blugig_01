@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { particleFragment, particleVertex } from "@/components/three/shaders";
 import { mulberry32 } from "@/lib/prng";
-import { getShape, type ShapeName } from "@/lib/three/shapes";
+import { getShape, getShapeTint, SHAPE_SWAY, type ShapeName } from "@/lib/three/shapes";
 
 export type ParticleCanvasProps = {
   shape: ShapeName;
@@ -76,6 +76,8 @@ function Particles({
     progress: 1,
     ready: false,
     shape: shape as ShapeName,
+    /** Shape whose tint the aTint attribute currently holds. */
+    tintShape: getShapeTint(shape, count) ? shape : (null as ShapeName | null),
     mouse: new THREE.Vector2(10, 10),
     tilt: new THREE.Vector2(0, 0),
     tiltTarget: new THREE.Vector2(0, 0),
@@ -89,7 +91,8 @@ function Particles({
     const seeds = new Float32Array(count);
     const rand = mulberry32(7);
     for (let i = 0; i < count; i++) seeds[i] = rand();
-    return { position: initial.slice(), from: initial.slice(), to: initial.slice(), seeds };
+    const tint = getShapeTint(shape, count)?.slice() ?? new Float32Array(count).fill(-1);
+    return { position: initial.slice(), from: initial.slice(), to: initial.slice(), seeds, tint };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [count]);
 
@@ -107,6 +110,7 @@ function Particles({
       uColorB: { value: hexToVec3(colorB) },
       uSparkle: { value: hexToVec3(sparkle) },
       uOpacity: { value: opacity },
+      uTint: { value: getShapeTint(shape, count) ? 1 : 0 },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -125,7 +129,8 @@ function Particles({
   }, [colorA, colorB, sparkle, opacity, pointSize, interactive]);
 
   // setShape(next): snapshot current positions into aFrom, write the target into aTo,
-  // animate uProgress 0 → 1 (1.2s easeInOut) while uNoise bumps and settles.
+  // animate uProgress 0 → 1 (1.2s easeInOut) while uNoise bumps and settles, and the
+  // brand tint fades toward the target's (a tinted target loads its tint into aTint first).
   useEffect(() => {
     const g = geo.current;
     const m = mat.current;
@@ -133,6 +138,7 @@ function Particles({
     const s = state.current;
     const fromAttr = g.getAttribute("aFrom") as THREE.BufferAttribute;
     const toAttr = g.getAttribute("aTo") as THREE.BufferAttribute;
+    const tintAttr = g.getAttribute("aTint") as THREE.BufferAttribute;
     const running: { stop: () => void }[] = [];
 
     const morph = (next: ShapeName) => {
@@ -143,6 +149,13 @@ function Particles({
       ta.set(getShape(next, count));
       fromAttr.needsUpdate = true;
       toAttr.needsUpdate = true;
+      const nextTint = getShapeTint(next, count);
+      if (nextTint && s.tintShape !== next) {
+        (tintAttr.array as Float32Array).set(nextTint);
+        tintAttr.needsUpdate = true;
+        s.tintShape = next;
+        m.uniforms.uTint.value = 0;
+      }
       s.progress = 0;
       s.shape = next;
       m.uniforms.uProgress.value = 0;
@@ -168,6 +181,12 @@ function Particles({
           duration: 1.2,
           onUpdate: (v) => {
             m.uniforms.uWave.value = v;
+          },
+        }),
+        animate(m.uniforms.uTint.value as number, nextTint ? 1 : 0, {
+          duration: 1.2,
+          onUpdate: (v) => {
+            m.uniforms.uTint.value = v;
           },
         }),
       );
@@ -220,7 +239,10 @@ function Particles({
       (m.uniforms.uMouse.value as THREE.Vector2).lerp(s.mouse, 0.12);
     }
     if (g) {
-      g.rotation.y += delta * spin;
+      // a brand mark sways (~12s period) so it never turns past side-on and reads mirrored
+      const sway = SHAPE_SWAY[shape];
+      if (sway) g.rotation.y = Math.sin((m ? (m.uniforms.uTime.value as number) : 0) * 0.5) * sway;
+      else g.rotation.y += delta * spin;
       if (interactive) {
         // whole-group parallax ≤ ~6°
         const inside = Math.abs(s.mouse.x) <= 1.5;
@@ -246,6 +268,7 @@ function Particles({
           <bufferAttribute attach="attributes-aFrom" args={[buffers.from, 3]} />
           <bufferAttribute attach="attributes-aTo" args={[buffers.to, 3]} />
           <bufferAttribute attach="attributes-aSeed" args={[buffers.seeds, 1]} />
+          <bufferAttribute attach="attributes-aTint" args={[buffers.tint, 1]} />
         </bufferGeometry>
         <shaderMaterial
           ref={mat}
