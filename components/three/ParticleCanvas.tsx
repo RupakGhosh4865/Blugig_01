@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { particleFragment, particleVertex } from "@/components/three/shaders";
 import { mulberry32 } from "@/lib/prng";
-import { getShape, getShapeTint, SHAPE_SWAY, type ShapeName } from "@/lib/three/shapes";
+import { getShape, getShapeTint, SHAPE_MOTION, type ShapeName } from "@/lib/three/shapes";
 
 export type ParticleCanvasProps = {
   shape: ShapeName;
@@ -70,6 +70,7 @@ function Particles({
   onReady,
 }: ParticleCanvasProps) {
   const group = useRef<THREE.Group>(null);
+  const points = useRef<THREE.Points>(null);
   const geo = useRef<THREE.BufferGeometry>(null);
   const mat = useRef<THREE.ShaderMaterial>(null);
   const state = useRef({
@@ -240,7 +241,7 @@ function Particles({
     }
     if (g) {
       // a brand mark sways (~12s period) so it never turns past side-on and reads mirrored
-      const sway = SHAPE_SWAY[shape];
+      const sway = SHAPE_MOTION[shape]?.sway;
       if (sway) g.rotation.y = Math.sin((m ? (m.uniforms.uTime.value as number) : 0) * 0.5) * sway;
       else g.rotation.y += delta * spin;
       if (interactive) {
@@ -254,6 +255,13 @@ function Particles({
         g.rotation.z = -s.tilt.y * 0.4;
       }
     }
+    const pts = points.current;
+    if (pts) {
+      // a rolling shape (the gear) turns about the view axis while it is the shape on screen, and eases back once it morphs away
+      const roll = SHAPE_MOTION[s.shape]?.roll;
+      const z = pts.rotation.z;
+      pts.rotation.z = roll ? ((z + delta * roll + Math.PI) % (Math.PI * 2)) - Math.PI : z * 0.92;
+    }
     if (!s.ready) {
       s.ready = true;
       requestAnimationFrame(() => onReady());
@@ -262,7 +270,7 @@ function Particles({
 
   return (
     <group ref={group}>
-      <points frustumCulled={false}>
+      <points ref={points} frustumCulled={false}>
         <bufferGeometry ref={geo} key={count}>
           <bufferAttribute attach="attributes-position" args={[buffers.position, 3]} />
           <bufferAttribute attach="attributes-aFrom" args={[buffers.from, 3]} />

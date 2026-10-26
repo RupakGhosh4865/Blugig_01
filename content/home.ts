@@ -152,6 +152,8 @@ export const integrations = {
       { title: "Launch & hand over", body: "Go live with monitoring, runbook and team training." },
     ],
   },
+  /** Integrations page hero: the title and intro above, the assessment button, then this link. */
+  page: { secondary: { label: "See the flows", href: "#flows" } },
   /** The button opens the Calendly link (NEXT_PUBLIC_CALENDLY_URL) when set; `href` is the fallback. */
   cta: {
     text: "Not sure where to start? We'll map your first integrations in one session.",

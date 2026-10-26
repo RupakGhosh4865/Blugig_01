@@ -10,6 +10,9 @@ export type ShapeName =
   | "grid"
   | "shield"
   | "mitti"
+  | "gear"
+  | "orbit"
+  | "hub"
   | "bars"
   | "stream"
   | "migrate"
@@ -18,8 +21,15 @@ export type ShapeName =
   | "cube"
   | "scatter";
 
-/** Brand marks that must read the right way round sway within ±this many radians instead of spinning. */
-export const SHAPE_SWAY: Partial<Record<ShapeName, number>> = { mitti: 0.38 };
+/**
+ * Motion beyond the default slow spin. `sway` (radians): a mark that must read
+ * the right way round sways within ±sway instead of spinning. `roll` (rad/s):
+ * turns about the view axis, like a gear.
+ */
+export const SHAPE_MOTION: Partial<Record<ShapeName, { sway?: number; roll?: number }>> = {
+  mitti: { sway: 0.38 },
+  gear: { sway: 0.42, roll: 0.16 },
+};
 
 const cache = new Map<string, Float32Array>();
 const tints = new Map<string, Float32Array>();
@@ -56,6 +66,12 @@ function build(name: ShapeName, count: number, key: string): Float32Array {
       tints.set(key, tint);
       return normalise(pos);
     }
+    case "gear":
+      return normalise(gear(count));
+    case "orbit":
+      return normalise(orbit(count));
+    case "hub":
+      return normalise(hub(count));
     case "bars":
       return normalise(bars(count));
     case "stream":
@@ -267,6 +283,125 @@ function mitti(count: number) {
     i++;
   }
   return { pos, tint };
+}
+
+/** A ten-tooth gear with a bore and six lightening holes, as a thin solid (Services). */
+function gear(count: number) {
+  const rand = mulberry32(101);
+  const out = new Float32Array(count * 3);
+  const teeth = 10;
+  const [root, tip, bore, depth] = [0.8, 1, 0.3, 0.13];
+  const holes = Array.from({ length: 6 }, (_, k) => [Math.cos((k / 6) * Math.PI * 2) * 0.56, Math.sin((k / 6) * Math.PI * 2) * 0.56]);
+  const holeR = 0.11;
+  /** Outer radius at angle a: trapezoid teeth, a flat tip over ~30% of the pitch with sloped flanks. */
+  const outer = (a: number) => {
+    const p = ((((a / (Math.PI * 2)) * teeth) % 1) + 1) % 1;
+    const f = p < 0.2 ? 0 : p < 0.32 ? (p - 0.2) / 0.12 : p < 0.62 ? 1 : p < 0.74 ? (0.74 - p) / 0.12 : 0;
+    return root + (tip - root) * f;
+  };
+  const holeDist = (x: number, y: number) => Math.min(...holes.map(([hx, hy]) => Math.hypot(x - hx, y - hy)));
+  let i = 0;
+  let guard = 0;
+  while (i < count && guard++ < count * 40) {
+    const x = rand() * 2 - 1;
+    const y = rand() * 2 - 1;
+    const r = Math.hypot(x, y);
+    const R = outer(Math.atan2(y, x));
+    const hd = holeDist(x, y);
+    if (r > R || r < bore || hd < holeR) continue;
+    // Faces carry the interior; points near any edge fill the thickness so the rim reads in profile.
+    const edge = R - r < 0.04 || r - bore < 0.04 || hd < holeR + 0.03;
+    const j = i * 3;
+    out[j] = x;
+    out[j + 1] = y;
+    out[j + 2] = edge ? (rand() * 2 - 1) * depth : (rand() < 0.5 ? -depth : depth) + (rand() - 0.5) * 0.02;
+    i++;
+  }
+  return out;
+}
+
+/** Point in a ball of radius r around c, packed towards the surface so it reads as a sphere. */
+function ballPoint(rand: () => number, c: readonly number[], r: number) {
+  const u = rand() * 2 - 1;
+  const th = rand() * Math.PI * 2;
+  const s = Math.sqrt(1 - u * u);
+  const k = r * Math.pow(rand(), 0.25);
+  return [c[0] + k * s * Math.cos(th), c[1] + k * u, c[2] + k * s * Math.sin(th)];
+}
+
+/** A core with three tilted orbits and two bodies riding each: people around the technology (About). */
+function orbit(count: number) {
+  const rand = mulberry32(111);
+  const out = new Float32Array(count * 3);
+  const R = 0.95;
+  const tilt = (22 * Math.PI) / 180; // lift off the horizontal: each ring reads as a thin ellipse, atom-style
+  /** Point on ring k (rotated 0°/60°/120° about the view axis) at angle t, plus a thin tube offset. */
+  const ring = (k: number, t: number, tube: number) => {
+    const phi = (k * Math.PI) / 3;
+    const x = R * Math.cos(t);
+    const y = -R * Math.sin(t) * Math.sin(tilt);
+    const z = R * Math.sin(t) * Math.cos(tilt);
+    return [
+      x * Math.cos(phi) - y * Math.sin(phi) + (rand() - 0.5) * tube,
+      x * Math.sin(phi) + y * Math.cos(phi) + (rand() - 0.5) * tube,
+      z + (rand() - 0.5) * tube,
+    ];
+  };
+  const nCore = Math.floor(count * 0.3);
+  const nBodies = Math.floor(count * 0.12);
+  for (let i = 0; i < count; i++) {
+    let p: number[];
+    if (i < nCore) p = ballPoint(rand, [0, 0, 0], 0.3);
+    else if (i < nCore + nBodies) {
+      const b = i % 6;
+      const k = b % 3;
+      const t = (b < 3 ? 0.6 : 3.9) + k * 0.7;
+      p = ballPoint(rand, ring(k, t, 0), 0.075);
+    } else p = ring(i % 3, rand() * Math.PI * 2, 0.03);
+    out.set(p, i * 3);
+  }
+  return out;
+}
+
+/** A central hub linked to six systems, with a loop joining neighbours: the integration network (Integrations). */
+function hub(count: number) {
+  const rand = mulberry32(121);
+  const out = new Float32Array(count * 3);
+  const nodes = [
+    [0.92, 0.18, 0.1],
+    [0.3, 0.75, 0.45],
+    [-0.55, 0.55, -0.5],
+    [-0.9, -0.15, 0.2],
+    [-0.2, -0.8, -0.4],
+    [0.55, -0.6, -0.45],
+  ].map((n) => {
+    const l = Math.hypot(n[0], n[1], n[2]);
+    return n.map((v) => (v / l) * 0.92);
+  });
+  const [coreR, nodeR] = [0.26, 0.09];
+  /** Point on the segment a → b, jittered into a thin tube. */
+  const link = (a: number[], b: number[]) => {
+    const t = rand();
+    return a.map((v, d) => v + (b[d] - v) * t + (rand() - 0.5) * 0.028);
+  };
+  const nCore = Math.floor(count * 0.22);
+  const nNodes = Math.floor(count * 0.21);
+  const nSpokes = Math.floor(count * 0.36);
+  for (let i = 0; i < count; i++) {
+    let p: number[];
+    if (i < nCore) p = ballPoint(rand, [0, 0, 0], coreR);
+    else if (i < nCore + nNodes) p = ballPoint(rand, nodes[i % 6], nodeR);
+    else if (i < nCore + nNodes + nSpokes) {
+      const n = nodes[i % 6];
+      const l = Math.hypot(n[0], n[1], n[2]);
+      p = link(
+        n.map((v) => (v / l) * coreR),
+        n.map((v) => (v / l) * (l - nodeR)),
+      );
+    } else p = link(nodes[i % 6], nodes[(i + 1) % 6]);
+    out.set(p, i * 3);
+  }
+  return out;
 }
 
 /** Columns of rising height on a base plane (Power BI). */

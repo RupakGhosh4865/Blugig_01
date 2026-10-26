@@ -8,8 +8,9 @@ import { CardZoom } from "@/components/motion/CardZoom";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollWords } from "@/components/motion/ScrollWords";
 import { SplitWords } from "@/components/motion/SplitWords";
-import { HeroRays } from "@/components/sections/home/HeroArt";
+import { HeroMotion } from "@/components/sections/home/HeroMotion";
 import { CtaBand } from "@/components/sections/service/CtaBand";
+import { HeroBackdrop, HeroParticles } from "@/components/sections/service/ServiceHero";
 import { ParticleField } from "@/components/three/ParticleField";
 import { Chip } from "@/components/ui/Chip";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -35,21 +36,25 @@ export default function AboutPage() {
   const leadCount = aboutHero.titleLead.split(/\s+/).length;
   return (
     <>
-      <section className="relative isolate overflow-hidden">
-        <HeroRays className="pointer-events-none absolute inset-0 -z-10 h-full w-full" />
-        <div className="shell flex min-h-[40rem] flex-col justify-center gap-6 pt-32 pb-16">
-          <Chip icon={Compass} className="enter-fade">
-            {aboutHero.chip}
-          </Chip>
-          <h1 className="title-xl max-w-[56rem]">
-            <SplitWords text={aboutHero.titleLead} />{" "}
-            <SplitWords text={aboutHero.titleAccent} offset={leadCount} wordClassName="text-grad" />
-          </h1>
-          <p className="enter-fade text-l max-w-[36rem]" style={d(0.5)}>
-            {aboutHero.sub}
-          </p>
-        </div>
-      </section>
+      <HeroMotion
+        gridClassName="pt-28 pb-16 lg:min-h-[50rem] lg:pt-24 lg:pb-10"
+        background={<HeroBackdrop />}
+        copy={
+          <div className="flex max-w-[46.5rem] flex-col gap-6">
+            <Chip icon={Compass} className="enter-fade">
+              {aboutHero.chip}
+            </Chip>
+            <h1 className="title-xl">
+              <SplitWords text={aboutHero.titleLead} />{" "}
+              <SplitWords text={aboutHero.titleAccent} offset={leadCount} wordClassName="text-grad" />
+            </h1>
+            <p className="enter-fade text-l max-w-[36rem]" style={d(0.5)}>
+              {aboutHero.sub}
+            </p>
+          </div>
+        }
+        visual={<HeroParticles shape="orbit" />}
+      />
 
       <section className="section-y bg-white text-ink">
         <div className="shell flex flex-col items-center gap-12">
@@ -127,7 +132,7 @@ export default function AboutPage() {
               <li className="flex items-center gap-4">
                 <Image src={mittiLogo} alt="" width={120} height={46} className="h-auto w-30" />
                 <p className="text-m text-gray-600">
-                  <span className="block font-medium text-ink">Mitti Certified Expert</span>
+                  <span className="block font-medium text-ink">Mitti Certified Experts</span>
                   Implementation partner for Mitti
                 </p>
               </li>

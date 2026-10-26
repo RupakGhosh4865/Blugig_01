@@ -66,7 +66,7 @@ export default function SolutionsPage() {
         title="Services"
         line="Expert support. Every step of your Mitti journey."
         shape="mitti"
-        nextShape="grid"
+        nextShape="gear"
       />
     </>
   );

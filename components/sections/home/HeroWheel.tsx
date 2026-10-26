@@ -12,12 +12,12 @@ import {
   Workflow,
 } from "lucide-react";
 import { animate, useMotionValue, useMotionValueEvent } from "motion/react";
-import Image from "next/image";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { ParticleField } from "@/components/three/ParticleField";
 import { heroWheel } from "@/content/home";
+import { shade } from "@/lib/color";
 import { useMediaQuery, useReducedMotionSafe } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
-import mittiIcon from "@/public/brand/mitti-icon.png";
 
 /*
  * Hero wheel — after the zig.ai hero motion: a hub sits off-screen right with
@@ -250,15 +250,22 @@ function Scene({ variant, reduce, stage }: { variant: Variant; reduce: boolean; 
           className="absolute -translate-x-1/2 -translate-y-1/2"
           style={{ left: hub.x, top: hub.y, width: hub.size, height: hub.size }}
         >
-          <div className="enter-fade relative size-full" style={{ "--d": `${ENTER.delay + 0.2}s` } as CSSProperties}>
-            {/* hub plate: a hairline ring in the spoke colour that clears the spokes around the mark */}
-            <span className="absolute inset-[-24%] rounded-full border border-[#c3cbd8] bg-canvas" />
-            <Image
-              src={mittiIcon}
-              alt=""
-              width={Math.round(hub.size)}
-              height={Math.round(hub.size)}
-              className="relative size-full drop-shadow-[0_16px_22px_rgba(4,28,66,0.3)]"
+          {/* hub plate: a hairline ring in the spoke colour that clears the spokes, holding the particle Mitti mark */}
+          <div
+            className="enter-fade relative size-full overflow-hidden rounded-full border border-[#c3cbd8] bg-canvas"
+            style={{ "--d": `${ENTER.delay + 0.2}s` } as CSSProperties}
+          >
+            <span className="absolute inset-0 bg-[radial-gradient(circle,rgba(10,128,251,0.12),transparent_70%)]" />
+            <ParticleField
+              shape="mitti"
+              colorA={shade("#0a80fb", 0.22)}
+              colorB="#041c42"
+              sparkle="#29b9fa"
+              density={0.32}
+              pointSize={1.8}
+              cameraZ={3.15}
+              interactive={false}
+              className="absolute inset-[5%]"
             />
           </div>
         </div>
@@ -268,13 +275,13 @@ function Scene({ variant, reduce, stage }: { variant: Variant; reduce: boolean; 
 }
 
 type HubSpot = { x: number; y: number; size: number };
-/** Mitti badge size (px) and the clearance it keeps from the middle card and the right edge. */
-const HUB_BADGE = { max: 72, min: 40, gap: 26 };
+/** Hub circle diameter (px; below `min` the particle mark gets too small to read) and its clearance from the middle card and the right edge. */
+const HUB_BADGE = { max: 170, min: 92, gap: 16 };
 
 /**
- * Where the Mitti badge sits, in wrapper px: on the hub line, inside the arc —
- * centred in the room between the middle card and the right edge, or on the hub
- * itself when that is nearer. Null when the room is too tight.
+ * Where the Mitti hub circle sits, in wrapper px: on the hub line, inside the
+ * arc — centred in the room between the middle card and the right edge, or on
+ * the hub itself when that is nearer. Null when the room is too tight.
  */
 function hubSpot(V: (typeof VARIANTS)[Variant], scale: number, left: number, top: number, width: number): HubSpot | null {
   const x = (cx: number) => left + (V.nx + cx * V.k) * scale;

@@ -27,7 +27,7 @@ export const site = {
   },
   /** Partner credentials shown as badges (hero, About). */
   credentials: [
-    { kind: "mitti", name: "Mitti", line: "Certified Expert" },
+    { kind: "mitti", name: "Mitti", line: "Certified Experts" },
     { kind: "workato", name: "Workato", line: "Silver Partner" },
   ],
   /** Parent company and the footer legal line (verbatim from the owner). */

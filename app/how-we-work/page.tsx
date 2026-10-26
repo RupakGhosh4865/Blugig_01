@@ -69,7 +69,7 @@ export default function HowWeWorkPage() {
         title="About Avantra"
         line="Technology works best when people can use it well."
         shape="stream"
-        nextShape="globe"
+        nextShape="orbit"
       />
     </>
   );

@@ -75,6 +75,7 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
         headers: { "content-type": "application/json" },
         body: JSON.stringify(lead),
       });
+      if (!res.ok) console.error("[contact] webhook rejected the lead", res.status, (await res.text()).slice(0, 500));
       delivered = delivered || res.ok;
     }
     if (resendKey && to) {
@@ -91,6 +92,8 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
             .join("\n"),
         }),
       });
+      // Resend explains rejections in the body, e.g. a sender domain that isn't verified yet.
+      if (!res.ok) console.error("[contact] Resend rejected the email", res.status, (await res.text()).slice(0, 500));
       delivered = delivered || res.ok;
     }
   } catch (err) {
@@ -99,6 +102,7 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
 
   if (!webhook && !(resendKey && to)) {
     // Development / unconfigured: log the lead so the flow can be tested end to end.
+    if (resendKey || to) console.warn("[contact] email needs both RESEND_API_KEY and CONTACT_TO_EMAIL — this lead was not sent");
     console.info("[contact] lead received (no CONTACT_WEBHOOK_URL / RESEND_API_KEY configured)", lead);
     delivered = true;
   }
@@ -107,8 +111,9 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
     ? { ok: true, message: SUCCESS }
     : {
         ok: false,
+        // The form adds "You can also email us at …" when site.email is set.
         message: site.email
-          ? "We couldn't send your message right now. Please email us directly."
+          ? "We couldn't send your message right now."
           : "We couldn't send your message right now. Please try again shortly.",
       };
 }
