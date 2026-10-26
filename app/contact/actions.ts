@@ -65,7 +65,8 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
 
   const webhook = process.env.CONTACT_WEBHOOK_URL;
   const resendKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL;
+  // Leads go to the site inbox unless CONTACT_TO_EMAIL names another.
+  const to = process.env.CONTACT_TO_EMAIL || site.email;
   let delivered = false;
 
   try {
@@ -102,7 +103,7 @@ export async function submitContact(input: ContactInput): Promise<ContactResult>
 
   if (!webhook && !(resendKey && to)) {
     // Development / unconfigured: log the lead so the flow can be tested end to end.
-    if (resendKey || to) console.warn("[contact] email needs both RESEND_API_KEY and CONTACT_TO_EMAIL — this lead was not sent");
+    if (resendKey && !to) console.warn("[contact] RESEND_API_KEY is set but there is no recipient (CONTACT_TO_EMAIL / site.email) — this lead was not sent");
     console.info("[contact] lead received (no CONTACT_WEBHOOK_URL / RESEND_API_KEY configured)", lead);
     delivered = true;
   }

@@ -14,7 +14,7 @@ Each value is rendered only when set (footer, contact page, JSON-LD).
 - [ ] Client logos (with permission) — the marquee under the statement shows Mitti services/use cases until then (`content/home.ts` → `platforms`).
 
 ## Content to supply (hidden until set)
-- [ ] Booking link — `NEXT_PUBLIC_CALENDLY_URL` (shows the "Book a call" button and the scheduler on /contact, and points the home "Book an integration assessment" button at Calendly).
+- [x] Booking link — calendly.com/avantratechnologies-info/30min in `content/site.ts` (`NEXT_PUBLIC_CALENDLY_URL` overrides it).
 
 ## Content to confirm
 - [ ] Integration systems list — `content/home.ts` → `integrations.groups` (example systems per category on Home `#integrations`).

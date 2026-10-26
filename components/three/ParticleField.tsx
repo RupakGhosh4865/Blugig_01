@@ -25,6 +25,8 @@ type Props = {
   cameraZ?: number;
   spin?: number;
   interactive?: boolean;
+  /** Cursor push multiplier; small canvases need more to show it. */
+  mouseStrength?: number;
   className?: string;
   posterClassName?: string;
 };
@@ -47,6 +49,7 @@ export function ParticleField({
   cameraZ = 3.4,
   spin = 0.06,
   interactive = true,
+  mouseStrength = 1,
   className,
   posterClassName,
 }: Props) {
@@ -104,6 +107,7 @@ export function ParticleField({
             count={count}
             dpr={tier === "high" ? [1, 1.75] : [1, 1.25]}
             interactive={interactive && tier === "high"}
+            mouseStrength={mouseStrength}
             active={near}
             pointSize={pointSize}
             opacity={opacity}
