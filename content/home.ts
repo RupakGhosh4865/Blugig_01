@@ -113,7 +113,7 @@ export const integrations = {
   chip: "Integrations · Workato Silver Partner",
   titleLead: "Mitti findings that",
   titleAccent: "act on their own.",
-  sub: "We connect Mitti (formerly SafetyCulture) to the systems your teams already run — so a failed check opens a ticket, a work order or a task automatically, and closes the loop back in Mitti.",
+  sub: "We connect Mitti (by SafetyCulture) to the systems your teams already run — so a failed check opens a ticket, a work order or a task automatically, and closes the loop back in Mitti.",
   partner: { title: "Workato Silver Partner", line: "Certified Workato builders · Automation League" },
   /** One card per flow. Systems are examples of common Workato connectors, not a client list. */
   flows: [
