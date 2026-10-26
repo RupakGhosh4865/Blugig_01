@@ -39,6 +39,15 @@ export const iconData = {
     ["path", {"d":"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"}],
     ["path", {"d":"M8 16H3v5"}],
   ],
+  /** Avantra's own (not lucide): two apps linked by a two-way sync — the integration mark. */
+  integrate: [
+    ["rect", {"width":"7","height":"7","x":"3","y":"3","rx":"2"}],
+    ["rect", {"width":"7","height":"7","x":"14","y":"14","rx":"2"}],
+    ["path", {"d":"M10 6.5h4.5a3 3 0 0 1 3 3V14"}],
+    ["path", {"d":"m15.5 12 2 2 2-2"}],
+    ["path", {"d":"M14 17.5H9.5a3 3 0 0 1-3-3V10"}],
+    ["path", {"d":"m4.5 12 2-2 2 2"}],
+  ],
   inspect: [
     ["rect", {"width":"8","height":"4","x":"8","y":"2","rx":"1","ry":"1"}],
     ["path", {"d":"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"}],

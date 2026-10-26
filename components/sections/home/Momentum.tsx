@@ -15,12 +15,22 @@ const LINE_STEP = 30;
 const CARD_COUNT = momentum.cards.length + 1;
 const ANGLES = Array.from({ length: CARD_COUNT }, (_, i) => LINE_START + (CARD_COUNT - 1 - i) * LINE_STEP);
 const WHEEL_BASE = "translate(10%, -20%)";
+/**
+ * The track (h-[320vh], pulled up 100vh under the steps panel) pins for 220vh.
+ * The first 100vh is the steps panel sliding off, which uncovers this section
+ * bottom-first; the cards wait just off-screen until the heading is in view
+ * (the last 10% of that slide only clears the navbar strip), then ride in.
+ */
+const REVEALED = 100 / 220;
+const CARDS_FROM = REVEALED * 0.9;
+const CARDS_TO = 0.96;
 
-type Geometry = { wcx: number; meta: { naturalCx: number; deltaY: number }[]; total: number };
+/** `parked`: wheel turn that holds the first card just past the right edge, so it shows the moment the wheel moves. */
+type Geometry = { wcx: number; meta: { naturalCx: number; deltaY: number }[]; total: number; parked: number };
 
 function applyWheel(g: Geometry | null, wheel: HTMLDivElement | null, cards: (HTMLDivElement | null)[], q: number) {
   if (!g || !wheel) return;
-  const r = progressBetween(q, 0.12, 0.95) * g.total;
+  const r = g.parked + progressBetween(q, CARDS_FROM, CARDS_TO) * (g.total - g.parked);
   wheel.style.transform = `${WHEEL_BASE} rotate(${r}deg)`;
   cards.forEach((card, i) => {
     if (!card) return;
@@ -34,9 +44,9 @@ function applyWheel(g: Geometry | null, wheel: HTMLDivElement | null, cards: (HT
 
 /**
  * zig "Every month, the account record gets more complete": a pinned section
- * that the yellow steps panel slides off of; as you scroll a giant wheel of
- * hairlines rotates and each card slides along its ray, ending with the CTA
- * card at the left edge.
+ * that the yellow steps panel slides off of. Once the heading is in view, a
+ * giant wheel of hairlines rotates as you scroll and each card rides in from
+ * the right along its ray, ending with the CTA card at the left edge.
  */
 export function Momentum() {
   const track = useRef<HTMLDivElement>(null);
@@ -71,7 +81,10 @@ export function Momentum() {
       const targetCx = r.getBoundingClientRect().left + (last?.width ?? 0) / 2;
       const cot = (targetCx - wcx) / meta[CARD_COUNT - 1].deltaY;
       const finalAngle = (Math.atan2(1, cot) * 180) / Math.PI;
-      geom.current = { wcx, meta, total: Math.min(180, finalAngle - LINE_START) };
+      // First card's ray angle when its left edge sits on the viewport's right edge (minus 1° of slack).
+      const firstW = cardEls[0]?.getBoundingClientRect().width ?? 0;
+      const edgeAngle = (Math.atan2(meta[0].deltaY, window.innerWidth + firstW / 2 - wcx) * 180) / Math.PI - 1;
+      geom.current = { wcx, meta, total: Math.min(180, finalAngle - LINE_START), parked: edgeAngle - ANGLES[0] };
       applyWheel(geom.current, w, cardEls, scrollYProgress.get());
     };
     measure();
@@ -82,7 +95,7 @@ export function Momentum() {
   useMotionValueEvent(scrollYProgress, "change", (q) => applyWheel(geom.current, wheel.current, cards.current, q));
 
   return (
-    <div ref={track} className={cn("relative z-0", choreo && "-mt-[100vh] h-[260vh]")}>
+    <div ref={track} className={cn("relative z-0", choreo && "-mt-[100vh] h-[320vh]")}>
       <section
         className={cn(
           "relative flex flex-col justify-around gap-12 overflow-hidden bg-canvas py-24 text-ink",

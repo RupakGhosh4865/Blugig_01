@@ -66,7 +66,7 @@ export const solutions: Solution[] = [
     slug: "connected-workflows",
     title: "Connected workflows (Workato)",
     body: "Sync inspections, issues and actions with your ERP, HR and ticketing tools — no re-keying.",
-    icon: "refresh",
+    icon: "integrate",
     integration: true,
   },
 ];

@@ -9,6 +9,7 @@ export type ShapeName =
   | "globe"
   | "grid"
   | "shield"
+  | "mitti"
   | "bars"
   | "stream"
   | "migrate"
@@ -17,19 +18,32 @@ export type ShapeName =
   | "cube"
   | "scatter";
 
+/** Brand marks that must read the right way round sway within ±this many radians instead of spinning. */
+export const SHAPE_SWAY: Partial<Record<ShapeName, number>> = { mitti: 0.38 };
+
 const cache = new Map<string, Float32Array>();
+const tints = new Map<string, Float32Array>();
 
 export function getShape(name: ShapeName, count: number): Float32Array {
   const key = `${name}:${count}`;
   let arr = cache.get(key);
   if (!arr) {
-    arr = build(name, count);
+    arr = build(name, count, key);
     cache.set(key, arr);
   }
   return arr;
 }
 
-function build(name: ShapeName, count: number): Float32Array {
+/**
+ * Per-particle position (0–1) along a shape's brand gradient, −1 for plain
+ * particles; null when the shape has no tinted part. Index-aligned with getShape.
+ */
+export function getShapeTint(name: ShapeName, count: number): Float32Array | null {
+  getShape(name, count);
+  return tints.get(`${name}:${count}`) ?? null;
+}
+
+function build(name: ShapeName, count: number, key: string): Float32Array {
   switch (name) {
     case "globe":
       return normalise(globe(count));
@@ -37,6 +51,11 @@ function build(name: ShapeName, count: number): Float32Array {
       return normalise(grid(count));
     case "shield":
       return normalise(shield(count));
+    case "mitti": {
+      const { pos, tint } = mitti(count);
+      tints.set(key, tint);
+      return normalise(pos);
+    }
     case "bars":
       return normalise(bars(count));
     case "stream":
@@ -182,6 +201,72 @@ function shield(count: number) {
     i++;
   }
   return out;
+}
+
+/** Mitti mark outlines, traced from the 512px favicon (px, y down; the mark is centred on 256). */
+const MITTI_M: [number, number][] = [
+  [183, 112], [238, 112], [244, 116], [274, 252], [278, 248], [353, 113], [413, 112], [420, 117], [422, 121],
+  [422, 128], [389, 311], [385, 324], [379, 330], [372, 333], [327, 333], [324, 330], [341, 239], [348, 212],
+  [347, 210], [289, 321], [281, 329], [271, 333], [231, 332], [227, 326], [215, 209], [213, 211], [192, 305],
+  [186, 324], [180, 330], [172, 333], [135, 333], [132, 330], [169, 125], [176, 115],
+];
+const MITTI_SWOOSH: [number, number][] = [
+  [125, 358], [384, 358], [385, 362], [381, 371], [374, 377], [368, 379], [89, 399], [91, 387], [99, 373], [109, 364],
+];
+
+/** Even-odd point-in-polygon test. */
+function inPolygon(poly: [number, number][], x: number, y: number) {
+  let hit = false;
+  for (let a = 0, b = poly.length - 1; a < poly.length; b = a++) {
+    const [xa, ya] = poly[a];
+    const [xb, yb] = poly[b];
+    if (ya > y !== yb > y && x < ((xb - xa) * (y - ya)) / (yb - ya) + xa) hit = !hit;
+  }
+  return hit;
+}
+
+function distToOutline(poly: [number, number][], x: number, y: number) {
+  let min = Infinity;
+  for (let a = 0, b = poly.length - 1; a < poly.length; b = a++) {
+    const [sx, sy] = poly[b];
+    const vx = poly[a][0] - sx;
+    const vy = poly[a][1] - sy;
+    const t = Math.max(0, Math.min(1, ((x - sx) * vx + (y - sy) * vy) / (vx * vx + vy * vy)));
+    min = Math.min(min, Math.hypot(x - (sx + vx * t), y - (sy + vy * t)));
+  }
+  return min;
+}
+
+/**
+ * The Mitti mark: a filled italic M over its swoosh, with slight depth. Swoosh
+ * particles carry their left → right position as a tint, so the shader can
+ * paint the brand gradient across it.
+ */
+function mitti(count: number) {
+  const rand = mulberry32(91);
+  const pos = new Float32Array(count * 3);
+  const tint = new Float32Array(count).fill(-1);
+  const local = ([x, y]: [number, number]): [number, number] => [(x - 256) / 170, (256 - y) / 170];
+  const m = MITTI_M.map(local);
+  const swoosh = MITTI_SWOOSH.map(local);
+  const sx = swoosh.map(([x]) => x);
+  const [x0, x1] = [Math.min(...sx), Math.max(...sx)];
+  let i = 0;
+  let guard = 0;
+  while (i < count && guard++ < count * 40) {
+    const x = rand() * 2 - 1;
+    const y = rand() * 1.72 - 0.86;
+    const inM = inPolygon(m, x, y);
+    if (!inM && !inPolygon(swoosh, x, y)) continue;
+    const edge = distToOutline(inM ? m : swoosh, x, y) < 0.035;
+    const j = i * 3;
+    pos[j] = x;
+    pos[j + 1] = y;
+    pos[j + 2] = (rand() - 0.5) * (edge ? 0.06 : inM ? 0.22 : 0.1);
+    if (!inM) tint[i] = (x - x0) / (x1 - x0);
+    i++;
+  }
+  return { pos, tint };
 }
 
 /** Columns of rising height on a base plane (Power BI). */

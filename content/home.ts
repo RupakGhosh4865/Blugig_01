@@ -7,12 +7,13 @@ import { site } from "@/content/site";
  */
 /**
  * Two hero stages: the page opens on the inspection story, a short scroll swaps
- * to the integration story. Index matches `heroWheel.stages`.
+ * to the integration story. Index matches `heroWheel.stages`. The credential
+ * badges stay put above both stages.
  */
 export const hero = {
+  badges: site.credentials,
   stages: [
     {
-      badges: site.credentials,
       titleLead: "Every inspection,",
       titleAccent: "turned into action.",
       sub: "Avantra designs, deploys, and scales Mitti across your sites, so issues get fixed faster and every team stays audit-ready.",
@@ -21,23 +22,20 @@ export const hero = {
       apps: [],
     },
     {
-      badges: site.credentials,
       titleLead: "Connect Mitti",
       titleAccent: "to every system you run.",
       sub: "Avantra builds Workato automations that sync inspections, issues and actions with your ERP, CRM, HR and ticketing tools.",
       primary: { label: "Plan my integration", href: "/contact" },
       secondary: { label: "See integrations", href: "/services" },
-      apps: ["Salesforce", "SAP", "ServiceNow", "Slack", "Teams", "+1000 apps"],
+      apps: ["Salesforce", "SAP", "ServiceNow", "Slack", "Teams", "+more"],
     },
   ],
 } as const;
 
 /**
- * Hero wheel (illustrative). Five events ride the wheel, stack, then resolve
- * into the two summary cards — same choreography as zig.ai's hero. Each stage
- * swaps the card copy in place. Order matters: [0] becomes the "Avantra did"
- * card, [1] hides the "You did" card, [4] is the highlighted outcome. `w` widens
- * a card whose title runs long.
+ * Hero wheel (illustrative). Each stage is a set of five events resting on the
+ * wheel's spokes, top → bottom; switching stage turns the wheel to the next set.
+ * [4] is the highlighted outcome. `w` widens a card whose title runs long.
  */
 export const heroWheel = {
   stages: [
@@ -56,8 +54,6 @@ export const heroWheel = {
       { time: "9:05 AM", title: "All systems in sync", detail: "0 manual steps", icon: "resolved", tone: "green" },
     ],
   ],
-  brand: { title: "Avantra did", detail: "14 setup tasks", people: ["AM", "JR", "SK"], more: "+12" },
-  person: { title: "You did", detail: "Approved the rollout" },
 } as const;
 
 export const gap = {
@@ -84,19 +80,9 @@ export const statement = {
   rest: "from planning and configuration to adoption and rollout.",
 };
 
-export const platforms = {
-  label: "Mitti (by SafetyCulture)",
-  items: [
-    "Implementation",
-    "Enablement",
-    "Ongoing support",
-    "Inspections & audits",
-    "Issue reporting",
-    "Corrective actions",
-    "Site standards",
-    "Asset inspections",
-    "Operational visibility",
-  ],
+/** Client logo loop under the hero; the logos live in content/clients.ts. */
+export const trustedBy = {
+  label: "Trusted by teams at",
 };
 
 export const expertise = {
@@ -122,18 +108,56 @@ export const impact = {
     "Clear workflows, practical templates, defined responsibilities — and people who feel ready to use the platform.",
 };
 
-/** Workato integration strip (Home `#integrations`; the nav's Integrations links land here). */
+/** Workato integrations section (Home `#integrations`; the nav's Integrations links land here). */
 export const integrations = {
   chip: "Integrations · Workato Silver Partner",
-  title: "Connect Mitti to the rest of your stack",
-  sub: "As a Workato Silver Partner, we connect Mitti to your ERP, HRIS, CMMS and ticketing tools so actions flow automatically.",
-  cta: { label: "Plan my integration", href: "/contact?topic=connected-workflows" },
-  /** Example systems per category — illustrative of common Workato connectors; confirm the final list. */
-  groups: [
-    { title: "ERP & finance", systems: ["SAP", "Oracle NetSuite", "Microsoft Dynamics 365"] },
-    { title: "HR & people", systems: ["Workday", "SAP SuccessFactors", "BambooHR"] },
-    { title: "Maintenance & tickets", systems: ["ServiceNow", "Jira Service Management", "SAP Plant Maintenance"] },
+  titleLead: "Mitti findings that",
+  titleAccent: "act on their own.",
+  sub: "We connect Mitti (formerly SafetyCulture) to the systems your teams already run — so a failed check opens a ticket, a work order or a task automatically, and closes the loop back in Mitti.",
+  partner: { title: "Workato Silver Partner", line: "Certified Workato builders · Automation League" },
+  /** One card per flow. Systems are examples of common Workato connectors, not a client list. */
+  flows: [
+    {
+      title: "Issues → ITSM",
+      flow: "Mitti issue → ticket → status sync",
+      body: "Failed items raise a ticket with photos, site and owner; closure syncs back to Mitti.",
+      systems: ["ServiceNow", "Jira SM"],
+    },
+    {
+      title: "Actions → CMMS / ERP",
+      flow: "Mitti action → work order",
+      body: "Asset faults become work orders with the right cost centre and asset ID.",
+      systems: ["SAP PM", "Dynamics 365", "NetSuite"],
+    },
+    {
+      title: "People ↔ HRIS",
+      flow: "HRIS → Mitti users & groups",
+      body: "Joiners, movers and leavers update Mitti users, sites and training automatically.",
+      systems: ["Workday", "SuccessFactors", "BambooHR"],
+    },
+    {
+      title: "Insights → BI & chat",
+      flow: "Mitti data → BI · alerts → Teams/Slack",
+      body: "Inspection data lands in your BI model; critical findings alert the right channel.",
+      systems: ["Power BI", "Teams", "Slack"],
+    },
   ],
+  systemsNote: "Example systems",
+  process: {
+    label: "How a Workato project runs",
+    steps: [
+      { title: "Assess", body: "Map systems, data owners and the 2–3 flows worth automating first." },
+      { title: "Design", body: "Agree triggers, field mapping, error handling and security." },
+      { title: "Build & test", body: "Build Workato recipes in a sandbox and test with real Mitti data." },
+      { title: "Launch & hand over", body: "Go live with monitoring, runbook and team training." },
+    ],
+  },
+  /** The button opens the Calendly link (NEXT_PUBLIC_CALENDLY_URL) when set; `href` is the fallback. */
+  cta: {
+    text: "Not sure where to start? We'll map your first integrations in one session.",
+    label: "Book an integration assessment",
+    href: "/contact?topic=connected-workflows",
+  },
 };
 
 export const wins = {

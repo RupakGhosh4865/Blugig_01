@@ -1,6 +1,7 @@
 import { ArrowRight, Check, Flag, Zap } from "lucide-react";
-import { LogoMark } from "@/components/layout/Logo";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
+import mittiLogo from "@/public/brand/mitti-logo.png";
 
 export type IllustrationId = "plan" | "settings" | "tablet" | "chart" | "team" | "refresh";
 
@@ -155,9 +156,7 @@ function PipelineMock() {
       </div>
       <Connector />
       <div className="flex flex-col items-center gap-1 rounded-xl bg-white px-3 py-3 shadow-[0_12px_30px_-8px_rgba(4,28,66,0.25)]">
-        <span className="block size-8 overflow-hidden rounded-lg">
-          <LogoMark className="size-full" />
-        </span>
+        <Image src={mittiLogo} alt="" width={60} height={23} className="h-auto w-15" />
         <span className="text-[10px] font-medium text-ink">Mitti account</span>
       </div>
       <Connector />

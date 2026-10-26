@@ -62,32 +62,32 @@ export function Navbar() {
           <NavigationMenu.List className="flex h-10 items-center gap-6 rounded-full bg-white px-7 xl:gap-[2.375rem] xl:px-8">
             <MenuItem label="Solutions" href="/solutions" open={menu === "/solutions"} onOpen={setMenu}>
               <MegaMenu
-                items={[
-                  ...solutions
-                    .filter((s) => !s.integration)
-                    .map((s, i) => ({
-                      key: s.slug,
-                      href: `/solutions#${s.slug}`,
-                      number: String(i + 1).padStart(2, "0"),
-                      icon: s.icon,
-                      title: s.title,
-                      line: s.body,
-                    })),
-                  { key: "integrations", href: integrationsMenu.href, number: "", icon: "refresh", title: integrationsMenu.title, line: integrationsMenu.line, wide: true },
-                ]}
+                items={solutions
+                  .filter((s) => !s.integration)
+                  .map((s, i) => ({
+                    key: s.slug,
+                    href: `/solutions#${s.slug}`,
+                    number: String(i + 1).padStart(2, "0"),
+                    icon: s.icon,
+                    title: s.title,
+                    line: s.body,
+                  }))}
                 aside={{ eyebrow: "Solutions with Mitti", title: "Which process should we improve first?", cta: "Discuss your use case", href: "/contact" }}
               />
             </MenuItem>
             <MenuItem label="Services" href="/services" open={menu === "/services"} onOpen={setMenu}>
               <MegaMenu
-                items={services.map((s) => ({
-                  key: s.slug,
-                  href: `/services#${s.slug}`,
-                  number: s.number,
-                  icon: s.icon,
-                  title: s.title,
-                  line: s.deliverables.join(" · "),
-                }))}
+                items={[
+                  ...services.map((s) => ({
+                    key: s.slug,
+                    href: `/services#${s.slug}`,
+                    number: s.number,
+                    icon: s.icon,
+                    title: s.title,
+                    line: s.deliverables.join(" · "),
+                  })),
+                  { key: "integrations", href: integrationsMenu.href, number: "", icon: "integrate", title: integrationsMenu.title, line: integrationsMenu.line, wide: true },
+                ]}
                 aside={{ eyebrow: "Mitti implementation", title: "Not sure where to start?", cta: "Talk to our team", href: "/contact" }}
               />
             </MenuItem>
@@ -185,7 +185,10 @@ function MegaMenu({
                   href={s.href}
                   className="group flex items-center gap-4 rounded-2xl bg-canvas p-4 transition-colors duration-300 hover:bg-sky-50"
                 >
-                  <DrawIcon id={s.icon} className="size-7 shrink-0 text-blue-600" />
+                  {/* the featured row's mark sits on a logo-blue → sky tile */}
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,var(--color-blue-600),var(--color-sky-500))] text-white shadow-[0_10px_22px_-10px_rgba(0,109,224,0.7)] transition-transform duration-300 group-hover:scale-105">
+                    <DrawIcon id={s.icon} className="size-6" />
+                  </span>
                   <span className="flex flex-col gap-1">
                     <span className="text-[1.0625rem] leading-tight font-medium text-ink">{s.title}</span>
                     <span className="text-s text-gray-500">{s.line}</span>

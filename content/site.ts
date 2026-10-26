@@ -13,8 +13,8 @@ export const site = {
   description:
     "Avantra Technologies is a Mitti implementation partner. We help operations teams plan, configure and roll out Mitti by SafetyCulture — from setup to site-wide adoption.",
   /** Each contact value is rendered only when set (footer, contact page, JSON-LD). */
-  email: "info@sspmconsultants.com" as string,
-  phone: "+91 6309789829" as string,
+  email: "info@avantratechnologies.com" as string,
+  phone: "+91 7676771425" as string,
   address: "Bangalore, Karnataka, India" as string,
   replyTime: "1 business day",
   social: {
@@ -25,7 +25,7 @@ export const site = {
     name: "Workato Automation League — Silver Partner",
     short: "Workato Silver Partner",
   },
-  /** Text credentials shown as badges (hero, footer, About). */
+  /** Partner credentials shown as badges (hero, About). */
   credentials: [
     { kind: "mitti", name: "Mitti", line: "Certified Expert" },
     { kind: "workato", name: "Workato", line: "Silver Partner" },

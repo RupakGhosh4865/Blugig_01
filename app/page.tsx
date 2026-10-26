@@ -1,7 +1,5 @@
-import { Workflow } from "lucide-react";
 import type { Metadata } from "next";
 import { HashScroll } from "@/components/layout/HashScroll";
-import { CardRow } from "@/components/sections/CardRow";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { AgentSpotlight } from "@/components/sections/home/AgentSpotlight";
 import { Approach } from "@/components/sections/home/Approach";
@@ -9,12 +7,13 @@ import { Expertise } from "@/components/sections/home/Expertise";
 import { Gap } from "@/components/sections/home/Gap";
 import { Hero } from "@/components/sections/home/Hero";
 import { Impact } from "@/components/sections/home/Impact";
+import { Integrations } from "@/components/sections/home/Integrations";
 import { Momentum } from "@/components/sections/home/Momentum";
-import { Platforms } from "@/components/sections/home/Platforms";
+import { TrustedBy } from "@/components/sections/home/TrustedBy";
 import { Statement } from "@/components/sections/home/Statement";
 import { Testimonials } from "@/components/sections/home/Testimonials";
 import { Wins } from "@/components/sections/home/Wins";
-import { approach, expertise, gap, homeFaqs, integrations } from "@/content/home";
+import { approach, expertise, gap, homeFaqs } from "@/content/home";
 import { services } from "@/content/services";
 
 export const metadata: Metadata = {
@@ -41,7 +40,7 @@ export default function HomePage() {
         ]}
       />
       <Statement />
-      <Platforms />
+      <TrustedBy />
       <Expertise
         chip={expertise.chip}
         lead={expertise.titleLead}
@@ -57,15 +56,7 @@ export default function HomePage() {
         }))}
       />
       <Impact />
-      <CardRow
-        id="integrations"
-        chip={integrations.chip}
-        icon={Workflow}
-        lead={integrations.title}
-        sub={integrations.sub}
-        cta={integrations.cta}
-        items={integrations.groups.map((g) => ({ title: g.title, tags: g.systems }))}
-      />
+      <Integrations />
       <Wins />
       <Approach data={approach} />
       <Momentum />
