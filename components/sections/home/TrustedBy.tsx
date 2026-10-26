@@ -18,7 +18,7 @@ export function TrustedBy() {
       <div className="shell flex flex-col gap-4 overflow-hidden sm:flex-row sm:items-center sm:gap-12">
         <p className="title-s shrink-0 text-gray-600 max-sm:text-lg">{trustedBy.label}</p>
         <div className="marquee-mask w-full min-w-0 sm:flex-1 sm:border-l sm:border-gray-300 sm:pl-12">
-          <Marquee duration={49} className="py-2">
+          <Marquee duration={80} className="py-2">
             <ul className="flex items-center gap-6 pr-6">
               {clients.map(({ name, logo }) => {
                 const fit = Math.min(LOGO.w / logo.width, LOGO.h / logo.height);

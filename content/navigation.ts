@@ -1,7 +1,7 @@
-/** Home section that the Integrations links scroll to. */
-export const integrationsHref = "/#integrations";
+/** The Integrations page (top-level nav link and the Services-menu entry). */
+export const integrationsHref = "/integrations";
 
-/** Services-menu entry for the Workato integrations section on Home. */
+/** Services-menu entry for the Integrations page. */
 export const integrationsMenu = {
   title: "Integrations",
   line: "Connect Mitti to your ERP, HR and ticketing tools with Workato.",
@@ -10,9 +10,9 @@ export const integrationsMenu = {
 
 /** Top-level links after the Solutions and Services menus. */
 export const mainNav = [
+  { label: "Integrations", href: integrationsHref },
   { label: "How we work", href: "/how-we-work" },
   { label: "About", href: "/about" },
-  { label: "Integrations", href: integrationsHref },
 ] as const;
 
 export const primaryCta = { label: "Talk to our team", href: "/contact" } as const;

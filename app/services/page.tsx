@@ -4,12 +4,13 @@ import type { CSSProperties } from "react";
 import { IntegrateIcon } from "@/components/icons/IntegrateIcon";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { CardRow } from "@/components/sections/CardRow";
-import { HeroRays } from "@/components/sections/home/HeroArt";
 import { Expertise } from "@/components/sections/home/Expertise";
+import { HeroMotion } from "@/components/sections/home/HeroMotion";
 import { CtaBand } from "@/components/sections/service/CtaBand";
 import { Delivery } from "@/components/sections/service/Delivery";
 import { NextService } from "@/components/sections/service/NextService";
 import { Related } from "@/components/sections/service/Related";
+import { HeroBackdrop, HeroParticles } from "@/components/sections/service/ServiceHero";
 import { ButtonLink } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { phases } from "@/content/howWeWork";
@@ -37,29 +38,33 @@ export default function ServicesPage() {
   const leadCount = servicesHero.titleLead.split(/\s+/).length;
   return (
     <>
-      <section className="relative isolate overflow-hidden">
-        <HeroRays className="pointer-events-none absolute inset-0 -z-10 h-full w-full" />
-        <div className="shell flex min-h-[38rem] flex-col justify-center gap-[2.625rem] pt-32 pb-16">
-          <div className="flex max-w-[50rem] flex-col gap-6">
-            <Chip icon={Lightbulb} className="enter-fade">
-              {servicesHero.chip}
-            </Chip>
-            <h1 className="title-xl">
-              <SplitWords text={servicesHero.titleLead} />{" "}
-              <SplitWords text={servicesHero.titleAccent} offset={leadCount} wordClassName="text-grad" />
-            </h1>
-            <p className="enter-fade text-l max-w-[36rem]" style={d(0.5)}>
-              {servicesHero.sub}
-            </p>
+      <HeroMotion
+        gridClassName="pt-28 pb-16 lg:min-h-[50rem] lg:pt-24 lg:pb-10"
+        background={<HeroBackdrop />}
+        copy={
+          <div className="flex max-w-[46.5rem] flex-col gap-[2.625rem]">
+            <div className="flex flex-col gap-6">
+              <Chip icon={Lightbulb} className="enter-fade">
+                {servicesHero.chip}
+              </Chip>
+              <h1 className="title-xl">
+                <SplitWords text={servicesHero.titleLead} />{" "}
+                <SplitWords text={servicesHero.titleAccent} offset={leadCount} wordClassName="text-grad" />
+              </h1>
+              <p className="enter-fade text-l max-w-[36rem]" style={d(0.5)}>
+                {servicesHero.sub}
+              </p>
+            </div>
+            <div className="enter-fade flex flex-wrap gap-3" style={d(0.65)}>
+              <ButtonLink href={servicesHero.primary.href}>{servicesHero.primary.label}</ButtonLink>
+              <ButtonLink href={servicesHero.secondary.href} variant="outline">
+                {servicesHero.secondary.label}
+              </ButtonLink>
+            </div>
           </div>
-          <div className="enter-fade flex flex-wrap gap-3" style={d(0.65)}>
-            <ButtonLink href={servicesHero.primary.href}>{servicesHero.primary.label}</ButtonLink>
-            <ButtonLink href={servicesHero.secondary.href} variant="outline">
-              {servicesHero.secondary.label}
-            </ButtonLink>
-          </div>
-        </div>
-      </section>
+        }
+        visual={<HeroParticles shape="gear" />}
+      />
 
       <Expertise
         chip={servicesIntro.chip}
@@ -126,12 +131,12 @@ export default function ServicesPage() {
         secondary={{ label: "How we work", href: "/how-we-work" }}
       />
       <NextService
-        href="/how-we-work"
-        eyebrow="Approach"
-        title="How we work"
-        line="A clear plan. A confident rollout."
-        shape="grid"
-        nextShape="stream"
+        href="/integrations"
+        eyebrow="Integrations"
+        title="Integrations"
+        line="Mitti findings that act on their own."
+        shape="gear"
+        nextShape="hub"
       />
       <JsonLd
         data={breadcrumbJsonLd([
