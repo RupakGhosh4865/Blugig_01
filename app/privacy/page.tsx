@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/sections/LegalPage";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy policy",
+export const metadata: Metadata = pageMetadata({
+  title: "Privacy Policy | Avantra Technologies",
   description: "How Avantra Technologies collects, uses, shares and protects personal data, and the rights you have over it.",
-  alternates: { canonical: "/privacy" },
-};
+  path: "/privacy",
+});
 
 const entity = `${site.legalName}, a business of ${site.parentCompany}`;
 const contactLine = `Email ${site.email} · Phone ${site.phones.join(" / ")} · ${site.address}`;
@@ -20,6 +21,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy policy"
+      path="/privacy"
       updated="23 October 2026"
       intro={[
         `This privacy policy explains how ${entity} ("Avantra", "we", "our" or "us") collects, uses, shares and protects personal data when you visit this website or contact us through it, and the choices and rights you have.`,

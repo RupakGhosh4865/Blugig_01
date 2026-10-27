@@ -152,8 +152,15 @@ export const integrations = {
       { title: "Launch & hand over", body: "Go live with monitoring, runbook and team training." },
     ],
   },
-  /** Integrations page hero: the title and intro above, the assessment button, then this link. */
-  page: { secondary: { label: "See the flows", href: "#flows" } },
+  /** Integrations page hero: the title and intro above, the assessment button, then this link; `flows` heads the flow cards (H2). */
+  page: {
+    secondary: { label: "See the flows", href: "#flows" },
+    flows: {
+      lead: "Four flows that",
+      accent: "close the loop.",
+      sub: "Each flow starts with a Mitti finding and ends in the system that owns the fix, with the status synced back to Mitti.",
+    },
+  },
   /** The button opens the Calendly link (NEXT_PUBLIC_CALENDLY_URL) when set; `href` is the fallback. */
   cta: {
     text: "Not sure where to start? We'll map your first integrations in one session.",

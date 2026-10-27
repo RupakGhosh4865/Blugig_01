@@ -23,7 +23,8 @@ export function detectTier(): RenderTier {
   const narrow = window.matchMedia("(max-width: 1023px)").matches;
   const cores = nav.hardwareConcurrency ?? 4;
 
-  if (coarse && cores <= 4) return "off";
-  if (coarse || narrow) return "low";
+  // Phones and touch screens keep the static poster: three.js setup there blocks the main thread (TBT/INP).
+  if (coarse || narrow) return "off";
+  if (cores <= 4) return "low";
   return "high";
 }

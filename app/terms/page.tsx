@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/sections/LegalPage";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Terms and conditions",
+export const metadata: Metadata = pageMetadata({
+  title: "Terms and Conditions | Avantra Technologies",
   description: "The terms and conditions that apply when you use the Avantra Technologies website.",
-  alternates: { canonical: "/terms" },
-};
+  path: "/terms",
+});
 
 const entity = `${site.legalName}, a business of ${site.parentCompany}`;
 
@@ -14,6 +15,7 @@ export default function TermsPage() {
   return (
     <LegalPage
       title="Terms and conditions"
+      path="/terms"
       updated="23 October 2026"
       intro={[
         `These terms and conditions ("Terms") govern your use of this website, which is operated by ${entity}, ${site.address} ("Avantra", "we", "our" or "us").`,

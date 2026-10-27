@@ -15,10 +15,14 @@ import { Testimonials } from "@/components/sections/home/Testimonials";
 import { Wins } from "@/components/sections/home/Wins";
 import { approach, expertise, gap, homeFaqs } from "@/content/home";
 import { services } from "@/content/services";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Mitti (SafetyCulture) Implementation Partner | Avantra",
+  description:
+    "Avantra plans, configures and rolls out Mitti (formerly SafetyCulture) across your sites, so issues get fixed faster and every team stays audit-ready.",
+  path: "/",
+});
 
 /**
  * Section order follows zig.ai: hero → before/after → scrubbed statement →

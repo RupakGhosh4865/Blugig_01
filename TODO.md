@@ -6,8 +6,23 @@ Everything below is either hidden until supplied or marked as draft on the site.
 Each value is rendered only when set (footer, contact page, JSON-LD).
 - [x] `email`, `phone`, `address`
 - [x] `social.linkedin`
-- [ ] Confirm reply-time promise `replyTime` ("1 business day") — used on /contact and in the form success message.
-- [ ] Production domain → `NEXT_PUBLIC_SITE_URL` in Railway variables (falls back to Railway's generated domain, then localhost).
+- [ ] Confirm reply-time promise `replyTime` ("1 business day") — used on /contact, in the form success message and the /contact meta description.
+- [x] Production domain — `PRODUCTION_URL` (www.avantratechnologies.com) is the default; `NEXT_PUBLIC_SITE_URL` only overrides it (e.g. staging). No Railway fallback.
+- [x] City spelled "Bengaluru" everywhere (was "Bangalore" on the site, "Bengaluru" in schema). Use the same spelling on LinkedIn and partner listings.
+
+## SEO — owner actions (see the audit's action plan)
+- [ ] Deploy, then check the Railway host redirects: `curl -sI https://avantra-tech-production.up.railway.app/about` → `308` to www. Keep the Railway domain attached.
+- [ ] Google Search Console: add a **Domain** property for `avantratechnologies.com` (DNS TXT record in GoDaddy; never delete it), submit `sitemap.xml`, request indexing for /, /services, /solutions, /integrations.
+- [ ] Bing Webmaster Tools: import from Search Console. After each deploy, `npm run indexnow` pings Bing/IndexNow (key file `public/266ad790aefc0f0477960e0ac1ed1c94.txt`).
+- [ ] Create an **Avantra Technologies LinkedIn company page**; add its URL to `site.profiles` (structured data `sameAs`) and swap the footer link `social.linkedin` to it.
+- [ ] Partner directories: ask the Mitti partner manager for a listing (integrations.safetyculture.com) and Workato how service partners are listed. When live, add the URLs to `site.profiles` and link the hero/About badges to them.
+- [ ] Google Business Profile only if the Bengaluru office has signage, staff during business hours and receives visitors (no virtual offices).
+- [ ] Ask SSPM to link to www.avantratechnologies.com from its website.
+- [ ] Proof and people: 2–3 case studies with real numbers (client permission, or anonymised), a team section on About (names, roles, photos, Mitti/Workato certifications, LinkedIn), one citable fact per service page. Never invent numbers or testimonials.
+- [ ] Deepen Solutions, Integrations, How we work and About (~800 words of real detail each).
+- [ ] Blog: write 3–4 posts with named authors before removing `noindex` from /blog; then add posts to `app/sitemap.ts` and Article structured data.
+- [ ] HSTS: after a week without problems, raise `max-age` in `next.config.ts` from 86400 to 31536000.
+- [ ] Optional: Cloudflare in front of Railway for edge caching, only after Search Console confirms the canonical fix.
 
 ## Brand
 - [ ] Vector logo (SVG), if available — the site uses the supplied PNGs (`public/brand/avantra-logo*.png`); the wordmark, one-colour navy and mark/favicon files are derived from them.

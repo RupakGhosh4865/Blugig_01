@@ -18,15 +18,15 @@ import { aboutCta, aboutHero, focus, partnerBand, story, values } from "@/conten
 import { site } from "@/content/site";
 import mittiLogo from "@/public/brand/mitti-logo.png";
 import partnerBadge from "@/public/brand/workato-silver-partner.png";
-import { breadcrumbJsonLd, JsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, JsonLd, pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "About",
+export const metadata: Metadata = pageMetadata({
+  title: "About Avantra Technologies | Mitti Partner in Bengaluru",
   description:
-    "Avantra Technologies is a Mitti implementation partner — thoughtful implementation, practical training and ongoing improvement for operations teams.",
-  alternates: { canonical: "/about" },
-};
+    "Avantra Technologies is a Mitti implementation partner in Bengaluru: practical setup, training and ongoing improvement for operations teams.",
+  path: "/about",
+});
 
 const d = (s: number) => ({ "--d": `${s}s` }) as CSSProperties;
 
