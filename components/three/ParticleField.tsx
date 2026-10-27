@@ -65,14 +65,20 @@ export function ParticleField({
     let idleId: number | undefined;
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
+    const run = () => setTier(detectTier());
+    const schedule = () => {
+      if ("requestIdleCallback" in window) idleId = window.requestIdleCallback(run, { timeout: 2000 });
+      else timeoutId = setTimeout(run, 1200);
+    };
+    // Never during page load: the canvas waits for the load event, then an idle moment.
+    const start = () => (document.readyState === "complete" ? schedule() : window.addEventListener("load", schedule, { once: true }));
+
     const io = new IntersectionObserver(
       ([entry]) => {
         setNear(entry.isIntersecting);
         if (entry.isIntersecting && !decided) {
           decided = true;
-          const run = () => setTier(detectTier());
-          if ("requestIdleCallback" in window) idleId = window.requestIdleCallback(run, { timeout: 2000 });
-          else timeoutId = setTimeout(run, 1200);
+          start();
         }
       },
       { rootMargin: "200px" },
@@ -80,6 +86,7 @@ export function ParticleField({
     io.observe(el);
     return () => {
       io.disconnect();
+      window.removeEventListener("load", schedule);
       if (idleId !== undefined) window.cancelIdleCallback(idleId);
       if (timeoutId !== undefined) clearTimeout(timeoutId);
     };

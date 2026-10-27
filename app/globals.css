@@ -377,8 +377,30 @@ body {
   animation: char-out 0.4s cubic-bezier(0.4, 0, 0.7, 1) both;
   animation-delay: calc(var(--c, 0) * 10ms);
 }
+/*
+ * First load: the headline is the LCP element, and Chrome doesn't count a paint
+ * at opacity 0, so the opening wave only blurs and drifts into focus (the text
+ * is visible from the first frame). Scroll swaps keep the full fade.
+ */
+@keyframes char-enter {
+  from {
+    filter: blur(14px);
+    transform: translate3d(0.42em, 0, 0) scale(1.08);
+  }
+  to {
+    filter: blur(0);
+    transform: none;
+  }
+}
+[data-swap="in"][data-enter] .split-char {
+  animation-name: char-enter;
+}
 [data-swap="idle"] .split-char {
   opacity: 0;
+}
+/* A stage that hasn't been shown isn't painted at all: Chrome otherwise counts its transparent letters as the LCP element. */
+[data-swap="idle"] {
+  visibility: hidden;
 }
 /* The rest of the stage's copy blurs out with the letters and back in after them. */
 .hero-swap {
@@ -505,6 +527,9 @@ html.lenis body {
   }
   [data-swap="in"] .split-char {
     animation: fade-in 0.2s both;
+  }
+  [data-swap="in"][data-enter] .split-char {
+    animation: none;
   }
   [data-swap="out"] .split-char {
     animation: none;

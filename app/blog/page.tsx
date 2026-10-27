@@ -6,11 +6,14 @@ import { HeroRays } from "@/components/sections/home/HeroArt";
 import { ButtonLink } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { blog } from "@/content/blog";
+import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Practical writing on Mitti rollouts, digital inspections and Workato integrations from Avantra Technologies.",
-  alternates: { canonical: "/blog" },
+  ...pageMetadata({
+    title: "Blog | Avantra Technologies",
+    description: "Practical writing on Mitti rollouts, digital inspections and Workato integrations from Avantra Technologies.",
+    path: "/blog",
+  }),
   // No articles yet: keep the empty index out of search (and out of sitemap.ts) until the first post.
   robots: { index: false, follow: true },
 };

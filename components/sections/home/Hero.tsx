@@ -82,6 +82,7 @@ export function Hero() {
                     heading={i === 0 ? "h1" : "h2"}
                     swap={i === stage ? "in" : seen[i] ? "out" : "idle"}
                     lag={swapped ? SWAP_LAG : 0.1}
+                    entering={!swapped}
                   />
                 ))}
               </div>
@@ -106,27 +107,40 @@ export function Hero() {
 /**
  * One stage's copy. Stages stack in a single grid cell so swapping never shifts
  * the layout; the headline letters and the rest of the copy animate from
- * `swap` (see .split-char / .hero-swap in globals.css).
+ * `swap` (see .split-char / .hero-swap in globals.css). `entering` marks the
+ * first load, before any swap, when the letters must paint visibly for LCP.
  */
-function HeroCopy({ copy, heading: Heading, swap, lag }: { copy: Stage; heading: "h1" | "h2"; swap: Swap; lag: number }) {
+function HeroCopy({
+  copy,
+  heading: Heading,
+  swap,
+  lag,
+  entering,
+}: {
+  copy: Stage;
+  heading: "h1" | "h2";
+  swap: Swap;
+  lag: number;
+  entering: boolean;
+}) {
   const leadCount = copy.titleLead.replace(/\s+/g, "").length;
   const sd = (s: number) => ({ "--sd": `${s + lag}s` }) as CSSProperties;
   return (
     <div
       data-swap={swap}
+      data-enter={entering || undefined}
       inert={swap !== "in"}
       className="flex flex-col gap-[2.625rem] [grid-area:1/1] max-[991px]:items-center"
       style={{ "--lag": `${lag}s` } as CSSProperties}
     >
       <div className="flex flex-col gap-6 max-[991px]:items-center max-[767px]:max-w-[24rem]">
-        {/* Lead and accent each own a line (balanced when the accent wraps), as in the mockups. */}
-        <Heading className="title-xl">
-          <span className="sr-only">
-            {copy.titleLead} {copy.titleAccent}
-          </span>
+        {/* Lead and accent each own a line (balanced when the accent wraps), as in the mockups.
+            The letters are the only copy of the text (crawlers read it once); the space between the
+            lines keeps the words apart, and aria-label spares screen readers the letter spans. */}
+        <Heading className="title-xl" aria-label={`${copy.titleLead} ${copy.titleAccent}`}>
           <span aria-hidden className="block text-balance">
             <SplitChars text={copy.titleLead} />
-          </span>
+          </span>{" "}
           <span aria-hidden className="block text-balance">
             <SplitChars text={copy.titleAccent} offset={leadCount} gradient />
           </span>

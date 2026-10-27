@@ -8,13 +8,14 @@ import { ServiceHero } from "@/components/sections/service/ServiceHero";
 import { Tools } from "@/components/sections/service/Tools";
 import { industries } from "@/content/industries";
 import { solutions, solutionsCta, solutionsHero, solutionsIndustries, solutionsIntro, workflow } from "@/content/solutions";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Solutions",
+export const metadata: Metadata = pageMetadata({
+  title: "Mitti Solutions for Inspections, Audits & Actions | Avantra",
   description:
-    "Practical Mitti solutions for inspections and audits, issue reporting, corrective actions, site standards, asset inspections, operational visibility and Workato-connected workflows.",
-  alternates: { canonical: "/solutions" },
-};
+    "Mitti solutions for inspections and audits, issue reporting, corrective actions, site standards, asset checks and Workato-connected workflows.",
+  path: "/solutions",
+});
 
 export default function SolutionsPage() {
   return (

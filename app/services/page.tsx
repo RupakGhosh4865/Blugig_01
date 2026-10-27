@@ -23,14 +23,14 @@ import {
   servicesIntro,
   supportOptions,
 } from "@/content/services";
-import { breadcrumbJsonLd, JsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, JsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Services",
+export const metadata: Metadata = pageMetadata({
+  title: "Mitti Implementation Services & Rollout Support | Avantra",
   description:
-    "Mitti implementation services — discovery and planning, platform configuration, inspections and workflows, reporting setup, training and launch, ongoing optimization, and Workato integration and automation.",
-  alternates: { canonical: "/services" },
-};
+    "Mitti implementation services: discovery, configuration, inspections and workflows, reporting, training and launch, and ongoing optimization.",
+  path: "/services",
+});
 
 const d = (s: number) => ({ "--d": `${s}s` }) as CSSProperties;
 

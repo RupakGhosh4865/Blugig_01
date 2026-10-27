@@ -9,13 +9,14 @@ import { CtaBand } from "@/components/sections/service/CtaBand";
 import { NextService } from "@/components/sections/service/NextService";
 import { ServiceHero } from "@/components/sections/service/ServiceHero";
 import { governance, howCta, howHero, ownership, phases, readiness } from "@/content/howWeWork";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "How we work",
+export const metadata: Metadata = pageMetadata({
+  title: "How We Implement Mitti: A 4-Phase Rollout Plan | Avantra",
   description:
-    "Our Mitti implementation approach: discover, configure and validate, train and launch, then support and improve — with clear deliverables and shared ownership.",
-  alternates: { canonical: "/how-we-work" },
-};
+    "Our Mitti implementation approach: discover, configure and validate, train and launch, then support and improve, with clear deliverables.",
+  path: "/how-we-work",
+});
 
 export default function HowWeWorkPage() {
   return (

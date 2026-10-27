@@ -45,13 +45,16 @@ export function Logo({
     loading: eager ? ("eager" as const) : undefined,
   };
 
+  // An eager logo is the LCP element on inner pages: fetch the colourway that paints first ahead of the rest.
+  const first = eager ? { fetchPriority: "high" as const } : null;
+
   if (variant !== "auto") {
     const src = variant === "onDark" ? art.dark : variant === "onBrand" ? art.brand : art.light;
-    return <Image src={src} alt={alt} className={cn("block", className)} {...size} />;
+    return <Image src={src} alt={alt} className={cn("block", className)} {...size} {...first} />;
   }
   return (
     <span className="block">
-      <Image src={art.light} alt={alt} className={cn("logo-auto logo-on-light block", className)} {...size} />
+      <Image src={art.light} alt={alt} className={cn("logo-auto logo-on-light block", className)} {...size} {...first} />
       <Image src={art.dark} alt="" aria-hidden className={cn("logo-auto logo-on-dark", className)} {...size} />
       <Image src={art.brand} alt="" aria-hidden className={cn("logo-auto logo-on-brand", className)} {...size} />
     </span>

@@ -1,5 +1,6 @@
 import { FileText } from "lucide-react";
 import { Chip } from "@/components/ui/Chip";
+import { breadcrumbJsonLd, JsonLd } from "@/lib/seo";
 
 /** A paragraph, or a bulleted list when given an array. */
 type Block = string | readonly string[];
@@ -15,11 +16,14 @@ const slug = (s: string) =>
 /** Long-form typography page for /privacy and /terms: numbered sections with an on-page index. */
 export function LegalPage({
   title,
+  path,
   updated,
   intro,
   sections,
 }: {
   title: string;
+  /** The page's route, for its breadcrumb structured data. */
+  path: string;
   updated: string;
   intro?: readonly string[];
   sections: readonly LegalSection[];
@@ -71,6 +75,12 @@ export function LegalPage({
           ))}
         </article>
       </div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: title, path },
+        ])}
+      />
     </section>
   );
 }

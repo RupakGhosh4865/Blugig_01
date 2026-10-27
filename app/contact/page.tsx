@@ -7,13 +7,13 @@ import { SplitWords } from "@/components/motion/SplitWords";
 import { HeroRays } from "@/components/sections/home/HeroArt";
 import { Chip } from "@/components/ui/Chip";
 import { contactDetails, site } from "@/content/site";
+import { breadcrumbJsonLd, JsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Talk to Avantra Technologies about your Mitti rollout — new implementations, improving an existing setup, or supporting your next phase.",
-  alternates: { canonical: "/contact" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Contact Avantra | Book a Mitti Rollout Consultation",
+  description: `Talk to Avantra about your Mitti rollout: a new implementation, improving an existing setup, or Workato integrations. We reply within ${site.replyTime}.`,
+  path: "/contact",
+});
 
 const d = (s: number) => ({ "--d": `${s}s` }) as CSSProperties;
 
@@ -108,6 +108,12 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
     </section>
   );
 }
