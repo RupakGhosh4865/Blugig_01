@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useId, useState, useTransition } from "react";
@@ -13,7 +13,7 @@ import { contactSchema, topicGroups, topicOptions, type ContactInput } from "@/l
 import { cn } from "@/lib/utils";
 
 const field =
-  "w-full rounded-[0.75rem] border border-gray-200 bg-canvas px-4 text-base tracking-normal text-ink placeholder:text-gray-400 transition-[border-color,box-shadow] duration-200 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 aria-[invalid=true]:border-[#b4321f]";
+  "w-full rounded-[0.75rem] border border-gray-200 bg-canvas px-4 text-base tracking-normal text-ink placeholder:text-gray-500 transition-[border-color,box-shadow] duration-200 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15 aria-[invalid=true]:border-[#b4321f]";
 
 export function ContactForm() {
   const [pending, startTransition] = useTransition();
@@ -53,15 +53,19 @@ export function ContactForm() {
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Name" required error={errors.name}>
-          {(p) => <input {...p} {...register("name")} autoComplete="name" className={cn(field, "h-12")} />}
+          {(p) => <input {...p} {...register("name")} autoComplete="name" placeholder="Your full name" className={cn(field, "h-12")} />}
         </Field>
         <Field label="Work email" required error={errors.email}>
-          {(p) => <input {...p} {...register("email")} type="email" autoComplete="email" className={cn(field, "h-12")} />}
+          {(p) => (
+            <input {...p} {...register("email")} type="email" autoComplete="email" placeholder="you@company.com" className={cn(field, "h-12")} />
+          )}
         </Field>
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Company" required error={errors.company}>
-          {(p) => <input {...p} {...register("company")} autoComplete="organization" className={cn(field, "h-12")} />}
+          {(p) => (
+            <input {...p} {...register("company")} autoComplete="organization" placeholder="Company name" className={cn(field, "h-12")} />
+          )}
         </Field>
         <Field label="What can we help with?" error={errors.topic}>
           {(p) => (
@@ -89,10 +93,18 @@ export function ContactForm() {
         </Field>
       </div>
       <Field label="Message" required error={errors.message}>
-        {(p) => <textarea {...p} {...register("message")} rows={5} className={cn(field, "resize-y py-3")} />}
+        {(p) => (
+          <textarea
+            {...p}
+            {...register("message")}
+            rows={5}
+            placeholder="Your sites, your current setup and what you would like to improve"
+            className={cn(field, "resize-y py-3")}
+          />
+        )}
       </Field>
       <Field label="How did you hear about us?" error={errors.source}>
-        {(p) => <input {...p} {...register("source")} className={cn(field, "h-12")} />}
+        {(p) => <input {...p} {...register("source")} placeholder="LinkedIn, a referral, search…" className={cn(field, "h-12")} />}
       </Field>
 
       {/* Honeypot */}
@@ -123,8 +135,9 @@ export function ContactForm() {
           </Link>
           .
         </p>
-        <Button type="submit" disabled={pending} className="disabled:opacity-60">
+        <Button type="submit" disabled={pending} className="w-full disabled:opacity-60 sm:w-auto">
           {pending ? "Sending…" : "Send message"}
+          {pending ? null : <ArrowRight aria-hidden className="size-5 shrink-0" strokeWidth={1.8} />}
         </Button>
       </div>
     </form>
