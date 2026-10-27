@@ -1,11 +1,10 @@
-import { CalendarDays, Mail, MapPin, MessageSquare, Phone } from "lucide-react";
+import { Mail, MapPin, MessageSquare, Phone, Send } from "lucide-react";
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { ContactForm } from "@/app/contact/ContactForm";
 import { CalendlyEmbed } from "@/app/contact/CalendlyEmbed";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { HeroRays } from "@/components/sections/home/HeroArt";
-import { ButtonLink } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { contactDetails, site } from "@/content/site";
 
@@ -65,20 +64,35 @@ export default function ContactPage() {
         </div>
 
         <div className="enter-fade flex flex-col gap-6" style={d(0.4)}>
+          {site.calendlyUrl ? <CalendlyEmbed url={site.calendlyUrl} /> : null}
+
           <div className="relative rounded-[1.5rem] border border-white bg-white/80 p-6 shadow-[0_40px_80px_-40px_rgba(4,28,66,0.35)] backdrop-blur-xl sm:p-10">
-            <h2 className="title-s mb-8">Talk to our team</h2>
+            <div className="mb-8 flex items-start gap-4">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-800">
+                <Send aria-hidden className="size-5" strokeWidth={1.8} />
+              </span>
+              <div className="flex flex-col gap-1">
+                <h2 className="title-s">Prefer to write? Send us a message</h2>
+                <p className="text-s text-gray-600">
+                  Tell us about your sites and what you want to improve. We reply within {site.replyTime}.
+                </p>
+              </div>
+            </div>
             <ContactForm />
-            {details.length > 0 || site.calendlyUrl ? (
-              <div className="mt-8 flex flex-col gap-5 border-t border-gray-200 pt-6 sm:flex-row sm:items-end sm:justify-between">
-                {details.length > 0 ? (
-                  <ul className="flex flex-col gap-2.5 text-base">
-                    {details.map((c) => {
+            {details.length > 0 ? (
+              // Email and address on the left, the phone numbers together on the right.
+              <div className="mt-8 grid gap-x-6 gap-y-4 border-t border-gray-200 pt-6 sm:grid-cols-2">
+                {[details.filter((c) => c.kind !== "phone"), details.filter((c) => c.kind === "phone")].map((group, i) => (
+                  <ul key={i} className="flex flex-col gap-4">
+                    {group.map((c) => {
                       const Glyph = CONTACT_ICONS[c.kind];
                       return (
-                        <li key={c.kind} className="flex items-center gap-3">
-                          <Glyph aria-hidden className="size-5 shrink-0 text-sky-800" strokeWidth={1.5} />
+                        <li key={c.value} className="flex items-center gap-3 text-base">
+                          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-sky-50 text-sky-800">
+                            <Glyph aria-hidden className="size-4" strokeWidth={1.7} />
+                          </span>
                           {c.href ? (
-                            <a href={c.href} className="hover:text-blue-700">
+                            <a href={c.href} className="break-all transition-colors duration-300 hover:text-blue-700">
                               {c.value}
                             </a>
                           ) : (
@@ -88,17 +102,10 @@ export default function ContactPage() {
                       );
                     })}
                   </ul>
-                ) : null}
-                {site.calendlyUrl ? (
-                  <ButtonLink href={site.calendlyUrl} target="_blank" rel="noopener noreferrer" variant="outline" className="self-start sm:self-auto">
-                    <CalendarDays aria-hidden className="size-5" strokeWidth={1.6} />
-                    Book a call
-                  </ButtonLink>
-                ) : null}
+                ))}
               </div>
             ) : null}
           </div>
-          {site.calendlyUrl ? <CalendlyEmbed url={site.calendlyUrl} /> : null}
         </div>
       </div>
     </section>

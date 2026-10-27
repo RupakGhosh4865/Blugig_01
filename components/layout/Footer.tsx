@@ -62,7 +62,7 @@ export function Footer() {
               {contact.map((c) => {
                 const Glyph = CONTACT_ICONS[c.kind];
                 return (
-                  <li key={c.kind} className="flex items-center gap-2.5 text-sm text-gray-800">
+                  <li key={c.value} className="flex items-center gap-2.5 text-sm text-gray-800">
                     <Glyph aria-hidden className="size-4 shrink-0 text-ink" strokeWidth={1.6} />
                     {c.href ? (
                       <a href={c.href} className="transition-colors duration-300 hover:text-ink">

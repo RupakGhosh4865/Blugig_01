@@ -14,7 +14,8 @@ export const site = {
     "Avantra Technologies is a Mitti implementation partner. We help operations teams plan, configure and roll out Mitti by SafetyCulture — from setup to site-wide adoption.",
   /** Each contact value is rendered only when set (footer, contact page, JSON-LD). */
   email: "info@avantratechnologies.com" as string,
-  phone: "+91 7676771425" as string,
+  /** Listed in this order everywhere; the first is the primary (structured data). */
+  phones: ["+91 9821711355", "+91 7676771425"] as string[],
   address: "Bangalore, Karnataka, India" as string,
   replyTime: "1 business day",
   social: {
@@ -39,10 +40,10 @@ export const site = {
 
 /** Contact lines that are set, with their link (footer + contact page). */
 export function contactDetails() {
-  const lines = [
+  const lines: { kind: "email" | "phone" | "address"; value: string; href?: string }[] = [
     { kind: "email", value: site.email, href: `mailto:${site.email}` },
-    { kind: "phone", value: site.phone, href: `tel:${site.phone.replace(/[^+\d]/g, "")}` },
-    { kind: "address", value: site.address, href: undefined },
-  ] as const;
+    ...site.phones.map((p) => ({ kind: "phone" as const, value: p, href: `tel:${p.replace(/[^+\d]/g, "")}` })),
+    { kind: "address", value: site.address },
+  ];
   return lines.filter((l) => l.value);
 }

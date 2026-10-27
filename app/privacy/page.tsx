@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const entity = `${site.legalName}, a business of ${site.parentCompany}`;
-const contactLine = `Email ${site.email} · Phone ${site.phone} · ${site.address}`;
+const contactLine = `Email ${site.email} · Phone ${site.phones.join(" / ")} · ${site.address}`;
 
 /**
  * Written to match how this site actually handles data: the contact form, Railway hosting

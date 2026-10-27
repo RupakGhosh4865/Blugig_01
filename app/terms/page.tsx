@@ -123,7 +123,7 @@ export default function TermsPage() {
           h: "Contact us",
           body: [
             `Questions about these Terms? Contact ${entity}:`,
-            [`Email ${site.email} · Phone ${site.phone} · ${site.address}`],
+            [`Email ${site.email} · Phone ${site.phones.join(" / ")} · ${site.address}`],
           ],
         },
       ]}
