@@ -20,7 +20,13 @@ Each value is rendered only when set (footer, contact page, JSON-LD).
 - [ ] Ask SSPM to link to www.avantratechnologies.com from its website.
 - [ ] Proof and people: 2–3 case studies with real numbers (client permission, or anonymised), a team section on About (names, roles, photos, Mitti/Workato certifications, LinkedIn), one citable fact per service page. Never invent numbers or testimonials.
 - [ ] Deepen Solutions, Integrations, How we work and About (~800 words of real detail each).
-- [ ] Blog: write 3–4 posts with named authors before removing `noindex` from /blog; then add posts to `app/sitemap.ts` and Article structured data.
+- [ ] Blog: publish 2–3 more posts in /admin with **named authors** (role + LinkedIn). The /blog index joins search automatically at 3 live posts; posts get the sitemap, RSS, structured data and an IndexNow ping on publish without any code change.
+
+## Blog admin (/admin) — setup on Railway
+- [ ] Add a **Postgres** database to the Railway project, and in the web service's Variables add `DATABASE_URL` → reference the database's `DATABASE_URL`. The `blog_posts` table and the example post are created on first request. Until then the admin can't save (the container disk is wiped on deploy) and the site shows the example post.
+- [ ] Set `ADMIN_PASSWORD` (long and random) in the web service's Variables; optionally `ADMIN_SESSION_SECRET`. Then sign in at https://www.avantratechnologies.com/admin.
+- [ ] Review the example post "SafetyCulture is now Mitti" (content/blogSeed.ts seeds it; edit it in /admin): confirm the August 2026 date and the IT Brief source link, and put a named author on it.
+- [ ] Images in posts: link images already in `public/` or on another site (`![alt text](https://…)`); there is no upload yet.
 - [ ] HSTS: after a week without problems, raise `max-age` in `next.config.ts` from 86400 to 31536000.
 - [ ] Optional: Cloudflare in front of Railway for edge caching, only after Search Console confirms the canonical fix.
 

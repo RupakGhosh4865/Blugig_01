@@ -1,7 +1,8 @@
 /**
  * Tell IndexNow engines (Bing, Yandex, Seznam…; not Google) that the site's pages changed.
  * Run after a deploy is live: `npm run indexnow`. Reads the live sitemap, so it submits
- * exactly the URLs search engines see. The key file is public/<KEY>.txt, served on www.
+ * exactly the URLs search engines see. The key file is public/<KEY>.txt, served on www;
+ * the same key is in lib/indexnow.ts, which pings for each blog post as it's published.
  */
 const SITE = "https://www.avantratechnologies.com";
 const KEY = "266ad790aefc0f0477960e0ac1ed1c94";

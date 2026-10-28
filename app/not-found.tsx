@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import { ParticleField } from "@/components/three/ParticleField";
 import { ButtonLink } from "@/components/ui/Button";
 
@@ -7,8 +8,19 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-/** 404 — scattered particles drifting slowly behind the message. */
+/**
+ * 404 — scattered particles drifting slowly behind the message. It renders
+ * under the root layout (outside the (site) group), so it brings the site chrome itself.
+ */
 export default function NotFound() {
+  return (
+    <SiteChrome>
+      <NotFoundMessage />
+    </SiteChrome>
+  );
+}
+
+function NotFoundMessage() {
   return (
     <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden">
       <ParticleField
