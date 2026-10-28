@@ -1,8 +1,8 @@
 import { Mail, MapPin, MessageSquare, Phone, Send } from "lucide-react";
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
-import { ContactForm } from "@/app/contact/ContactForm";
-import { CalendlyEmbed } from "@/app/contact/CalendlyEmbed";
+import { ContactForm } from "@/app/(site)/contact/ContactForm";
+import { CalendlyEmbed } from "@/app/(site)/contact/CalendlyEmbed";
 import { SplitWords } from "@/components/motion/SplitWords";
 import { HeroRays } from "@/components/sections/home/HeroArt";
 import { Chip } from "@/components/ui/Chip";

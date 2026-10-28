@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useId, useState, useTransition } from "react";
 import { useForm, type FieldError } from "react-hook-form";
-import { submitContact, type ContactResult } from "@/app/contact/actions";
+import { submitContact, type ContactResult } from "@/app/(site)/contact/actions";
 import { Button } from "@/components/ui/Button";
 import { site } from "@/content/site";
 import { contactSchema, topicGroups, topicOptions, type ContactInput } from "@/lib/contact-schema";

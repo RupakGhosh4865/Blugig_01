@@ -8,7 +8,7 @@ const LOGO = `data:image/png;base64,${readFileSync(join(process.cwd(), "public/b
 export const ogSize = { width: 1200, height: 630 };
 
 /** Shared OG card: cool off-white, hairline ring, logo-blue glow, the Avantra lockup. */
-export function renderOg({ eyebrow, title }: { eyebrow: string; title: string }) {
+export function renderOg({ eyebrow, title }: { eyebrow: string; title: string }, headers?: Record<string, string>) {
   return new ImageResponse(
     (
       <div
@@ -59,6 +59,6 @@ export function renderOg({ eyebrow, title }: { eyebrow: string; title: string })
         </div>
       </div>
     ),
-    ogSize,
+    { ...ogSize, headers },
   );
 }

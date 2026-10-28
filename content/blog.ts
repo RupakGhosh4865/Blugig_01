@@ -1,4 +1,4 @@
-/** Blog index copy. Until the first article is published the page shows `empty` and stays out of search. */
+/** Blog index copy. With no live posts the page shows `empty`; posts themselves are written in /admin. */
 export const blog = {
   chip: "Blog",
   titleLead: "Ideas for smarter operations",

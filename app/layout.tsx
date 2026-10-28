@@ -1,13 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Azeret_Mono } from "next/font/google";
-import { BackToTop } from "@/components/layout/BackToTop";
-import { Footer } from "@/components/layout/Footer";
-import { Navbar } from "@/components/layout/Navbar";
-import { PageBackground } from "@/components/layout/PageBackground";
-import { Providers } from "@/components/layout/Providers";
-import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { site } from "@/content/site";
-import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -44,29 +37,11 @@ export const viewport: Viewport = {
   themeColor: "#f4f6fa",
 };
 
+/** Document shell and fonts only: the public site's chrome is in app/(site)/layout.tsx, the admin's in app/admin. */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${archivo.variable} ${azeret.variable}`}>
-      <body className="min-h-dvh">
-        <a
-          href="#main"
-          className="fixed top-2 left-2 z-[100] -translate-y-20 rounded-full bg-ink px-5 py-3 text-sm text-white transition-transform focus:translate-y-0"
-        >
-          Skip to content
-        </a>
-        <Providers>
-          <SmoothScroll />
-          <PageBackground />
-          <Navbar />
-          <main id="main" tabIndex={-1} className="outline-none">
-            {children}
-          </main>
-          <Footer />
-          <BackToTop />
-        </Providers>
-        <JsonLd data={organizationJsonLd()} />
-        <JsonLd data={websiteJsonLd()} />
-      </body>
+      <body className="min-h-dvh">{children}</body>
     </html>
   );
 }

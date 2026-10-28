@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ShapeLab } from "@/app/styleguide/3d/ShapeLab";
+import { ShapeLab } from "@/app/(site)/styleguide/3d/ShapeLab";
 
 export const metadata: Metadata = { title: "3D shapes", robots: { index: false, follow: false } };
 
